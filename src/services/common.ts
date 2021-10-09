@@ -6,14 +6,31 @@ interface DTO<T> {
   id?: number;
 }
 
-export const createOneBase = async <K>({ resource, data }: DTO<K>) => {
-  return api.post<K>(resource, data || ({} as K));
+export const createOneBase = async <K>({
+  resource,
+  data,
+}: DTO<K>): Promise<K> => {
+  try {
+    return (await api.post<K>(resource, data || ({} as K))).data;
+  } catch (err) {
+    console.error(err);
+    return {} as K;
+  }
 };
 
 export const getManyBase = async <K>({ resource }: DTO<K>) => {
-  return api.get<K[]>(resource);
+  try {
+    return (await api.get<K[]>(resource)).data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
 
 export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
-  return api.delete<K>(`${resource}/${id}`);
+  try {
+    api.delete<K>(`${resource}/${id}`);
+  } catch (err) {
+    console.error(err);
+  }
 };
