@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box role="main">
+      <Box role="main" p={"2rem"}>
         <Table
           columns={["col-1", "col-2", "col-3"]}
           columnsContent={[{ id: 1, values: ["1", "2", "3"] }]}
