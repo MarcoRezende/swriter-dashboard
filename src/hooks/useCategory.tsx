@@ -14,12 +14,10 @@ export const CategoryProvider: React.FC = ({ children }) => {
     const category = new Category(categoryDto);
 
     return (
-      (
-        await createOneBase<Category>({
-          resource: CategoryResource,
-          data: category,
-        })
-      ).data || {}
+      (await createOneBase<Category>({
+        resource: CategoryResource,
+        data: category,
+      })) || {}
     );
   };
 
