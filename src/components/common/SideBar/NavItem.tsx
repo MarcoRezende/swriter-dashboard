@@ -3,7 +3,11 @@ import { Flex, FlexProps, Link } from "@chakra-ui/layout";
 
 import { RouteProps } from "../../../router";
 
+import ReachLink from "next/link";
+
 interface NavItemProps extends FlexProps, Omit<RouteProps, "name"> {}
+
+import { useRouter } from "next/router";
 
 export const NavItem: React.FC<NavItemProps> = ({
   icon,
@@ -11,8 +15,11 @@ export const NavItem: React.FC<NavItemProps> = ({
   children,
   ...rest
 }) => {
+  const router = useRouter();
+  const isActive = router.pathname === to;
+
   return (
-    <Link href={to} style={{ textDecoration: "none" }}>
+    <Link as={ReachLink} href={to} style={{ textDecoration: "none" }}>
       <Flex
         align="center"
         p="4"
@@ -20,8 +27,9 @@ export const NavItem: React.FC<NavItemProps> = ({
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={isActive ? "blue.800" : "transparent"}
         _hover={{
-          bg: "cyan.400",
+          bg: "blue.800",
           color: "white",
         }}
         {...rest}
