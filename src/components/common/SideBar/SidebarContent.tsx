@@ -1,6 +1,3 @@
-import { CloseButton } from "@chakra-ui/close-button";
-import { useColorModeValue } from "@chakra-ui/color-mode";
-import { Box, BoxProps, Flex, Text } from "@chakra-ui/layout";
 import {
   FiCompass,
   FiHome,
@@ -9,25 +6,25 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 import { IconType } from "react-icons/lib";
+
+import { CloseButton } from "@chakra-ui/close-button";
+import { useColorModeValue } from "@chakra-ui/color-mode";
+import { Box, BoxProps, Flex, Text } from "@chakra-ui/layout";
+
 import { NavItem } from "./NavItem";
 
+import { RouteProps } from "../../../router";
+
 interface SidebarProps extends BoxProps {
+  routes: RouteProps[];
   onClose: () => void;
 }
 
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
-];
-
-export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+export const SidebarContent: React.FC<SidebarProps> = ({
+  routes,
+  onClose,
+  ...rest
+}) => {
   return (
     <Box
       transition="3s ease"
@@ -45,9 +42,9 @@ export const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
+      {routes.map((route) => (
+        <NavItem key={route.name} icon={route.icon}>
+          {route.name}
         </NavItem>
       ))}
     </Box>

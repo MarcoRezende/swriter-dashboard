@@ -9,12 +9,21 @@ import {
 
 import { MobileNav } from "./MobileNav";
 import { SidebarContent } from "./SideBarContent";
+import { RouteProps } from "../../../router";
 
-export default function MainSideBar({ children }: { children: ReactNode }) {
+interface MainSideBarProps {
+  routes: RouteProps[];
+}
+
+export const MainSideBar: React.FC<MainSideBarProps> = ({
+  children,
+  routes,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
+        routes={routes}
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
@@ -28,7 +37,7 @@ export default function MainSideBar({ children }: { children: ReactNode }) {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent routes={routes} onClose={onClose} />
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
@@ -37,4 +46,4 @@ export default function MainSideBar({ children }: { children: ReactNode }) {
       </Box>
     </Box>
   );
-}
+};
