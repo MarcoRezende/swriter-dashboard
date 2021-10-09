@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 import { Hint } from "../models/Hint";
 import { createOneBase, getManyBase } from "../services/common";
-import { HintResource } from "../services/hint";
+import { hintResource } from "../services/hint";
 
 export interface HintAPI {
   createOne(HintDto: Hint): Promise<Hint>;
@@ -16,22 +16,18 @@ export const HintProvider: React.FC = ({ children }) => {
     const hint = new Hint(hintDto);
 
     return (
-      (
-        await createOneBase<Hint>({
-          resource: HintResource,
-          data: hint,
-        })
-      ).data || {}
+      (await createOneBase<Hint>({
+        resource: hintResource,
+        data: hint,
+      })) || {}
     );
   };
 
   const getMany = async () => {
     return (
-      (
-        await getManyBase<Hint>({
-          resource: HintResource,
-        })
-      ).data || []
+      (await getManyBase<Hint>({
+        resource: hintResource,
+      })) || []
     );
   };
 
