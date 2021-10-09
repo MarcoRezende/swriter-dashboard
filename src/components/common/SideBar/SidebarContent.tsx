@@ -1,19 +1,9 @@
-import {
-  FiCompass,
-  FiHome,
-  FiSettings,
-  FiStar,
-  FiTrendingUp,
-} from "react-icons/fi";
-import { IconType } from "react-icons/lib";
-
 import { CloseButton } from "@chakra-ui/close-button";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Box, BoxProps, Flex, Text } from "@chakra-ui/layout";
 
-import { NavItem } from "./NavItem";
-
 import { RouteProps } from "../../../router";
+import { NavItem } from "./NavItem";
 
 interface SidebarProps extends BoxProps {
   routes: RouteProps[];
@@ -43,7 +33,7 @@ export const SidebarContent: React.FC<SidebarProps> = ({
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {routes.map((route) => (
-        <NavItem key={route.name} icon={route.icon}>
+        <NavItem key={route.name} icon={route.icon} to={route.to}>
           {route.name}
         </NavItem>
       ))}
