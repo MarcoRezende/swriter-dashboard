@@ -11,7 +11,7 @@ import {
 interface TableProps extends ChakraTableProps {
   columns: string[];
   columnsContent: Array<{
-    id: string | number;
+    id: string;
     values: string[];
   }>;
 }
@@ -21,6 +21,8 @@ export const Table: React.FC<TableProps> = ({
   columnsContent,
   ...rest
 }) => {
+  const hasContent: boolean = !!columnsContent.length;
+
   return (
     <ChakraTable {...rest} variant="striped">
       <Thead>
@@ -31,13 +33,22 @@ export const Table: React.FC<TableProps> = ({
         </Tr>
       </Thead>
       <Tbody>
-        {columnsContent.map((content) => (
-          <Tr key={"row" + content.id}>
-            {content.values.map((value) => (
-              <Td key={"td" + value}>{value}</Td>
-            ))}
+        {hasContent ? (
+          columnsContent.map((content) => (
+            <Tr key={"row" + content.id}>
+              {content.values.map((value) => (
+                <Td key={"td" + value}>{value}</Td>
+              ))}
+            </Tr>
+          ))
+        ) : (
+          <Tr>
+            <Td colspan={columns.length} w="100%" textAlign="center">
+              {" "}
+              Sem conteúdo
+            </Td>
           </Tr>
-        ))}
+        )}
       </Tbody>
     </ChakraTable>
   );
