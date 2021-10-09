@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { MobileNav } from "./MobileNav";
-import { SidebarContent } from "./SideBarContent";
+import { SidebarContent } from "./SidebarContent";
 import { RouteProps } from "../../../router";
 
 interface MainSideBarProps {
