@@ -1,1 +1,1 @@
-export const HintResource: string = "hint";
+export const hintResource: string = "hint";
