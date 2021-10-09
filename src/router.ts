@@ -7,4 +7,4 @@ export interface RouteProps {
   to: string;
 }
 
-export const routes: RouteProps[] = [{ name: "Home", icon: FiHome, to: "" }];
+export const routes: RouteProps[] = [{ name: "Home", icon: FiHome, to: "/" }];
