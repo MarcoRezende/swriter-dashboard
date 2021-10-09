@@ -33,7 +33,7 @@ export const SidebarContent: React.FC<SidebarProps> = ({
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {routes.map((route) => (
-        <NavItem key={route.name} icon={route.icon} to={route.to}>
+        <NavItem key={route.name} icon={route.icon} to={route.to} mb={"2"}>
           {route.name}
         </NavItem>
       ))}
