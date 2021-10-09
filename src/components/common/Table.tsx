@@ -1,5 +1,6 @@
 import {
   Table as ChakraTable,
+  TableProps as ChakraTableProps,
   Tbody,
   Td,
   Th,
@@ -7,7 +8,7 @@ import {
   Tr,
 } from "@chakra-ui/table";
 
-interface TableProps {
+interface TableProps extends ChakraTableProps {
   columns: string[];
   columnsContent: Array<{
     id: string | number;
@@ -15,9 +16,13 @@ interface TableProps {
   }>;
 }
 
-export const Table: React.FC<TableProps> = ({ columns, columnsContent }) => {
+export const Table: React.FC<TableProps> = ({
+  columns,
+  columnsContent,
+  ...rest
+}) => {
   return (
-    <ChakraTable variant="striped">
+    <ChakraTable {...rest} variant="striped">
       <Thead>
         <Tr>
           {columns.map((column) => (
