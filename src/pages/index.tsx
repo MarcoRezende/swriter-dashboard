@@ -1,9 +1,41 @@
-import { Box } from "@chakra-ui/layout";
-import type { NextPage } from "next";
 import Head from "next/head";
-import { Table } from "../components/common/Table";
+import { useEffect, useState } from "react";
 
+import { Box } from "@chakra-ui/layout";
+
+import { Table } from "../components/common/Table";
+import { Hint } from "../models/Hint";
+
+import type { NextPage } from "next";
+import { getManyBase } from "../services/common";
+import { hintResource } from "../services/hint";
 const Home: NextPage = () => {
+  const [hints, setHints] = useState<Hint[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const hints = await getManyBase<Hint>({
+        resource: hintResource,
+      });
+
+      setHints(hints);
+    };
+
+    fetchData();
+  }, []);
+
+  const columns = ["Autor", "Livro", "Sentença"];
+
+  const tableContent = hints.map((hint) => {
+    const getContent = (values: string[] | undefined[]) =>
+      values.map((value) => (value ? value : "-"));
+
+    return {
+      id: hint.id as string,
+      values: getContent([(hint.author, hint.book, hint.tip)]),
+    };
+  });
+
   return (
     <Box>
       <Head>
@@ -13,10 +45,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Box role="main" p={"2rem"}>
-        <Table
-          columns={["col-1", "col-2", "col-3"]}
-          columnsContent={[{ id: 1, values: ["1", "2", "3"] }]}
-        />
+        <Table columns={columns} columnsContent={tableContent} />
       </Box>
     </Box>
   );
