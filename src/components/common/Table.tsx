@@ -54,11 +54,12 @@ export const Table: React.FC<TableProps> = ({
       <ChakraTable {...rest} variant="striped">
         <Thead>
           <Tr>
-            <Th fontSize="1rem" textTransform="capitalize">
+            <Th fontFamily="Poppins" fontSize="1rem" textTransform="capitalize">
               Número
             </Th>
             {columns.map((column) => (
               <Th
+                fontFamily="Poppins"
                 fontSize="1rem"
                 textTransform="capitalize"
                 key={"tr-" + column}
