@@ -26,11 +26,13 @@ export const NavItem: React.FC<NavItemProps> = ({
         mx="4"
         borderRadius="0.8rem"
         role="group"
+        border="2px"
+        borderColor="transparent"
         cursor="pointer"
         boxShadow={isActive ? "xl" : ""}
         bg={isActive ? "blue.800" : "transparent"}
         _hover={{
-          bg: "blue.800",
+          borderColor: "blue.800",
           color: "white",
         }}
         {...rest}
