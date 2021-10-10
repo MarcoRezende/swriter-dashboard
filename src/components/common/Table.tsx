@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { Button } from "@chakra-ui/button";
 import { Divider, Heading } from "@chakra-ui/layout";
@@ -14,7 +15,6 @@ import {
 
 interface TableProps extends ChakraTableProps {
   title: string;
-  resource: string;
   columns: string[];
   columnsContent: Array<{
     id: string;
@@ -24,12 +24,14 @@ interface TableProps extends ChakraTableProps {
 
 export const Table: React.FC<TableProps> = ({
   title,
-  resource,
   columns,
   columnsContent,
   ...rest
 }) => {
   const hasContent: boolean = !!columnsContent.length;
+  const router = useRouter();
+  const path = router.pathname;
+  const resource = path !== "/" ? path.replace(/\//g, "") : path;
 
   return (
     <>
