@@ -37,14 +37,21 @@ export const Table: React.FC<TableProps> = ({
           columnsContent.map((content) => (
             <Tr key={"row" + content.id}>
               {content.values.map((value) => (
-                <Td key={"td" + value}>{value}</Td>
+                <Td key={"td" + value} py="1rem" px="2rem">
+                  {value}
+                </Td>
               ))}
             </Tr>
           ))
         ) : (
           <Tr>
-            <Td colspan={columns.length} w="100%" textAlign="center">
-              {" "}
+            <Td
+              py="1rem"
+              px="2rem"
+              colSpan={columns.length}
+              w="100%"
+              textAlign="center"
+            >
               Sem conteúdo
             </Td>
           </Tr>
