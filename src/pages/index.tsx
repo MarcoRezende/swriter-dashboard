@@ -46,7 +46,12 @@ const Home: NextPage = () => {
       </Head>
 
       <Box role="main" p={"2rem"}>
-        <Table columns={columns} columnsContent={tableContent} />
+        <Table
+          title="Sentenças"
+          resource="sentenca"
+          columns={columns}
+          columnsContent={tableContent}
+        />
       </Box>
     </Box>
   );
