@@ -5,5 +5,13 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const fonts = {
+  heading: "Poppins",
+  body: "Poppins",
+};
+
+const theme = extendTheme({
+  config,
+  fonts,
+});
 export default theme;
