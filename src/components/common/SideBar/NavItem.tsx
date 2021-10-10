@@ -24,9 +24,10 @@ export const NavItem: React.FC<NavItemProps> = ({
         align="center"
         p="4"
         mx="4"
-        borderRadius="lg"
+        borderRadius="0.8rem"
         role="group"
         cursor="pointer"
+        boxShadow={isActive ? "xl" : ""}
         bg={isActive ? "blue.800" : "transparent"}
         _hover={{
           bg: "blue.800",
