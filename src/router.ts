@@ -11,6 +11,6 @@ export interface RouteProps {
 
 export const routes: RouteProps[] = [
   { name: "Sentenças", icon: RiBookReadLine, to: "/" },
-  { name: "Categorias", icon: MdOutlineCategory, to: "/categorias" },
-  { name: "Temas", icon: VscTypeHierarchy, to: "/temas" },
+  { name: "Categorias", icon: MdOutlineCategory, to: "/category" },
+  { name: "Temas", icon: VscTypeHierarchy, to: "/theme" },
 ];

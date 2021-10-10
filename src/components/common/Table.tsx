@@ -45,7 +45,7 @@ export const Table: React.FC<TableProps> = ({
           color: "white",
         }}
       >
-        <Link href={`/criar/${resource}`}>Criar</Link>
+        <Link href={`/${resource}/create/`}>Criar</Link>
       </Button>
       <Heading mb="0.5rem">{title}.</Heading>
       <Divider mb="2rem" />
