@@ -1,1 +1,1 @@
-export const CategoryResource: string = 'category';
+export const categoryResource: string = "category";
