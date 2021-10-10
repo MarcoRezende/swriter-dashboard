@@ -44,7 +44,7 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         textAlign="center"
         margin={{ base: "auto" }}
       >
-        Logo
+        Swriter
       </Text>
 
       {/* <HStack spacing={{ base: "0", md: "6" }}>
