@@ -9,6 +9,7 @@ import { Hint } from "../models/Hint";
 import type { NextPage } from "next";
 import { getManyBase } from "../services/common";
 import { hintResource } from "../services/hint";
+
 const Home: NextPage = () => {
   const [hints, setHints] = useState<Hint[]>([]);
 
