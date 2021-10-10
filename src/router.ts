@@ -2,6 +2,7 @@ import { IconType } from "react-icons";
 import { RiBookReadLine } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
 import { VscTypeHierarchy } from "react-icons/vsc";
+import { FiHome } from "react-icons/fi";
 
 export interface RouteProps {
   name: string;
@@ -10,7 +11,8 @@ export interface RouteProps {
 }
 
 export const routes: RouteProps[] = [
-  { name: "Sentenças", icon: RiBookReadLine, to: "/" },
+  { name: "Home", icon: FiHome, to: "/" },
+  { name: "Sentenças", icon: RiBookReadLine, to: "/hint" },
   { name: "Categorias", icon: MdOutlineCategory, to: "/category" },
   { name: "Temas", icon: VscTypeHierarchy, to: "/theme" },
 ];
