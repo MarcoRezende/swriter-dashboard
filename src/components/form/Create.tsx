@@ -9,7 +9,7 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { createOneBase } from "../../services/common";
-import { MultiSelect } from "./MultiSelect";
+import { MultiSelect, MultiSelectOption } from "./MultiSelect";
 
 export enum FieldType {
   text = "text",
@@ -25,6 +25,7 @@ export interface FormField {
   name: string;
   rules: RegisterOptions;
   type: FieldType;
+  selectOptions?: MultiSelectOption[];
 }
 
 interface FormProps {
@@ -75,82 +76,84 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
         p="2rem"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {filteredFields.map(({ name, placeholder, label, rules, type }) =>
-          (() => {
-            switch (type) {
-              case FieldType.textarea:
-                return (
-                  <FormControl
-                    mb="1.5rem"
-                    key={"form-control-" + name}
-                    isInvalid={errors[name]}
-                  >
-                    <FormLabel fontSize="1.3rem" htmlFor={name}>
-                      {label}.
-                    </FormLabel>
-                    <Input
-                      value={watchedFields[name]}
-                      as={Textarea}
-                      id={name}
-                      placeholder={placeholder}
-                      {...register(name, rules)}
-                    />
-                    <FormErrorMessage>
-                      {errors[name] && errors[name].message}
-                    </FormErrorMessage>
-                  </FormControl>
-                );
+        {filteredFields.map(
+          ({ name, placeholder, label, rules, type, selectOptions }) =>
+            (() => {
+              switch (type) {
+                case FieldType.textarea:
+                  return (
+                    <FormControl
+                      mb="1.5rem"
+                      key={"form-control-" + name}
+                      isInvalid={errors[name]}
+                    >
+                      <FormLabel fontSize="1.3rem" htmlFor={name}>
+                        {label}.
+                      </FormLabel>
+                      <Input
+                        value={watchedFields[name]}
+                        as={Textarea}
+                        id={name}
+                        placeholder={placeholder}
+                        {...register(name, rules)}
+                      />
+                      <FormErrorMessage>
+                        {errors[name] && errors[name].message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  );
 
-              case FieldType.text:
-                return (
-                  <FormControl
-                    mb="1.5rem"
-                    key={"form-control-" + name}
-                    isInvalid={errors[name]}
-                  >
-                    <FormLabel fontSize="1.3rem" htmlFor={name}>
-                      {label}.
-                    </FormLabel>
-                    <Input
-                      value={watchedFields[name]}
-                      id={name}
-                      placeholder={placeholder}
-                      {...register(name, rules)}
-                    />
-                    <FormErrorMessage>
-                      {errors[name] && errors[name].message}
-                    </FormErrorMessage>
-                  </FormControl>
-                );
+                case FieldType.text:
+                  return (
+                    <FormControl
+                      mb="1.5rem"
+                      key={"form-control-" + name}
+                      isInvalid={errors[name]}
+                    >
+                      <FormLabel fontSize="1.3rem" htmlFor={name}>
+                        {label}.
+                      </FormLabel>
+                      <Input
+                        value={watchedFields[name]}
+                        id={name}
+                        placeholder={placeholder}
+                        {...register(name, rules)}
+                      />
+                      <FormErrorMessage>
+                        {errors[name] && errors[name].message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  );
 
-              case FieldType.multi_select:
-                return (
-                  <FormControl
-                    mb="1.5rem"
-                    key={"form-control-" + name}
-                    isInvalid={errors[name]}
-                  >
-                    <FormLabel fontSize="1.3rem" htmlFor={name}>
-                      {label}.
-                    </FormLabel>
-                    <Input
-                      value={watchedFields[name]}
-                      as={MultiSelect}
-                      id={name}
-                      placeholder={placeholder}
-                      noOptionsMessage={() => "Nenhum valor disponível"}
-                      {...register(name, rules)}
-                    />
-                    <FormErrorMessage>
-                      {errors[name] && errors[name].message}
-                    </FormErrorMessage>
-                  </FormControl>
-                );
+                case FieldType.multi_select:
+                  return (
+                    <FormControl
+                      mb="1.5rem"
+                      key={"form-control-" + name}
+                      isInvalid={errors[name]}
+                    >
+                      <FormLabel fontSize="1.3rem" htmlFor={name}>
+                        {label}.
+                      </FormLabel>
+                      <Input
+                        value={watchedFields[name]}
+                        as={MultiSelect}
+                        options={selectOptions}
+                        id={name}
+                        placeholder={placeholder}
+                        noOptionsMessage={() => "Nenhum valor disponível"}
+                        {...register(name, rules)}
+                      />
+                      <FormErrorMessage>
+                        {errors[name] && errors[name].message}
+                      </FormErrorMessage>
+                    </FormControl>
+                  );
 
-              default:
-                <Text>Tipo inválido</Text>;
-            }
-          })()
+                default:
+                  <Text>Tipo inválido</Text>;
+              }
+            })()
         )}
         <Button mt={4} isLoading={isSubmitting} type="submit">
           Criar
