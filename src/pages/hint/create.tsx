@@ -1,6 +1,6 @@
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
 
-const CategoryForm = () => {
+const HintForm = () => {
   const fields: FormField[] = [
     {
       name: "tip",
@@ -8,6 +8,13 @@ const CategoryForm = () => {
       placeholder: "frase ou palavra",
       type: FieldType.textarea,
       rules: { required: true },
+    },
+    {
+      name: "book",
+      label: "Livro",
+      placeholder: "obra",
+      type: FieldType.text,
+      rules: {},
     },
     {
       name: "author",
@@ -28,4 +35,4 @@ const CategoryForm = () => {
   return <CreateForm endpoint="hint" fields={fields} />;
 };
 
-export default CategoryForm;
+export default HintForm;
