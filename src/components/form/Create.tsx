@@ -5,7 +5,7 @@ import {
   FormLabel,
 } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { createOneBase } from "../../services/common";
@@ -31,9 +31,14 @@ export interface FormField {
 interface FormProps {
   endpoint: string;
   fields: FormField[];
+  title: string;
 }
 
-export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
+export const CreateForm: React.FC<FormProps> = ({
+  fields,
+  endpoint,
+  title,
+}) => {
   const {
     handleSubmit,
     register,
@@ -66,7 +71,11 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
       m="auto"
       align="center"
       justifyContent="center"
+      flexDirection="column"
     >
+      <Heading alignSelf="flex-start" mb="1rem">
+        Criar {title}.
+      </Heading>
       <Box
         w="100%"
         as="form"

@@ -43,7 +43,7 @@ const CategoryForm = () => {
     },
   ];
 
-  return <CreateForm endpoint="category" fields={fields} />;
+  return <CreateForm title="categoria" endpoint="category" fields={fields} />;
 };
 
 export default CategoryForm;

@@ -32,7 +32,7 @@ const HintForm = () => {
     },
   ];
 
-  return <CreateForm endpoint="hint" fields={fields} />;
+  return <CreateForm title="sentença" endpoint="hint" fields={fields} />;
 };
 
 export default HintForm;

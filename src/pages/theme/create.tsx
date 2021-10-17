@@ -11,7 +11,7 @@ const ThemeForm = () => {
     },
   ];
 
-  return <CreateForm endpoint="theme" fields={fields} />;
+  return <CreateForm title="tema" endpoint="theme" fields={fields} />;
 };
 
 export default ThemeForm;
