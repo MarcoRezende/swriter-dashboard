@@ -28,12 +28,12 @@ const Home: NextPage = () => {
   const columns = ["Autor", "Livro", "Sentença"];
 
   const tableContent = hints.map((hint) => {
-    const getContent = (values: string[] | undefined[]) =>
+    const getContent = (values: (string | undefined)[]) =>
       values.map((value) => (value ? value : "-"));
 
     return {
       id: hint.id as string,
-      values: getContent([(hint.author, hint.book, hint.tip)]),
+      values: getContent([hint.author, hint.book, hint.tip]),
     };
   });
 
