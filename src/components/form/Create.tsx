@@ -8,9 +8,9 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import base from "@emotion/styled/types/base";
-import { RegisterOptions, useForm } from "react-hook-form";
+import { Controller, RegisterOptions, useForm } from "react-hook-form";
 import { createOneBase } from "../../services/common";
-import { Select, SelectOption } from "./Select";
+import { retrieveValueOnly, Select, SelectOption } from "./Select";
 
 export enum FieldType {
   TEXT = "TEXT",
@@ -44,10 +44,9 @@ export const CreateForm: React.FC<FormProps> = ({
     handleSubmit,
     register,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  const watchedFields = watch();
 
   const filteredFields = fields.map((field) => {
     if (typeof field.rules.required === "string") return field;
@@ -60,7 +59,9 @@ export const CreateForm: React.FC<FormProps> = ({
     return field;
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (rawData: any) => {
+    // retrieve only the value from custom the select
+    const data = retrieveValueOnly(rawData);
     createOneBase({ resource: endpoint, data });
   };
 
@@ -92,6 +93,7 @@ export const CreateForm: React.FC<FormProps> = ({
               switch (type) {
                 case FieldType.TEXTAREA:
                   return (
+                    // TODO: abstrair para um componente.
                     <FormControl
                       mb="1.5rem"
                       key={"form-control-" + name}
@@ -101,7 +103,6 @@ export const CreateForm: React.FC<FormProps> = ({
                         {label}.
                       </FormLabel>
                       <Input
-                        value={watchedFields[name]}
                         as={Textarea}
                         id={name}
                         placeholder={placeholder}
@@ -124,7 +125,6 @@ export const CreateForm: React.FC<FormProps> = ({
                         {label}.
                       </FormLabel>
                       <Input
-                        value={watchedFields[name]}
                         id={name}
                         placeholder={placeholder}
                         {...register(name, rules)}
@@ -135,30 +135,65 @@ export const CreateForm: React.FC<FormProps> = ({
                     </FormControl>
                   );
 
+                case FieldType.SELECT:
+                  return (
+                    <Controller
+                      name={name}
+                      control={control}
+                      render={({ field }) => (
+                        <FormControl
+                          mb="1.5rem"
+                          key={"form-control-" + name}
+                          isInvalid={errors[name]}
+                        >
+                          <FormLabel fontSize="1.3rem" htmlFor={name}>
+                            {label}.
+                          </FormLabel>
+                          <Select
+                            {...field}
+                            options={selectOptions}
+                            id={name}
+                            placeholder={placeholder}
+                            noOptionsMessage={() => "Nenhum valor disponível"}
+                          />
+                          <FormErrorMessage>
+                            {errors[name] && errors[name].message}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                      rules={rules}
+                    />
+                  );
+
                 case FieldType.MULTI_SELECT:
                   return (
-                    <FormControl
-                      mb="1.5rem"
-                      key={"form-control-" + name}
-                      isInvalid={errors[name]}
-                    >
-                      <FormLabel fontSize="1.3rem" htmlFor={name}>
-                        {label}.
-                      </FormLabel>
-                      <Input
-                        value={watchedFields[name]}
-                        as={Select}
-                        isMulti
-                        options={selectOptions}
-                        id={name}
-                        placeholder={placeholder}
-                        noOptionsMessage={() => "Nenhum valor disponível"}
-                        {...register(name, rules)}
-                      />
-                      <FormErrorMessage>
-                        {errors[name] && errors[name].message}
-                      </FormErrorMessage>
-                    </FormControl>
+                    <Controller
+                      name={name}
+                      control={control}
+                      render={({ field }) => (
+                        <FormControl
+                          mb="1.5rem"
+                          key={"form-control-" + name}
+                          isInvalid={errors[name]}
+                        >
+                          <FormLabel fontSize="1.3rem" htmlFor={name}>
+                            {label}.
+                          </FormLabel>
+                          <Select
+                            {...field}
+                            isMulti
+                            options={selectOptions}
+                            id={name}
+                            placeholder={placeholder}
+                            noOptionsMessage={() => "Nenhum valor disponível"}
+                          />
+                          <FormErrorMessage>
+                            {errors[name] && errors[name].message}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                      rules={rules}
+                    />
                   );
 
                 default:
