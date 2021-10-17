@@ -1,27 +1,29 @@
-import { Select } from "chakra-react-select";
+import { Select as ChakraSelect } from "chakra-react-select";
 import { ChakraSelectProps } from "chakra-react-select/dist/types/types";
 
-export type MultiSelectOption = {
+export type SelectOption = {
   label: string;
   value: string;
   isFixed?: boolean;
 };
 
-export interface MultiSelectProps extends ChakraSelectProps {
-  options?: MultiSelectOption[];
+export interface SelectProps extends ChakraSelectProps {
+  options?: SelectOption[];
+  isMulti?: boolean;
 }
 
-export const MultiSelect: React.FC<MultiSelectProps> = ({
+export const Select: React.FC<SelectProps> = ({
   options,
+  isMulti,
   noOptionsMessage,
   children,
   placeholder,
 }) => {
   return (
-    <Select
+    <ChakraSelect
       closeMenuOnSelect={false}
       colorScheme="blue"
-      isMulti
+      isMulti={isMulti}
       options={options}
       placeholder={placeholder}
       noOptionsMessage={noOptionsMessage}
