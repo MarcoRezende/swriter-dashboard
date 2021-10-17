@@ -1,9 +1,14 @@
 import { Select as ChakraSelect } from "chakra-react-select";
 import { ChakraSelectProps } from "chakra-react-select/dist/types/types";
 
+export type SelectValue = {
+  id: string;
+  [key: string]: any;
+};
+
 export type SelectOption = {
   label: string;
-  value: any;
+  value: SelectValue | SelectValue[];
   isFixed?: boolean;
 };
 
