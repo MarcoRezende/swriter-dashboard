@@ -7,6 +7,7 @@ import {
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
+import base from "@emotion/styled/types/base";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { createOneBase } from "../../services/common";
 import { Select, SelectOption } from "./Select";
@@ -66,7 +67,7 @@ export const CreateForm: React.FC<FormProps> = ({
   return (
     <Flex
       p="2rem"
-      maxW="70%"
+      maxW={{ base: "70%", md: "600px" }}
       h="100%"
       m="auto"
       align="center"
@@ -165,7 +166,7 @@ export const CreateForm: React.FC<FormProps> = ({
               }
             })()
         )}
-        <Button mt={4} isLoading={isSubmitting} type="submit">
+        <Button w="100%" mt={4} isLoading={isSubmitting} type="submit">
           Criar
         </Button>
       </Box>
