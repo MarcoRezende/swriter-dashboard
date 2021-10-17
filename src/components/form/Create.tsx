@@ -42,11 +42,13 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
 
   const filteredFields = fields.map((field) => {
     if (typeof field.rules.required === "string") return field;
+    else if (typeof field.rules.required === "boolean")
+      return {
+        ...field,
+        rules: { ...field.rules, required: "Campo obrigatório" },
+      };
 
-    return {
-      ...field,
-      rules: { ...field.rules, required: "Campo obrigatório" },
-    };
+    return field;
   });
 
   const onSubmit = () => {};
@@ -75,11 +77,13 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
               case FieldType.textarea:
                 return (
                   <FormControl
-                    mb="1rem"
+                    mb="1.5rem"
                     key={"form-control-" + name}
                     isInvalid={errors[name]}
                   >
-                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <FormLabel fontSize="1.3rem" htmlFor={name}>
+                      {label}.
+                    </FormLabel>
                     <Input
                       value={watchedFields[name]}
                       as={Textarea}
@@ -96,11 +100,13 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
               case FieldType.text:
                 return (
                   <FormControl
-                    mb="1rem"
+                    mb="1.5rem"
                     key={"form-control-" + name}
                     isInvalid={errors[name]}
                   >
-                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <FormLabel fontSize="1.3rem" htmlFor={name}>
+                      {label}.
+                    </FormLabel>
                     <Input
                       value={watchedFields[name]}
                       id={name}
@@ -116,11 +122,13 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
               case FieldType.multi_select:
                 return (
                   <FormControl
-                    mb="1rem"
+                    mb="1.5rem"
                     key={"form-control-" + name}
                     isInvalid={errors[name]}
                   >
-                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <FormLabel fontSize="1.3rem" htmlFor={name}>
+                      {label}.
+                    </FormLabel>
                     <Input
                       value={watchedFields[name]}
                       as={MultiSelect}
@@ -141,7 +149,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
           })()
         )}
         <Button mt={4} isLoading={isSubmitting} type="submit">
-          Submit
+          Criar
         </Button>
       </Box>
     </Flex>
