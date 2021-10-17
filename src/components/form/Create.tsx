@@ -8,11 +8,13 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { RegisterOptions, useForm } from "react-hook-form";
+import { MultiSelect } from "./MultiSelect";
 
 export enum FieldType {
   text = "text",
   textarea = "textarea",
   select = "select",
+  multi_select = "multi_select",
   radio = "radio",
 }
 
@@ -32,8 +34,11 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  const watchedFields = watch();
 
   const onSubmit = () => {};
 
@@ -61,18 +66,20 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
               case FieldType.textarea:
                 return (
                   <FormControl
+                    mb="1rem"
                     key={"form-control-" + name}
-                    isInvalid={errors.name}
+                    isInvalid={errors[name]}
                   >
-                    <FormLabel htmlFor="name">{label}</FormLabel>
+                    <FormLabel htmlFor={name}>{label}</FormLabel>
                     <Input
+                      value={watchedFields[name]}
                       as={Textarea}
-                      id="name"
+                      id={name}
                       placeholder={placeholder}
-                      {...register("name", rules)}
+                      {...register(name, rules)}
                     />
                     <FormErrorMessage>
-                      {errors.name && errors.name.message}
+                      {errors[name] && errors[name].message}
                     </FormErrorMessage>
                   </FormControl>
                 );
@@ -80,17 +87,41 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
               case FieldType.text:
                 return (
                   <FormControl
+                    mb="1rem"
                     key={"form-control-" + name}
-                    isInvalid={errors.name}
+                    isInvalid={errors[name]}
                   >
-                    <FormLabel htmlFor="name">{label}</FormLabel>
+                    <FormLabel htmlFor={name}>{label}</FormLabel>
                     <Input
-                      id="name"
+                      value={watchedFields[name]}
+                      id={name}
                       placeholder={placeholder}
-                      {...register("name", rules)}
+                      {...register(name, rules)}
                     />
                     <FormErrorMessage>
-                      {errors.name && errors.name.message}
+                      {errors[name] && errors[name].message}
+                    </FormErrorMessage>
+                  </FormControl>
+                );
+
+              case FieldType.multi_select:
+                return (
+                  <FormControl
+                    mb="1rem"
+                    key={"form-control-" + name}
+                    isInvalid={errors[name]}
+                  >
+                    <FormLabel htmlFor={name}>{label}</FormLabel>
+                    <Input
+                      value={watchedFields[name]}
+                      as={MultiSelect}
+                      id={name}
+                      placeholder={placeholder}
+                      noOptionsMessage={() => "Nenhum valor disponível"}
+                      {...register(name, rules)}
+                    />
+                    <FormErrorMessage>
+                      {errors[name] && errors[name].message}
                     </FormErrorMessage>
                   </FormControl>
                 );
