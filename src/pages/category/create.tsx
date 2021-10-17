@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
-import { MultiSelectOption } from "../../components/form/MultiSelect";
+import { SelectOption } from "../../components/form/Select";
 import { Theme } from "../../models/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
@@ -20,7 +20,7 @@ const CategoryForm = () => {
     fetchData();
   }, []);
 
-  const themeOptions: MultiSelectOption[] = themes.map((theme) => ({
+  const themeOptions: SelectOption[] = themes.map((theme) => ({
     label: theme.name,
     value: theme.name,
   }));
@@ -30,14 +30,14 @@ const CategoryForm = () => {
       name: "name",
       label: "Nome",
       placeholder: "nome da categoria",
-      type: FieldType.text,
+      type: FieldType.TEXT,
       rules: { required: true },
     },
     {
       name: "theme",
       label: "Tema",
       placeholder: "tema",
-      type: FieldType.multi_select,
+      type: FieldType.MULTI_SELECT,
       selectOptions: themeOptions,
       rules: { required: true },
     },

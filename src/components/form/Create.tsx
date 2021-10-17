@@ -9,14 +9,14 @@ import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { createOneBase } from "../../services/common";
-import { MultiSelect, MultiSelectOption } from "./MultiSelect";
+import { Select, SelectOption } from "./Select";
 
 export enum FieldType {
-  text = "text",
-  textarea = "textarea",
-  select = "select",
-  multi_select = "multi_select",
-  radio = "radio",
+  TEXT = "TEXT",
+  TEXTAREA = "textarea",
+  SELECT = "SELECT",
+  MULTI_SELECT = "MULTI_SELECT",
+  RADIO = "RADIO",
 }
 
 export interface FormField {
@@ -25,7 +25,7 @@ export interface FormField {
   name: string;
   rules: RegisterOptions;
   type: FieldType;
-  selectOptions?: MultiSelectOption[];
+  selectOptions?: SelectOption[];
 }
 
 interface FormProps {
@@ -80,7 +80,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
           ({ name, placeholder, label, rules, type, selectOptions }) =>
             (() => {
               switch (type) {
-                case FieldType.textarea:
+                case FieldType.TEXTAREA:
                   return (
                     <FormControl
                       mb="1.5rem"
@@ -103,7 +103,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
                     </FormControl>
                   );
 
-                case FieldType.text:
+                case FieldType.TEXT:
                   return (
                     <FormControl
                       mb="1.5rem"
@@ -125,7 +125,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
                     </FormControl>
                   );
 
-                case FieldType.multi_select:
+                case FieldType.MULTI_SELECT:
                   return (
                     <FormControl
                       mb="1.5rem"
@@ -137,7 +137,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
                       </FormLabel>
                       <Input
                         value={watchedFields[name]}
-                        as={MultiSelect}
+                        as={Select}
                         options={selectOptions}
                         id={name}
                         placeholder={placeholder}

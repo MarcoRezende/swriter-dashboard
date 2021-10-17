@@ -6,7 +6,7 @@ const ThemeForm = () => {
       name: "name",
       label: "Nome",
       placeholder: "nome do tema",
-      type: FieldType.text,
+      type: FieldType.TEXT,
       rules: { required: true },
     },
   ];
