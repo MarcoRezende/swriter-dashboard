@@ -4,7 +4,7 @@ import { ChakraSelectProps } from "chakra-react-select/dist/types/types";
 export type MultiSelectOption = {
   label: string;
   value: string;
-  isFixed: boolean;
+  isFixed?: boolean;
 };
 
 export interface MultiSelectProps extends ChakraSelectProps {
