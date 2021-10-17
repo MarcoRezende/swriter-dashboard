@@ -27,7 +27,7 @@ export const createOneBase = async <K>({
 
     toast({
       ...baseToastProps,
-      description: "Falha ao obter criar.",
+      description: "Falha ao criar.",
     });
 
     return {} as K;
