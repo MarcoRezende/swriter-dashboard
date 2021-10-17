@@ -1,8 +1,8 @@
-import Link from "next/link";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 
 import { Button } from "@chakra-ui/button";
-import { Divider, Heading } from "@chakra-ui/layout";
+import { Divider, Heading, Link } from "@chakra-ui/layout";
 import {
   Table as ChakraTable,
   TableProps as ChakraTableProps,
@@ -47,7 +47,9 @@ export const Table: React.FC<TableProps> = ({
           color: "white",
         }}
       >
-        <Link href={`/${resource}/create/`}>Criar</Link>
+        <Link w="100%" as={NextLink} href={`/${resource}/create/`}>
+          Criar
+        </Link>
       </Button>
       <Heading mb="0.5rem">{title}.</Heading>
       <Divider mb="2rem" />
@@ -75,9 +77,7 @@ export const Table: React.FC<TableProps> = ({
               <Tr key={"row" + content.id}>
                 <Td>{index + 1}</Td>
                 {content.values.map((value) => (
-                  <Td key={`td-${content.id}-${index}`} py="1rem" px="2rem">
-                    {value}
-                  </Td>
+                  <Td key={`td-${content.id}-${index}`}>{value}</Td>
                 ))}
               </Tr>
             ))
