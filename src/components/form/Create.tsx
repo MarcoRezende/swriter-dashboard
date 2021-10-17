@@ -8,6 +8,7 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { RegisterOptions, useForm } from "react-hook-form";
+import { createOneBase } from "../../services/common";
 import { MultiSelect } from "./MultiSelect";
 
 export enum FieldType {
@@ -27,10 +28,11 @@ export interface FormField {
 }
 
 interface FormProps {
+  endpoint: string;
   fields: FormField[];
 }
 
-export const CreateForm: React.FC<FormProps> = ({ fields }) => {
+export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
   const {
     handleSubmit,
     register,
@@ -51,7 +53,9 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
     return field;
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (data: any) => {
+    createOneBase({ resource: endpoint, data });
+  };
 
   return (
     <Flex
