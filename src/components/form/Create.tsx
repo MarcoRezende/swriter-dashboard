@@ -40,6 +40,15 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
 
   const watchedFields = watch();
 
+  const filteredFields = fields.map((field) => {
+    if (typeof field.rules.required === "string") return field;
+
+    return {
+      ...field,
+      rules: { ...field.rules, required: "Campo obrigatório" },
+    };
+  });
+
   const onSubmit = () => {};
 
   return (
@@ -60,7 +69,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields }) => {
         p="2rem"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {fields.map(({ name, placeholder, label, rules, type }) =>
+        {filteredFields.map(({ name, placeholder, label, rules, type }) =>
           (() => {
             switch (type) {
               case FieldType.textarea:
