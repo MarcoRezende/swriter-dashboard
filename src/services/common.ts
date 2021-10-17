@@ -8,10 +8,18 @@ interface DTO<T> {
 }
 
 const toast = createStandaloneToast();
-const baseToastProps: UseToastOptions = {
+const baseErrorToastProps: UseToastOptions = {
   title: "Erro.",
   position: "bottom-right",
   status: "error",
+  duration: 9000,
+  isClosable: true,
+};
+
+const baseSuccessToastProps: UseToastOptions = {
+  title: "Sucesso.",
+  position: "bottom-right",
+  status: "success",
   duration: 9000,
   isClosable: true,
 };
@@ -21,12 +29,19 @@ export const createOneBase = async <K>({
   data,
 }: DTO<K>): Promise<K> => {
   try {
-    return (await api.post<K>(resource, data || ({} as K))).data;
+    const { data: response } = await api.post<K>(resource, data || ({} as K));
+
+    toast({
+      ...baseSuccessToastProps,
+      description: "Criação realizada com sucesso.",
+    });
+
+    return response;
   } catch (err) {
     console.error(err);
 
     toast({
-      ...baseToastProps,
+      ...baseErrorToastProps,
       description: "Falha ao criar.",
     });
 
@@ -41,7 +56,7 @@ export const getManyBase = async <K>({ resource }: DTO<K>) => {
     console.error(err);
 
     toast({
-      ...baseToastProps,
+      ...baseErrorToastProps,
       description: "Falha ao obter conteúdo.",
     });
 
@@ -56,7 +71,7 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
     console.error(err);
 
     toast({
-      ...baseToastProps,
+      ...baseErrorToastProps,
       description: "Falha ao deletar conteúdo.",
     });
   }
