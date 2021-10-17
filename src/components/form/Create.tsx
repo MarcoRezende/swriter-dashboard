@@ -138,6 +138,7 @@ export const CreateForm: React.FC<FormProps> = ({ fields, endpoint }) => {
                       <Input
                         value={watchedFields[name]}
                         as={Select}
+                        isMulti
                         options={selectOptions}
                         id={name}
                         placeholder={placeholder}
