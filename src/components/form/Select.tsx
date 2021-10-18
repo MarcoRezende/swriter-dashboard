@@ -17,7 +17,7 @@ export interface SelectProps extends ChakraSelectProps {
   isMulti?: boolean;
 }
 
-export const retrieveValueOnly = (data: Record<string, any>) => {
+export function retrieveValueOnly(data: Record<string, any>) {
   let obj: any = {};
 
   Object.entries(data).forEach(([key]) => {
@@ -30,7 +30,17 @@ export const retrieveValueOnly = (data: Record<string, any>) => {
   });
 
   return obj;
-};
+}
+
+export function optionsFormatter(
+  options: SelectValue[],
+  label: string
+): SelectOption[] {
+  return options.map((option) => ({
+    label: option[label],
+    value: { id: option.id },
+  }));
+}
 
 export const Select: React.FC<SelectProps> = ({
   options,
