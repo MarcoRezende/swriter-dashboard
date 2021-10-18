@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
-import { SelectOption } from "../../components/form/Select";
+import { optionsFormatter, SelectOption } from "../../components/form/Select";
 import { Theme } from "../../models/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
@@ -20,11 +20,6 @@ const CategoryForm = () => {
     fetchData();
   }, []);
 
-  const themeOptions: SelectOption[] = themes.map((theme) => ({
-    label: theme.name,
-    value: theme.name,
-  }));
-
   const fields: FormField[] = [
     {
       name: "name",
@@ -37,8 +32,8 @@ const CategoryForm = () => {
       name: "theme",
       label: "Tema",
       placeholder: "tema",
-      type: FieldType.MULTI_SELECT,
-      selectOptions: themeOptions,
+      type: FieldType.SELECT,
+      selectOptions: optionsFormatter(themes, "name"),
       rules: { required: true },
     },
   ];
