@@ -33,12 +33,14 @@ interface FormProps {
   endpoint: string;
   fields: FormField[];
   title: string;
+  mode?: "edit" | "create";
 }
 
 export const CreateForm: React.FC<FormProps> = ({
   fields,
   endpoint,
   title,
+  mode = "create",
 }) => {
   const {
     handleSubmit,
@@ -82,7 +84,7 @@ export const CreateForm: React.FC<FormProps> = ({
       flexDirection="column"
     >
       <Heading alignSelf="flex-start" mb="1rem">
-        Criar {title}.
+        {mode === "edit" ? "Editar" : "Criar"} {title}.
       </Heading>
       <Box
         w="100%"
@@ -207,9 +209,33 @@ export const CreateForm: React.FC<FormProps> = ({
               }
             })()
         )}
-        <Button w="100%" mt={4} isLoading={isSubmitting} type="submit">
-          Criar
-        </Button>
+        <Flex gridGap={"10px"}>
+          <Button
+            bg={mode === "edit" ? "green.700" : "blue.800"}
+            w="100%"
+            mt={4}
+            isLoading={isSubmitting}
+            type="submit"
+            _hover={{
+              bg: mode === "edit" ? "green.600" : "blue.700",
+            }}
+          >
+            {mode === "edit" ? "Atualizar" : "Criar"}
+          </Button>
+          {mode === "edit" && (
+            <Button
+              bg="red.800"
+              w="100%"
+              mt={4}
+              isLoading={isSubmitting}
+              _hover={{
+                bg: "red.700",
+              }}
+            >
+              Deletar
+            </Button>
+          )}
+        </Flex>
       </Box>
     </Flex>
   );
