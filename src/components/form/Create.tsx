@@ -43,7 +43,7 @@ export const CreateForm: React.FC<FormProps> = ({
   const {
     handleSubmit,
     register,
-    watch,
+    reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm();
@@ -59,10 +59,16 @@ export const CreateForm: React.FC<FormProps> = ({
     return field;
   });
 
-  const onSubmit = (rawData: any) => {
+  const onSubmit = async (rawData: any) => {
     // retrieve only the value from custom the select
     const data = retrieveValueOnly(rawData);
-    createOneBase({ resource: endpoint, data });
+
+    try {
+      await createOneBase({ resource: endpoint, data });
+      reset();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
