@@ -74,10 +74,21 @@ export const Table: React.FC<TableProps> = ({
         <Tbody>
           {hasContent ? (
             columnsContent.map((content, index) => (
-              <Tr key={"row-" + content.id}>
-                <Td py="1.5rem">{index + 1}</Td>
+              <Tr
+                key={"row-" + content.id}
+                transition="transform 0.3s, filter 0.3s"
+                _hover={{
+                  cursor: "pointer",
+                  transform: "translateY(-5px)",
+                  filter: "brightness(1.2)",
+                }}
+              >
+                <Td borderBottom="0" py="1.5rem">
+                  {index + 1}
+                </Td>
                 {content.values.map((value, contentIndex) => (
                   <Td
+                    borderBottom="0"
                     py="1.5rem"
                     key={`td-${content.id}-${index + contentIndex}`}
                   >
