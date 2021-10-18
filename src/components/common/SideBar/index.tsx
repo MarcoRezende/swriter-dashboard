@@ -21,7 +21,11 @@ export const MainSideBar: React.FC<MainSideBarProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box h="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box
+      h="100vh"
+      overflowY="auto"
+      bg={useColorModeValue("gray.100", "gray.900")}
+    >
       <SidebarContent
         routes={routes}
         onClose={() => onClose}
