@@ -11,7 +11,7 @@ export class BaseEntity<T> {
     Object.assign(this, obj);
   }
 
-  id?: string;
+  id!: string;
   createdDate?: Date;
   updatedDate?: Date;
 }
