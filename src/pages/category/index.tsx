@@ -25,7 +25,7 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Nome"];
+  const columns = ["Nome", "Tema"];
 
   const tableContent = categories.map((category) => {
     const getContent = (values: string[] | undefined[]) =>
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 
     return {
       id: category.id as string,
-      values: getContent([category.name]),
+      values: getContent([category.name, category.theme?.name]),
     };
   });
 
