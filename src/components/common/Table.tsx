@@ -33,6 +33,11 @@ export const Table: React.FC<TableProps> = ({
   const path = router.pathname;
   const resource = path !== "/" ? path.replace(/\//g, "") : path;
 
+  const handleClick = (e: any, id: string) => {
+    e.preventDefault();
+    router.push(`${path}/edit/${id}`);
+  };
+
   return (
     <>
       <Button
@@ -75,6 +80,7 @@ export const Table: React.FC<TableProps> = ({
           {hasContent ? (
             columnsContent.map((content, index) => (
               <Tr
+                onClick={(e) => handleClick(e, content.id)}
                 key={"row-" + content.id}
                 transition="transform 0.3s, filter 0.3s"
                 _hover={{
