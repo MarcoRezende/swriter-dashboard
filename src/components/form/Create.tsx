@@ -7,9 +7,10 @@ import {
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
-import base from "@emotion/styled/types/base";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 import { Controller, RegisterOptions, useForm } from "react-hook-form";
-import { createOneBase } from "../../services/common";
+import { createOneBase, deleteOneBase } from "../../services/common";
 import { retrieveValueOnly, Select, SelectOption } from "./Select";
 
 export enum FieldType {
@@ -30,6 +31,7 @@ export interface FormField {
 }
 
 interface FormProps {
+  idName?: string;
   endpoint: string;
   fields: FormField[];
   title: string;
@@ -37,6 +39,7 @@ interface FormProps {
 }
 
 export const CreateForm: React.FC<FormProps> = ({
+  idName,
   fields,
   endpoint,
   title,
@@ -49,6 +52,8 @@ export const CreateForm: React.FC<FormProps> = ({
     control,
     formState: { errors, isSubmitting },
   } = useForm();
+  const router = useRouter();
+  const entityId = router.query[idName as string] as string | undefined;
 
   const filteredFields = fields.map((field) => {
     if (typeof field.rules.required === "string") return field;
@@ -72,6 +77,15 @@ export const CreateForm: React.FC<FormProps> = ({
       console.error(err);
     }
   };
+
+  const deleteOne = useCallback(async () => {
+    try {
+      await deleteOneBase({ resource: endpoint, id: entityId ?? "" });
+      router.back();
+    } catch (err) {
+      console.error(err);
+    }
+  }, [endpoint, entityId, router]);
 
   return (
     <Flex
@@ -147,13 +161,10 @@ export const CreateForm: React.FC<FormProps> = ({
                   return (
                     <Controller
                       name={name}
+                      key={"form-control-" + name}
                       control={control}
                       render={({ field }) => (
-                        <FormControl
-                          mb="1.5rem"
-                          key={"form-control-" + name}
-                          isInvalid={errors[name]}
-                        >
+                        <FormControl mb="1.5rem" isInvalid={errors[name]}>
                           <FormLabel fontSize="1.3rem" htmlFor={name}>
                             {label}.
                           </FormLabel>
@@ -177,13 +188,10 @@ export const CreateForm: React.FC<FormProps> = ({
                   return (
                     <Controller
                       name={name}
+                      key={"form-control-" + name}
                       control={control}
                       render={({ field }) => (
-                        <FormControl
-                          mb="1.5rem"
-                          key={"form-control-" + name}
-                          isInvalid={errors[name]}
-                        >
+                        <FormControl mb="1.5rem" isInvalid={errors[name]}>
                           <FormLabel fontSize="1.3rem" htmlFor={name}>
                             {label}.
                           </FormLabel>
@@ -210,29 +218,46 @@ export const CreateForm: React.FC<FormProps> = ({
             })()
         )}
         <Flex gridGap={"10px"}>
-          <Button
-            bg={mode === "edit" ? "green.700" : "blue.800"}
-            w="100%"
-            mt={4}
-            isLoading={isSubmitting}
-            type="submit"
-            _hover={{
-              bg: mode === "edit" ? "green.600" : "blue.700",
-            }}
-          >
-            {mode === "edit" ? "Atualizar" : "Criar"}
-          </Button>
-          {mode === "edit" && (
+          {mode === "edit" ? (
+            <>
+              <Button
+                onClick={() => deleteOne()}
+                bg="red.800"
+                w="100%"
+                mt={4}
+                isLoading={isSubmitting}
+                _hover={{
+                  bg: "red.700",
+                }}
+              >
+                Deletar
+              </Button>
+
+              <Button
+                bg="green.700"
+                w="100%"
+                mt={4}
+                isLoading={isSubmitting}
+                type="submit"
+                _hover={{
+                  bg: "green.600",
+                }}
+              >
+                Atualizar
+              </Button>
+            </>
+          ) : (
             <Button
-              bg="red.800"
+              bg="blue.800"
               w="100%"
               mt={4}
               isLoading={isSubmitting}
+              type="submit"
               _hover={{
-                bg: "red.700",
+                bg: "blue.700",
               }}
             >
-              Deletar
+              Criar
             </Button>
           )}
         </Flex>

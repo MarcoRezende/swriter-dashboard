@@ -49,6 +49,7 @@ const EditField = () => {
       title="categoria"
       endpoint="category"
       fields={fields}
+      idName="categoryId"
     />
   );
 };

@@ -1,10 +1,11 @@
 import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
+import { AxiosError } from "axios";
 import { api } from "../config/axios";
 
 interface DTO<T> {
   resource: string;
   data?: T;
-  id?: number;
+  id?: string;
 }
 
 const toast = createStandaloneToast();
@@ -27,7 +28,7 @@ const baseSuccessToastProps: UseToastOptions = {
 export const createOneBase = async <K>({
   resource,
   data,
-}: DTO<K>): Promise<K> => {
+}: DTO<K>): Promise<K | undefined> => {
   try {
     const { data: response } = await api.post<K>(resource, data || ({} as K));
 
@@ -42,10 +43,11 @@ export const createOneBase = async <K>({
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao criar.",
+      description: handleErrorMessage(
+        (err as AxiosError).response?.status as number,
+        "Falha ao criar."
+      ),
     });
-
-    return {} as K;
   }
 };
 
@@ -66,7 +68,12 @@ export const getManyBase = async <K>({ resource }: DTO<K>) => {
 
 export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
   try {
-    api.delete<K>(`${resource}/${id}`);
+    await api.delete<K>(`${resource}/${id}`);
+
+    toast({
+      ...baseSuccessToastProps,
+      description: "Deleção realizada com sucesso.",
+    });
   } catch (err) {
     console.error(err);
 
@@ -74,5 +81,18 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
       ...baseErrorToastProps,
       description: "Falha ao deletar conteúdo.",
     });
+  }
+};
+
+const handleErrorMessage = (
+  statusCode: number,
+  defaultMessage: string
+): string => {
+  switch (statusCode) {
+    case 409:
+      return "Registro duplicado.";
+
+    default:
+      return defaultMessage;
   }
 };
