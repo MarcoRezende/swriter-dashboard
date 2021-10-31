@@ -21,9 +21,19 @@ export function retrieveValueOnly(data: Record<string, any>) {
   let obj: any = {};
 
   Object.entries(data).forEach(([key]) => {
-    if (data[key].label) {
-      obj[key] = data[key].value;
+    if (data[key] instanceof Array) {
+      data[key].map((select: any) => {
+        if (select.label) {
+          obj[key] ? obj[key].push(select.value) : (obj[key] = [select.value]);
+        }
+      });
+
       return;
+    } else {
+      if (data[key].label) {
+        obj[key] = data[key].value;
+        return;
+      }
     }
 
     obj[key] = data[key];

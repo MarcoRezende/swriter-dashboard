@@ -100,6 +100,24 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
   }
 };
 
+export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
+  try {
+    await api.patch<K>(`${resource}/${id}`, data);
+
+    toast({
+      ...baseSuccessToastProps,
+      description: "Atualização realizada com sucesso.",
+    });
+  } catch (err) {
+    console.error(err);
+
+    toast({
+      ...baseErrorToastProps,
+      description: "Falha ao atualizar conteúdo.",
+    });
+  }
+};
+
 const handleErrorMessage = (
   statusCode: number,
   defaultMessage: string

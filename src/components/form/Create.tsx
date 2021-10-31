@@ -16,6 +16,7 @@ import {
   createOneBase,
   deleteOneBase,
   getOneBase,
+  patchOneBase,
 } from "../../services/common";
 import {
   optionsFormatter,
@@ -68,9 +69,7 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
     reset,
     control,
     formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: { theme: { value: "marco", label: "marco" } } as any,
-  });
+  } = useForm();
 
   const router = useRouter();
   const entityId = router.query[idName as string] as string | undefined;
@@ -89,10 +88,15 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
   const onSubmit = async (rawData: any) => {
     // retrieve only the value from custom the select
     const data = retrieveValueOnly(rawData);
+    console.log("🚀 ~ file: Create.tsx ~ line 91 ~ onSubmit ~ data", data);
 
     try {
-      await createOneBase({ resource: endpoint, data });
-      reset();
+      if (isCreateMode) {
+        await createOneBase({ resource: endpoint, data });
+        reset();
+      } else {
+        await patchOneBase({ resource: endpoint, id: entityId ?? "", data });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -152,12 +156,22 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
         return;
       }
 
-      return (
-        field.selectOptionKey &&
-        entity[field.name] &&
-        entity[field.name][field.selectOptionKey]
-      );
+      return field.selectOptionKey && entity[field.name];
     });
+  };
+
+  const filterSelectOptions = (
+    options: SelectOption[],
+    defaultOptions: SelectOption[]
+  ) => {
+    // TODO: list all options when empty
+    return isEditMode
+      ? options.filter((option) =>
+          defaultOptions.find(
+            (defaultValue) => defaultValue.label !== option.label
+          )
+        )
+      : options;
   };
 
   return (
@@ -209,6 +223,7 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
                           </FormLabel>
                           <Input
                             as={Textarea}
+                            defaultValue={entity[name]}
                             id={name}
                             placeholder={placeholder}
                             {...register(name, rules)}
@@ -257,10 +272,13 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
                                 {...rest}
                                 options={selectOptions}
                                 id={name}
-                                defaultValue={optionsFormatter(
-                                  [entity[name]],
-                                  selectOptionKey ?? ""
-                                )}
+                                defaultValue={
+                                  isEditMode &&
+                                  optionsFormatter(
+                                    [entity[name]],
+                                    selectOptionKey ?? ""
+                                  )
+                                }
                                 placeholder={placeholder}
                                 noOptionsMessage={() =>
                                   "Nenhum valor disponível"
@@ -288,8 +306,21 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
                               <Select
                                 {...rest}
                                 isMulti
-                                options={selectOptions}
+                                options={filterSelectOptions(
+                                  selectOptions as SelectOption[],
+                                  optionsFormatter(
+                                    entity[name],
+                                    selectOptionKey ?? ""
+                                  )
+                                )}
                                 id={name}
+                                defaultValue={
+                                  isEditMode &&
+                                  optionsFormatter(
+                                    entity[name],
+                                    selectOptionKey ?? ""
+                                  )
+                                }
                                 placeholder={placeholder}
                                 noOptionsMessage={() =>
                                   "Nenhum valor disponível"
