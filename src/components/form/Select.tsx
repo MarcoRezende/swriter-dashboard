@@ -37,28 +37,13 @@ export function optionsFormatter(
   label: string
 ): SelectOption[] {
   return options.map((option) => ({
-    label: option[label],
-    value: { id: option.id },
+    label: option ? option[label] : "",
+    value: { id: option?.id || "" },
   }));
 }
 
-export const Select: React.FC<SelectProps> = ({
-  options,
-  isMulti,
-  noOptionsMessage,
-  children,
-  placeholder,
-  ...rest
-}) => {
+export const Select: React.FC<SelectProps> = ({ children, ...rest }) => {
   return (
-    <ChakraSelect
-      closeMenuOnSelect={false}
-      colorScheme="blue"
-      isMulti={isMulti}
-      options={options}
-      placeholder={placeholder}
-      noOptionsMessage={noOptionsMessage}
-      {...rest}
-    />
+    <ChakraSelect closeMenuOnSelect={false} colorScheme="blue" {...rest} />
   );
 };
