@@ -44,8 +44,8 @@ const HintForm = () => {
       rules: {},
     },
     {
-      name: "category",
-      label: "Categoria",
+      name: "categories",
+      label: "Categorias",
       placeholder: "selecione",
       type: FieldType.MULTI_SELECT,
       selectOptions: optionsFormatter(categories, "name"),
