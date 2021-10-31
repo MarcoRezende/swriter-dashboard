@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState, memo } from "react";
 
 import {
   CreateForm,
@@ -7,23 +8,38 @@ import {
 } from "../../../components/form/Create";
 import { optionsFormatter } from "../../../components/form/Select";
 import { Theme } from "../../../models/Theme";
+import { categoryResource } from "../../../services/category";
 import { getManyBase } from "../../../services/common";
 import { themeResource } from "../../../services/theme";
 
 const EditField = () => {
   const [themes, setThemes] = useState<Theme[]>([]);
+  const router = useRouter();
+  const categoryId = router.query.categoryId as string | undefined;
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedThemes = await getManyBase<Theme>({
-        resource: themeResource,
-      });
+    let cancel = false;
 
-      setThemes(fetchedThemes);
+    const fetchData = async () => {
+      try {
+        const fetchedThemes = await getManyBase<Theme>({
+          resource: themeResource,
+        });
+
+        if (cancel) return;
+
+        setThemes(fetchedThemes);
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     fetchData();
-  }, []);
+
+    return () => {
+      cancel = true;
+    };
+  }, [categoryId]);
 
   const fields: FormField[] = [
     {
@@ -40,6 +56,7 @@ const EditField = () => {
       type: FieldType.SELECT,
       selectOptions: optionsFormatter(themes, "name"),
       rules: { required: true },
+      selectOptionKey: "name",
     },
   ];
 
@@ -47,11 +64,11 @@ const EditField = () => {
     <CreateForm
       mode="edit"
       title="categoria"
-      endpoint="category"
+      endpoint={categoryResource}
       fields={fields}
       idName="categoryId"
     />
   );
 };
 
-export default EditField;
+export default memo(EditField);

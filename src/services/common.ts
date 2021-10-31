@@ -66,6 +66,22 @@ export const getManyBase = async <K>({ resource }: DTO<K>) => {
   }
 };
 
+export const getOneBase = async <K>({
+  resource,
+  id,
+}: DTO<K>): Promise<K | undefined> => {
+  try {
+    return (await api.get<K>(`${resource}/${id}`)).data;
+  } catch (err) {
+    console.error(err);
+
+    toast({
+      ...baseErrorToastProps,
+      description: "Falha ao obter conteúdo.",
+    });
+  }
+};
+
 export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
   try {
     await api.delete<K>(`${resource}/${id}`);
