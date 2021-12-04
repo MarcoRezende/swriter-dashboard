@@ -6,7 +6,7 @@ import {
   FieldType,
   FormField,
 } from "../../../components/form/Create";
-import { optionsFormatter } from "../../../components/form/Select";
+import { optionsFormatter } from "../../../components/form/BaseSelect";
 import { Theme } from "../../../models/Theme";
 import { categoryResource } from "../../../services/category";
 import { getManyBase } from "../../../services/common";

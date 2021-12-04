@@ -27,7 +27,7 @@ interface TextAreaProps {
   };
 }
 
-export const Select: React.FC<TextAreaProps> = ({
+export const MultiSelect: React.FC<TextAreaProps> = ({
   error,
   entity,
   control,
@@ -35,24 +35,41 @@ export const Select: React.FC<TextAreaProps> = ({
   isEditMode,
   field: { name, label, placeholder, selectOptions, selectOptionKey },
 }) => {
+  const filterSelectOptions = (
+    options: SelectOption[],
+    defaultOptions: SelectOption[]
+  ) => {
+    // TODO: list all options when empty
+    return isEditMode
+      ? options.filter((option) =>
+          defaultOptions.find(
+            (defaultValue) => defaultValue.label !== option.label
+          )
+        )
+      : options;
+  };
+
   return (
     <Controller
       name={name}
       key={"form-control-" + name}
       control={control}
-      rules={rules}
-      render={({ field: { ref, value, ...rest } }) => (
+      render={({ field: { ref, ...rest } }) => (
         <FormControl mb="1.5rem" isInvalid={error}>
           <FormLabel fontSize="1.3rem" htmlFor={name}>
             {label}.
           </FormLabel>
           <BaseSelect
             {...rest}
-            options={selectOptions}
+            isMulti
+            options={filterSelectOptions(
+              selectOptions as SelectOption[],
+              optionsFormatter(entity[name], selectOptionKey ?? "")
+            )}
             id={name}
             defaultValue={
               isEditMode &&
-              optionsFormatter([entity[name]], selectOptionKey ?? "")
+              optionsFormatter(entity[name], selectOptionKey ?? "")
             }
             placeholder={placeholder}
             noOptionsMessage={() => "Nenhum valor disponível"}
@@ -60,6 +77,7 @@ export const Select: React.FC<TextAreaProps> = ({
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>
       )}
+      rules={rules}
     />
   );
 };

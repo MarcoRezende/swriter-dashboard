@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
-import { optionsFormatter, SelectOption } from "../../components/form/Select";
+import {
+  optionsFormatter,
+  SelectOption,
+} from "../../components/form/BaseSelect";
 import { Theme } from "../../models/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";

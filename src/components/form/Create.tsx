@@ -1,33 +1,23 @@
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useState, memo } from "react";
-import { Controller, RegisterOptions, useForm } from "react-hook-form";
-
 import { Button } from "@chakra-ui/button";
-import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-} from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
 import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
-import { Textarea } from "@chakra-ui/textarea";
-
+import { useRouter } from "next/router";
+import { memo, useCallback, useEffect, useState } from "react";
+import { RegisterOptions, useForm } from "react-hook-form";
 import {
   createOneBase,
   deleteOneBase,
   getOneBase,
   patchOneBase,
 } from "../../services/common";
-import {
-  optionsFormatter,
-  retrieveValueOnly,
-  Select,
-  SelectOption,
-} from "./Select";
+import { retrieveValueOnly, SelectOption } from "./BaseSelect";
+import { Input } from "./Input";
+import { MultiSelect } from "./MultiSelect";
+import { Select } from "./Select";
+import { Textarea } from "./TextArea";
 
 export enum FieldType {
   TEXT = "TEXT",
-  TEXTAREA = "textarea",
+  TEXTAREA = "TEXTAREA",
   SELECT = "SELECT",
   MULTI_SELECT = "MULTI_SELECT",
   RADIO = "RADIO",
@@ -86,9 +76,8 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
   });
 
   const onSubmit = async (rawData: any) => {
-    // retrieve only the value from custom the select
+    // retrieve only the value from select
     const data = retrieveValueOnly(rawData);
-    console.log("🚀 ~ file: Create.tsx ~ line 91 ~ onSubmit ~ data", data);
 
     try {
       if (isCreateMode) {
@@ -160,20 +149,6 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
     });
   };
 
-  const filterSelectOptions = (
-    options: SelectOption[],
-    defaultOptions: SelectOption[]
-  ) => {
-    // TODO: list all options when empty
-    return isEditMode
-      ? options.filter((option) =>
-          defaultOptions.find(
-            (defaultValue) => defaultValue.label !== option.label
-          )
-        )
-      : options;
-  };
-
   return (
     <>
       {(isCreateMode || (isEditMode && isEntityOptionsLoaded())) && (
@@ -212,126 +187,63 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
                   switch (type) {
                     case FieldType.TEXTAREA:
                       return (
-                        // TODO: abstrair para um componente.
-                        <FormControl
-                          mb="1.5rem"
+                        <Textarea
+                          error={errors[name]}
+                          entity={entity}
+                          field={{ name, label, placeholder }}
+                          register={register}
+                          rules={rules}
                           key={"form-control-" + name}
-                          isInvalid={errors[name]}
-                        >
-                          <FormLabel fontSize="1.3rem" htmlFor={name}>
-                            {label}.
-                          </FormLabel>
-                          <Input
-                            as={Textarea}
-                            defaultValue={entity[name]}
-                            id={name}
-                            placeholder={placeholder}
-                            {...register(name, rules)}
-                          />
-                          <FormErrorMessage>
-                            {errors[name] && errors[name].message}
-                          </FormErrorMessage>
-                        </FormControl>
+                        />
                       );
 
                     case FieldType.TEXT:
                       return (
-                        <FormControl
-                          mb="1.5rem"
+                        <Input
+                          error={errors[name]}
+                          entity={entity}
+                          field={{ name, label, placeholder }}
+                          register={register}
+                          rules={rules}
                           key={"form-control-" + name}
-                          isInvalid={errors[name]}
-                        >
-                          <FormLabel fontSize="1.3rem" htmlFor={name}>
-                            {label}.
-                          </FormLabel>
-                          <Input
-                            id={name}
-                            placeholder={placeholder}
-                            defaultValue={entity[name]}
-                            {...register(name, rules)}
-                          />
-                          <FormErrorMessage>
-                            {errors[name] && errors[name].message}
-                          </FormErrorMessage>
-                        </FormControl>
+                        />
                       );
 
                     case FieldType.SELECT:
                       return (
-                        <Controller
-                          name={name}
+                        <Select
+                          error={errors[name]}
+                          entity={entity}
+                          isEditMode={isEditMode}
+                          field={{
+                            name,
+                            label,
+                            placeholder,
+                            selectOptions,
+                            selectOptionKey,
+                          }}
+                          rules={rules}
                           key={"form-control-" + name}
                           control={control}
-                          rules={rules}
-                          render={({ field: { ref, value, ...rest } }) => (
-                            <FormControl mb="1.5rem" isInvalid={errors[name]}>
-                              <FormLabel fontSize="1.3rem" htmlFor={name}>
-                                {label}.
-                              </FormLabel>
-                              <Select
-                                {...rest}
-                                options={selectOptions}
-                                id={name}
-                                defaultValue={
-                                  isEditMode &&
-                                  optionsFormatter(
-                                    [entity[name]],
-                                    selectOptionKey ?? ""
-                                  )
-                                }
-                                placeholder={placeholder}
-                                noOptionsMessage={() =>
-                                  "Nenhum valor disponível"
-                                }
-                              />
-                              <FormErrorMessage>
-                                {errors[name] && errors[name].message}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
                         />
                       );
 
                     case FieldType.MULTI_SELECT:
                       return (
-                        <Controller
-                          name={name}
+                        <MultiSelect
+                          error={errors[name]}
+                          entity={entity}
+                          isEditMode={isEditMode}
+                          field={{
+                            name,
+                            label,
+                            placeholder,
+                            selectOptions,
+                            selectOptionKey,
+                          }}
+                          rules={rules}
                           key={"form-control-" + name}
                           control={control}
-                          render={({ field: { ref, ...rest } }) => (
-                            <FormControl mb="1.5rem" isInvalid={errors[name]}>
-                              <FormLabel fontSize="1.3rem" htmlFor={name}>
-                                {label}.
-                              </FormLabel>
-                              <Select
-                                {...rest}
-                                isMulti
-                                options={filterSelectOptions(
-                                  selectOptions as SelectOption[],
-                                  optionsFormatter(
-                                    entity[name],
-                                    selectOptionKey ?? ""
-                                  )
-                                )}
-                                id={name}
-                                defaultValue={
-                                  isEditMode &&
-                                  optionsFormatter(
-                                    entity[name],
-                                    selectOptionKey ?? ""
-                                  )
-                                }
-                                placeholder={placeholder}
-                                noOptionsMessage={() =>
-                                  "Nenhum valor disponível"
-                                }
-                              />
-                              <FormErrorMessage>
-                                {errors[name] && errors[name].message}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                          rules={rules}
                         />
                       );
 
