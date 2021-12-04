@@ -13,10 +13,14 @@ export const NavItem: React.FC<NavItemProps> = ({
   icon,
   to,
   children,
+  childrenRoutes,
+  exact,
   ...rest
 }) => {
   const router = useRouter();
-  const isActive = router.pathname === to;
+  const isActive = exact
+    ? router.pathname === to
+    : router.pathname.includes(to);
 
   return (
     <Link as={ReachLink} href={to} style={{ textDecoration: "none" }}>
