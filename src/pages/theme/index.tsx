@@ -2,21 +2,27 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { Box } from "@chakra-ui/layout";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { Table } from "../../components/common/Table";
 import { Theme } from "../../models/Theme";
-
-import type { NextPage } from "next";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
 
+import type { NextPage } from "next";
 const Home: NextPage = () => {
   const [themes, setThemes] = useState<Theme[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      const requestQuery = RequestQueryBuilder.create().sortBy({
+        field: "createdDate",
+        order: "DESC",
+      }).queryObject;
+
       const themes = await getManyBase<Theme>({
         resource: themeResource,
+        requestQuery,
       });
 
       setThemes(themes);

@@ -2,21 +2,27 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 
 import { Box } from "@chakra-ui/layout";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { Table } from "../../components/common/Table";
 import { Hint } from "../../models/Hint";
-
-import type { NextPage } from "next";
 import { getManyBase } from "../../services/common";
 import { hintResource } from "../../services/hint";
 
+import type { NextPage } from "next";
 const Home: NextPage = () => {
   const [hints, setHints] = useState<Hint[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      const requestQuery = RequestQueryBuilder.create().sortBy({
+        field: "createdDate",
+        order: "DESC",
+      }).queryObject;
+
       const hints = await getManyBase<Hint>({
         resource: hintResource,
+        requestQuery,
       });
 
       setHints(hints);
