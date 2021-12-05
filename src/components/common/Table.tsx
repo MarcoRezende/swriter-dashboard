@@ -33,6 +33,8 @@ export const Table: React.FC<TableProps> = ({
   const path = router.pathname;
   const resource = path !== "/" ? path.replace(/\//g, "") : path;
 
+  const MAX_TEXT_LENGTH = 120;
+
   const handleClick = (e: any, id: string) => {
     e.preventDefault();
     router.push(`${path}/edit/${id}`);
@@ -98,7 +100,9 @@ export const Table: React.FC<TableProps> = ({
                     py="1.5rem"
                     key={`td-${content.id}-${index + contentIndex}`}
                   >
-                    {value}
+                    {value.length > MAX_TEXT_LENGTH
+                      ? `${value.substring(0, MAX_TEXT_LENGTH)}...`
+                      : value}
                   </Td>
                 ))}
               </Tr>
