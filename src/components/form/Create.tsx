@@ -13,7 +13,7 @@ import { retrieveValueOnly, SelectOption } from "./BaseSelect";
 import { Input } from "./Input";
 import { MultiSelect } from "./MultiSelect";
 import { Select } from "./Select";
-import { Textarea } from "./TextArea";
+import { Textarea } from "./Textarea";
 
 export enum FieldType {
   TEXT = "TEXT",
@@ -86,6 +86,9 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
       } else {
         await patchOneBase({ resource: endpoint, id: entityId ?? "", data });
       }
+
+      // redirect to entity table
+      router.push(router.pathname.split("/").slice(0, 2).join("/"));
     } catch (err) {
       console.error(err);
     }
