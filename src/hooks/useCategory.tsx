@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { Category } from "../models/Category";
-import { CategoryResource } from "../services/category";
+import { categoryResource } from "../services/category";
 import { createOneBase } from "../services/common";
 
 export interface CategoryAPI {
@@ -15,9 +15,9 @@ export const CategoryProvider: React.FC = ({ children }) => {
 
     return (
       (await createOneBase<Category>({
-        resource: CategoryResource,
+        resource: categoryResource,
         data: category,
-      })) || {}
+      })) || ({} as Category)
     );
   };
 
