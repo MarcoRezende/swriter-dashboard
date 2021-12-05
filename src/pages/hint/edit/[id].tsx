@@ -15,7 +15,7 @@ import { getManyBase } from "../../../services/common";
 const EditField = () => {
   const [categories, setCategories] = useState<Theme[]>([]);
   const router = useRouter();
-  const hintId = router.query.hintId as string | undefined;
+  const hintId = router.query.id as string | undefined;
 
   useEffect(() => {
     let cancel = false;
@@ -80,7 +80,7 @@ const EditField = () => {
       title="sentença"
       endpoint={hintResource}
       fields={fields}
-      idName="hintId"
+      idName="id"
     />
   );
 };

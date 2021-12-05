@@ -15,7 +15,7 @@ import { themeResource } from "../../../services/theme";
 const EditField = () => {
   const [themes, setThemes] = useState<Theme[]>([]);
   const router = useRouter();
-  const categoryId = router.query.categoryId as string | undefined;
+  const categoryId = router.query.id as string | undefined;
 
   useEffect(() => {
     let cancel = false;
@@ -66,7 +66,7 @@ const EditField = () => {
       title="categoria"
       endpoint={categoryResource}
       fields={fields}
-      idName="categoryId"
+      idName="id"
     />
   );
 };
