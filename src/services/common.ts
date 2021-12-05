@@ -54,7 +54,6 @@ export const createOneBase = async <K>({
 
 export const getManyBase = async <K>({ resource, requestQuery }: DTO<K>) => {
   try {
-    console.log("🚀 ~ file: common.ts ~ line 58 ~ requestQuery", requestQuery);
     return (await api.get<K[]>(resource, { params: requestQuery })).data;
   } catch (err) {
     console.error(err);
