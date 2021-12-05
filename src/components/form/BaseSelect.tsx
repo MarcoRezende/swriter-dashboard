@@ -17,6 +17,12 @@ export interface SelectProps extends ChakraSelectProps {
   isMulti?: boolean;
 }
 
+/**
+ * Turns the BaseSelect response - `{ label: string, value: any }` - into
+ * the entity format - `{ relation: [{ id: value.id, prop: label, [key: string]: any }], [key: string]: any }`
+ * @param data { [key: string]: any }
+ * @returns { [key: string]: any }
+ */
 export function retrieveValueOnly(data: Record<string, any>) {
   let obj: any = {};
 
@@ -42,6 +48,12 @@ export function retrieveValueOnly(data: Record<string, any>) {
   return obj;
 }
 
+/**
+ * Formats entity to BaseSelect format (SelectOption)
+ * @param options { id: string }[]
+ * @param label property to retrieve from entity and use it as name
+ * @returns { label: string, value: string }
+ */
 export function optionsFormatter(
   options: SelectValue[],
   label: string
