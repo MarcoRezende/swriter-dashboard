@@ -19,7 +19,7 @@ export const HintProvider: React.FC = ({ children }) => {
       (await createOneBase<Hint>({
         resource: hintResource,
         data: hint,
-      })) || {}
+      })) || ({} as Hint)
     );
   };
 
