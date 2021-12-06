@@ -15,6 +15,8 @@
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "axios": "^0.22.0",
     "chakra-react-select": "^1.2.2",
+    "date-fns": "^2.27.0",
+    "date-fns-tz": "^1.1.6",
     "framer-motion": "^4",
     "next": "11.1.2",
     "react": "17.0.2",
