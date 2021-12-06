@@ -2,7 +2,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 
 import { Button } from "@chakra-ui/button";
-import { Divider, Heading, Link } from "@chakra-ui/layout";
+import { Divider, Flex, Heading, Link } from "@chakra-ui/layout";
 import {
   Table as ChakraTable,
   TableProps as ChakraTableProps,
@@ -42,22 +42,36 @@ export const Table: React.FC<TableProps> = ({
 
   return (
     <>
-      <Button
-        borderColor="blue.800"
-        px="4rem"
-        mb="1rem"
-        d="block"
-        ml="auto"
-        variant="outline"
-        _hover={{
-          bg: "blue.800",
-          color: "white",
-        }}
-      >
-        <Link w="100%" as={NextLink} href={`/${resource}/create/`}>
-          Criar
-        </Link>
-      </Button>
+      <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
+        <Button
+          borderColor="blue.800"
+          px="4rem"
+          d="block"
+          mr="1rem"
+          variant="outline"
+          _hover={{
+            bg: "blue.800",
+            color: "white",
+          }}
+        >
+          <Link w="100%" as={NextLink} href={`/${resource}/create/`}>
+            Criar
+          </Link>
+        </Button>
+        {/* @TODO create modal to upload files when clicked */}
+        <Button
+          borderColor="blue.800"
+          px="4rem"
+          d="block"
+          variant="outline"
+          _hover={{
+            bg: "blue.800",
+            color: "white",
+          }}
+        >
+          Importar CSV
+        </Button>
+      </Flex>
       <Heading mb="0.5rem">{title}.</Heading>
       <Divider mb="2rem" />
       <ChakraTable {...rest} variant="striped">
