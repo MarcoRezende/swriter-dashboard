@@ -8,6 +8,7 @@ import { Table } from "../../components/common/Table";
 import { Theme } from "../../models/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
+import { formatDate } from "../../utils/date";
 
 import type { NextPage } from "next";
 const Home: NextPage = () => {
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Nome"];
+  const columns = ["Nome", "Criado", "Atualizado"];
 
   const tableContent = themes.map((theme) => {
     const getContent = (values: string[] | undefined[]) =>
@@ -39,7 +40,11 @@ const Home: NextPage = () => {
 
     return {
       id: theme.id as string,
-      values: getContent([theme.name]),
+      values: getContent([
+        theme.name,
+        formatDate(theme.createdDate, { relative: true }),
+        formatDate(theme.updatedDate, { relative: true }),
+      ]),
     };
   });
 

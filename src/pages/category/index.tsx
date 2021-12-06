@@ -10,6 +10,7 @@ import { categoryResource } from "../../services/category";
 import { getManyBase } from "../../services/common";
 
 import type { NextPage } from "next";
+import { formatDate } from "../../utils/date";
 const Home: NextPage = () => {
   const [categories, setCategory] = useState<Category[]>([]);
 
@@ -31,15 +32,20 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Nome", "Tema"];
+  const columns = ["Nome", "Tema", "Criado", "Atualizado"];
 
   const tableContent = categories.map((category) => {
-    const getContent = (values: string[] | undefined[]) =>
+    const getContent = (values: (string | undefined)[]) =>
       values.map((value) => (value ? value : "-"));
 
     return {
       id: category.id as string,
-      values: getContent([category.name, category.theme?.name]),
+      values: getContent([
+        category.name,
+        category.theme?.name,
+        formatDate(category.createdDate, { relative: true }),
+        formatDate(category.updatedDate, { relative: true }),
+      ]),
     };
   });
 

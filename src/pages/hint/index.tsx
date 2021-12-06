@@ -8,6 +8,7 @@ import { Table } from "../../components/common/Table";
 import { Hint } from "../../models/Hint";
 import { getManyBase } from "../../services/common";
 import { hintResource } from "../../services/hint";
+import { formatDate } from "../../utils/date";
 
 import type { NextPage } from "next";
 const Home: NextPage = () => {
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Autor", "Livro", "Sentença"];
+  const columns = ["Autor", "Livro", "Sentença", "Criado", "Atualizado"];
 
   const tableContent = hints.map((hint) => {
     const getContent = (values: (string | undefined)[]) =>
@@ -39,7 +40,13 @@ const Home: NextPage = () => {
 
     return {
       id: hint.id as string,
-      values: getContent([hint.author, hint.book, hint.tip]),
+      values: getContent([
+        hint.author,
+        hint.book,
+        hint.tip,
+        formatDate(hint.createdDate, { relative: true }),
+        formatDate(hint.updatedDate, { relative: true }),
+      ]),
     };
   });
 
