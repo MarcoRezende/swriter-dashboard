@@ -5,6 +5,7 @@ import { api } from "../config/axios";
 interface DTO<T> {
   resource: string;
   data?: T;
+  file?: File;
   id?: string;
   requestQuery?: { [key: string]: any };
 }
@@ -115,6 +116,29 @@ export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
     toast({
       ...baseErrorToastProps,
       description: "Falha ao atualizar conteúdo.",
+    });
+  }
+};
+
+export const uploadFile = async <K>({ resource, file }: DTO<K>) => {
+  if (!file) return;
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    await api.post<FormData>(`${resource}`, formData);
+
+    toast({
+      ...baseSuccessToastProps,
+      description: "Arquivo upado com sucesso.",
+    });
+  } catch (err) {
+    console.error(err);
+
+    toast({
+      ...baseErrorToastProps,
+      description: "Falha upar conteudo.",
     });
   }
 };
