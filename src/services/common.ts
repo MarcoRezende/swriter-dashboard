@@ -1,5 +1,5 @@
 import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { api } from "../config/axios";
 
 interface DTO<T> {
@@ -8,6 +8,14 @@ interface DTO<T> {
   file?: File;
   id?: string;
   requestQuery?: { [key: string]: any };
+}
+
+interface NextPaginateResponse {
+  count: number;
+  data: [];
+  page: number;
+  pageCount: number;
+  total: number;
 }
 
 const toast = createStandaloneToast();
@@ -55,7 +63,14 @@ export const createOneBase = async <K>({
 
 export const getManyBase = async <K>({ resource, requestQuery }: DTO<K>) => {
   try {
-    return (await api.get<K[]>(resource, { params: requestQuery })).data;
+    const { data: response } = await api.get<
+      K[],
+      AxiosResponse<NextPaginateResponse>
+    >(resource, {
+      params: requestQuery,
+    });
+
+    return response.data;
   } catch (err) {
     console.error(err);
 
