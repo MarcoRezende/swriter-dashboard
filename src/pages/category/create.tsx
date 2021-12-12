@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { optionsFormatter } from "../../components/form/BaseSelect";
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../components/form/EntityCrud";
@@ -46,7 +46,7 @@ const CategoryForm = () => {
   ];
 
   return (
-    <CreateForm<Category>
+    <EntityCrud<Category>
       model={categoriesModel}
       title="categoria"
       endpoint="category"

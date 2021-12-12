@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 
 import { optionsFormatter } from "../../../components/form/BaseSelect";
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../../components/form/EntityCrud";
@@ -63,7 +63,7 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm<Category>
+    <EntityCrud<Category>
       model={categoriesModel}
       mode="edit"
       title="categoria"

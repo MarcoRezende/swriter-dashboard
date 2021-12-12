@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../components/form/EntityCrud";
@@ -60,7 +60,7 @@ const HintForm = () => {
   ];
 
   return (
-    <CreateForm<Hint>
+    <EntityCrud<Hint>
       model={hintsModel}
       title="sentença"
       endpoint="hint"

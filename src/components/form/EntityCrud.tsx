@@ -42,7 +42,7 @@ type GenericEntity = {
   [key: string]: any;
 };
 
-export function CreateForm<Entity>({
+export function EntityCrud<Entity>({
   idName,
   fields,
   endpoint,

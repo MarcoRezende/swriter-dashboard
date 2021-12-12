@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../../components/form/EntityCrud";
@@ -21,7 +21,7 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm<Theme>
+    <EntityCrud<Theme>
       model={themesModel}
       mode="edit"
       title="tema"

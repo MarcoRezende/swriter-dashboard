@@ -3,7 +3,7 @@ import { memo, useEffect, useState } from "react";
 
 import { optionsFormatter } from "../../../components/form/BaseSelect";
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../../components/form/EntityCrud";
@@ -77,7 +77,7 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm<Hint>
+    <EntityCrud<Hint>
       model={hintsModel}
       mode="edit"
       title="sentença"

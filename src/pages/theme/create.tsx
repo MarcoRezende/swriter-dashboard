@@ -1,5 +1,5 @@
 import {
-  CreateForm,
+  EntityCrud,
   FieldType,
   FormField,
 } from "../../components/form/EntityCrud";
@@ -18,7 +18,7 @@ const ThemeForm = () => {
   ];
 
   return (
-    <CreateForm<Theme>
+    <EntityCrud<Theme>
       model={themesModel}
       title="tema"
       endpoint="theme"
