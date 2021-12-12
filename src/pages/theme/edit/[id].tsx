@@ -1,10 +1,7 @@
 import { memo } from "react";
 
-import {
-  EntityCrud,
-  FieldType,
-  FormField,
-} from "../../../components/form/EntityCrud";
+import { EntityCrud } from "../../../components/form/EntityCrud";
+import { FieldType, FormField } from "../../../components/form/EntityField";
 import { Theme } from "../../../entities/Theme";
 import themesModel from "../../../models/themes.model";
 import { themeResource } from "../../../services/theme";

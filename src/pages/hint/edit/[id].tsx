@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 
+import { EntityCrud } from "../../../components/form/EntityCrud";
+import { FieldType, FormField } from "../../../components/form/EntityField";
 import { optionsFormatter } from "../../../components/form/fields/BaseSelect";
-import {
-  EntityCrud,
-  FieldType,
-  FormField,
-} from "../../../components/form/EntityCrud";
 import { Hint } from "../../../entities/Hint";
 import { Theme } from "../../../entities/Theme";
 import hintsModel from "../../../models/hints.model";

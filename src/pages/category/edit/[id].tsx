@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 
+import { EntityCrud } from "../../../components/form/EntityCrud";
+import { FieldType, FormField } from "../../../components/form/EntityField";
 import { optionsFormatter } from "../../../components/form/fields/BaseSelect";
-import {
-  EntityCrud,
-  FieldType,
-  FormField,
-} from "../../../components/form/EntityCrud";
 import { Category } from "../../../entities/Category";
 import { Theme } from "../../../entities/Theme";
 import categoriesModel from "../../../models/categories.model";

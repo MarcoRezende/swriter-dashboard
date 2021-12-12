@@ -4,7 +4,7 @@ import {
   EntityCrud,
   FieldType,
   FormField,
-} from "../../components/form/EntityCrud";
+} from "../../components/form/EntityField";
 import { optionsFormatter } from "../../components/form/fields/BaseSelect";
 import { Category } from "../../entities/Category";
 import { Hint } from "../../entities/Hint";

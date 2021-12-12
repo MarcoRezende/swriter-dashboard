@@ -1,10 +1,7 @@
-import {
-  EntityCrud,
-  FieldType,
-  FormField,
-} from "../../components/form/EntityCrud";
-import themesModel from "../../models/themes.model";
+import { EntityCrud } from "../../components/form/EntityCrud";
+import { FieldType, FormField } from "../../components/form/EntityField";
 import { Theme } from "../../entities/Theme";
+import themesModel from "../../models/themes.model";
 
 const ThemeForm = () => {
   const fields: FormField[] = [
