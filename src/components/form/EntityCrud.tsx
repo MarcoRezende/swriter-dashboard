@@ -5,11 +5,11 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { CrudModel } from "../../models/crud-model";
 import { deleteOneBase, getOneBase } from "../../services/common";
-import { retrieveValueOnly, SelectOption } from "./BaseSelect";
-import { Input } from "./Input";
-import { MultiSelect } from "./MultiSelect";
-import { Select } from "./Select";
-import { Textarea } from "./Textarea";
+import { retrieveValueOnly, SelectOption } from "./fields/BaseSelect";
+import { Input } from "./fields/Input";
+import { MultiSelect } from "./fields/MultiSelect";
+import { Select } from "./fields/Select";
+import { Textarea } from "./fields/Textarea";
 
 export enum FieldType {
   TEXT = "TEXT",
