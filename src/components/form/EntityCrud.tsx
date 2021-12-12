@@ -139,8 +139,7 @@ export function EntityCrud<Entity>({
 
     return selectFields.every((field) => {
       if (!field.selectOptionKey) {
-        console.error(`Key is required at select "${field.label}".`);
-        return;
+        throw new Error(`Key is required at select "${field.label}".`);
       }
 
       return field.selectOptionKey && entity[field.name];
