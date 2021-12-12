@@ -31,6 +31,10 @@ export function EntityCrud<Entity>({
   model,
   mode = "create",
 }: FormProps<Entity>) {
+  const [loading, setLoading] = useState({
+    updatingOrCreating: false,
+    deleting: false,
+  });
   const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
   const {
     handleSubmit,
@@ -38,7 +42,7 @@ export function EntityCrud<Entity>({
     reset,
     control,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm();
 
   const router = useRouter();
@@ -58,6 +62,7 @@ export function EntityCrud<Entity>({
   const onSubmit = async (rawData: any) => {
     // retrieve only the value from select
     const data = retrieveValueOnly<Entity>(rawData);
+    setLoading({ ...loading, updatingOrCreating: true });
 
     try {
       if (isCreateMode) {
@@ -72,16 +77,22 @@ export function EntityCrud<Entity>({
     } catch (err) {
       console.error(err);
     }
+
+    setLoading({ ...loading, updatingOrCreating: false });
   };
 
   const deleteOne = useCallback(async () => {
+    setLoading({ ...loading, deleting: true });
+
     try {
       await deleteOneBase({ resource: endpoint, id: entityId ?? "" });
       router.back();
     } catch (err) {
       console.error(err);
     }
-  }, [endpoint, entityId, router]);
+
+    setLoading({ ...loading, deleting: false });
+  }, [endpoint, entityId, router, loading]);
 
   useEffect(() => {
     const isEditMode = mode === "edit";
@@ -175,7 +186,7 @@ export function EntityCrud<Entity>({
                     bg="red.800"
                     w="100%"
                     mt={4}
-                    isLoading={isSubmitting}
+                    isLoading={loading.deleting}
                     _hover={{
                       bg: "red.700",
                     }}
@@ -187,7 +198,7 @@ export function EntityCrud<Entity>({
                     bg="green.700"
                     w="100%"
                     mt={4}
-                    isLoading={isSubmitting}
+                    isLoading={loading.updatingOrCreating}
                     type="submit"
                     _hover={{
                       bg: "green.600",
@@ -201,7 +212,7 @@ export function EntityCrud<Entity>({
                   bg="blue.800"
                   w="100%"
                   mt={4}
-                  isLoading={isSubmitting}
+                  isLoading={loading.updatingOrCreating}
                   type="submit"
                   _hover={{
                     bg: "blue.700",
