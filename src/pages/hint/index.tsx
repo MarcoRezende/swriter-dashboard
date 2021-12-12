@@ -6,6 +6,7 @@ import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { Table } from "../../components/common/Table";
 import { Hint } from "../../entities/Hint";
+import hintsModel from "../../models/hints.model";
 import { getManyBase } from "../../services/common";
 import { hintResource } from "../../services/hint";
 import { formatDate } from "../../utils/date";
@@ -60,6 +61,7 @@ const Home: NextPage = () => {
 
       <Box role="main" p={"2rem"}>
         <Table
+          model={hintsModel}
           title="Sentenças"
           columns={columns}
           columnsContent={tableContent}

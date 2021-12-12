@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/table";
 import { ModalFile } from "../form/fields/ModalFile";
 import { uploadFile } from "../../services/common";
+import { CrudModel } from "../../models/crud.model";
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -23,6 +24,7 @@ interface TableProps extends ChakraTableProps {
     values: string[];
   }>;
   uploadEndpoint?: string;
+  model: CrudModel<any>;
 }
 
 export const Table: React.FC<TableProps> = ({
@@ -30,6 +32,7 @@ export const Table: React.FC<TableProps> = ({
   columns,
   columnsContent,
   uploadEndpoint,
+  model,
   ...rest
 }) => {
   const hasContent: boolean = !!columnsContent.length;
@@ -56,6 +59,20 @@ export const Table: React.FC<TableProps> = ({
   return (
     <>
       <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
+        <Button
+          onClick={() => model.deleteAll()}
+          borderColor="red.800"
+          px="4rem"
+          d="block"
+          mr="1rem"
+          variant="outline"
+          _hover={{
+            bg: "red.800",
+            color: "white",
+          }}
+        >
+          Deletar tudo
+        </Button>
         <Button
           borderColor="blue.800"
           px="4rem"

@@ -6,6 +6,7 @@ import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { Table } from "../../components/common/Table";
 import { Theme } from "../../entities/Theme";
+import themesModel from "../../models/themes.model";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
 import { formatDate } from "../../utils/date";
@@ -57,7 +58,12 @@ const Home: NextPage = () => {
       </Head>
 
       <Box role="main" p={"2rem"}>
-        <Table title="Temas" columns={columns} columnsContent={tableContent} />
+        <Table
+          model={themesModel}
+          title="Temas"
+          columns={columns}
+          columnsContent={tableContent}
+        />
       </Box>
     </Box>
   );
