@@ -1,15 +1,12 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
-import { memo, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { CrudModel } from "../../models/crud-model";
 import { deleteOneBase, getOneBase } from "../../services/common";
+import { EntityField } from "./EntityField";
 import { retrieveValueOnly, SelectOption } from "./fields/BaseSelect";
-import { Input } from "./fields/Input";
-import { MultiSelect } from "./fields/MultiSelect";
-import { Select } from "./fields/Select";
-import { Textarea } from "./fields/Textarea";
 
 export enum FieldType {
   TEXT = "TEXT",
@@ -174,85 +171,17 @@ export function EntityCrud<Entity>({
             p="2rem"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {filteredFields.map(
-              ({
-                name,
-                placeholder,
-                label,
-                rules,
-                type,
-                selectOptions,
-                selectOptionKey,
-              }) =>
-                (() => {
-                  switch (type) {
-                    case FieldType.TEXTAREA:
-                      return (
-                        <Textarea
-                          error={errors[name]}
-                          entity={entity}
-                          field={{ name, label, placeholder }}
-                          register={register}
-                          rules={rules}
-                          key={"form-control-" + name}
-                        />
-                      );
-
-                    case FieldType.TEXT:
-                      return (
-                        <Input
-                          error={errors[name]}
-                          entity={entity}
-                          field={{ name, label, placeholder }}
-                          register={register}
-                          rules={rules}
-                          key={"form-control-" + name}
-                        />
-                      );
-
-                    case FieldType.SELECT:
-                      return (
-                        <Select
-                          error={errors[name]}
-                          entity={entity}
-                          isEditMode={isEditMode}
-                          field={{
-                            name,
-                            label,
-                            placeholder,
-                            selectOptions,
-                            selectOptionKey,
-                          }}
-                          rules={rules}
-                          key={"form-control-" + name}
-                          control={control}
-                        />
-                      );
-
-                    case FieldType.MULTI_SELECT:
-                      return (
-                        <MultiSelect
-                          error={errors[name]}
-                          entity={entity}
-                          isEditMode={isEditMode}
-                          field={{
-                            name,
-                            label,
-                            placeholder,
-                            selectOptions,
-                            selectOptionKey,
-                          }}
-                          rules={rules}
-                          key={"form-control-" + name}
-                          control={control}
-                        />
-                      );
-
-                    default:
-                      <Text>Tipo inválido</Text>;
-                  }
-                })()
-            )}
+            {filteredFields.map((field) => (
+              <EntityField
+                field={field}
+                entity={entity}
+                register={register}
+                errors={errors}
+                isEditMode={isEditMode}
+                control={control}
+                key={"field-" + field.name}
+              />
+            ))}
             <Flex gridGap={"10px"}>
               {mode === "edit" ? (
                 <>
