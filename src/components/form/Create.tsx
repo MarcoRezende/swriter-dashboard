@@ -3,12 +3,8 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { RegisterOptions, useForm } from "react-hook-form";
-import {
-  createOneBase,
-  deleteOneBase,
-  getOneBase,
-  patchOneBase,
-} from "../../services/common";
+import { CrudModel } from "../../models/crud-model";
+import { deleteOneBase, getOneBase } from "../../services/common";
 import { retrieveValueOnly, SelectOption } from "./BaseSelect";
 import { Input } from "./Input";
 import { MultiSelect } from "./MultiSelect";
@@ -33,26 +29,28 @@ export interface FormField {
   selectOptionKey?: string;
 }
 
-interface FormProps {
+interface FormProps<T> {
   idName?: string;
   endpoint: string;
   fields: FormField[];
   title: string;
   mode?: "edit" | "create";
+  model: CrudModel<T>;
 }
 
-type Entity = {
+type GenericEntity = {
   [key: string]: any;
 };
 
-export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
+export function CreateForm<Entity>({
   idName,
   fields,
   endpoint,
   title,
+  model,
   mode = "create",
-}) {
-  const [entity, setEntity] = useState<Entity>({} as Entity);
+}: FormProps<Entity>) {
+  const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
   const {
     handleSubmit,
     register,
@@ -77,14 +75,14 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
 
   const onSubmit = async (rawData: any) => {
     // retrieve only the value from select
-    const data = retrieveValueOnly(rawData);
+    const data = retrieveValueOnly<Entity>(rawData);
 
     try {
       if (isCreateMode) {
-        await createOneBase({ resource: endpoint, data });
+        await model.create(data);
         reset();
       } else {
-        await patchOneBase({ resource: endpoint, id: entityId ?? "", data });
+        await model.patch(entityId ?? "", data);
       }
 
       // redirect to entity table
@@ -111,14 +109,14 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
 
       const fetchData = async () => {
         try {
-          const fetchedEntity = await getOneBase<Entity>({
+          const fetchedEntity = await getOneBase<GenericEntity>({
             resource: endpoint,
             id: entityId,
           });
 
           if (cancel) return;
 
-          setEntity(fetchedEntity as Entity);
+          setEntity(fetchedEntity as GenericEntity);
 
           return fetchedEntity;
         } catch (err) {
@@ -304,4 +302,4 @@ export const CreateForm: React.FC<FormProps> = memo(function CreateForm({
       )}
     </>
   );
-});
+}
