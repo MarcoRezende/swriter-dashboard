@@ -23,7 +23,7 @@ export interface SelectProps extends ChakraSelectProps {
  * @param data { [key: string]: any }
  * @returns { [key: string]: any }
  */
-export function retrieveValueOnly(data: Record<string, any>) {
+export function retrieveValueOnly<K>(data: Record<string, any>): K {
   let obj: any = {};
 
   Object.entries(data).forEach(([key]) => {
