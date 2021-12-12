@@ -4,7 +4,7 @@ import {
   optionsFormatter,
   SelectOption,
 } from "../../components/form/BaseSelect";
-import { Theme } from "../../models/Theme";
+import { Theme } from "../../entities/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
 

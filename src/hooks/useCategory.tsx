@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { Category } from "../models/Category";
+import { Category } from "../entities/Category";
 import { categoryResource } from "../services/category";
 import { createOneBase } from "../services/common";
 

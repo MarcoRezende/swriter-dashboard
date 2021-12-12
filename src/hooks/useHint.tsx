@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import { Hint } from "../models/Hint";
+import { Hint } from "../entities/Hint";
 import { createOneBase, getManyBase } from "../services/common";
 import { hintResource } from "../services/hint";
 

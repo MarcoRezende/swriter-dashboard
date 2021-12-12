@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/layout";
 import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { Table } from "../../components/common/Table";
-import { Theme } from "../../models/Theme";
+import { Theme } from "../../entities/Theme";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
 import { formatDate } from "../../utils/date";

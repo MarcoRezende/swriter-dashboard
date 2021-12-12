@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Box, Flex } from "@chakra-ui/layout";
 
-import { Hint } from "../models/Hint";
+import { Hint } from "../entities/Hint";
 
 import type { NextPage } from "next";
 

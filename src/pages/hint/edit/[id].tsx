@@ -7,7 +7,7 @@ import {
   FormField,
 } from "../../../components/form/Create";
 import { optionsFormatter } from "../../../components/form/BaseSelect";
-import { Theme } from "../../../models/Theme";
+import { Theme } from "../../../entities/Theme";
 import { categoryResource } from "../../../services/category";
 import { hintResource } from "../../../services/hint";
 import { getManyBase } from "../../../services/common";
