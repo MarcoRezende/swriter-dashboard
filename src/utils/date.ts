@@ -2,7 +2,7 @@ import { parseISO, formatRelative, subHours } from "date-fns";
 import { pt } from "date-fns/locale";
 import { format } from "date-fns-tz";
 
-const TIMEZONE_OFFSET = 3;
+const TIMEZONE_OFFSET = 0;
 
 interface FormatOptions {
   relative?: boolean;
