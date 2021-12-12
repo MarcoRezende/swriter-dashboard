@@ -6,7 +6,7 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 
 import { CrudModel } from "../../models/crud-model";
-import { deleteOneBase, getOneBase } from "../../services/common";
+import { getOneBase } from "../../services/common";
 import { EntityField, FieldType, FormField } from "./EntityField";
 import { retrieveValueOnly } from "./fields/BaseSelect";
 
@@ -85,14 +85,14 @@ export function EntityCrud<Entity>({
     setLoading({ ...loading, deleting: true });
 
     try {
-      await deleteOneBase({ resource: endpoint, id: entityId ?? "" });
+      await model.delete(entityId ?? "");
       router.back();
     } catch (err) {
       console.error(err);
     }
 
     setLoading({ ...loading, deleting: false });
-  }, [endpoint, entityId, router, loading]);
+  }, [entityId, router, loading, model]);
 
   useEffect(() => {
     const isEditMode = mode === "edit";
