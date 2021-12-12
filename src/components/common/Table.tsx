@@ -12,7 +12,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/table";
-import { ModalFile } from "../form/ModalFile";
+import { ModalFile } from "../form/fields/ModalFile";
 import { uploadFile } from "../../services/common";
 
 interface TableProps extends ChakraTableProps {
