@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 
-import {
-  EntityCrud,
-  FieldType,
-  FormField,
-} from "../../components/form/EntityField";
+import { FieldType, FormField } from "../../components/form/EntityField";
 import { optionsFormatter } from "../../components/form/fields/BaseSelect";
 import { Category } from "../../entities/Category";
 import { Hint } from "../../entities/Hint";
 import { categoryResource } from "../../services/category";
 import { getManyBase } from "../../services/common";
 import hintsModel from "../../models/hints.model";
+import { EntityCrud } from "../../components/form/EntityCrud";
 
 const HintForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
