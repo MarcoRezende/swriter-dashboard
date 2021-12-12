@@ -1,4 +1,9 @@
-import { createOneBase, deleteOneBase, patchOneBase } from "../services/common";
+import {
+  createOneBase,
+  deleteAllBase,
+  deleteOneBase,
+  patchOneBase,
+} from "../services/common";
 
 export class CrudModel<Entity> {
   public constructor(private endpoint: string) {}
@@ -13,5 +18,9 @@ export class CrudModel<Entity> {
 
   async delete(entityId: string): Promise<void> {
     await deleteOneBase<Entity>({ resource: this.endpoint, id: entityId });
+  }
+
+  async deleteAll() {
+    await deleteAllBase({ resource: this.endpoint });
   }
 }

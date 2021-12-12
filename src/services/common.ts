@@ -121,6 +121,24 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
   }
 };
 
+export const deleteAllBase = async <K>({ resource }: DTO<K>) => {
+  try {
+    await api.delete<K>(`${resource}`);
+
+    toast({
+      ...baseSuccessToastProps,
+      description: "Deleção realizada com sucesso.",
+    });
+  } catch (err) {
+    console.error(err);
+
+    toast({
+      ...baseErrorToastProps,
+      description: "Falha ao deletar conteúdo.",
+    });
+  }
+};
+
 export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
   try {
     await api.patch<K>(`${resource}/${id}`, data);
