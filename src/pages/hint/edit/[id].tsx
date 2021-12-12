@@ -1,16 +1,18 @@
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 
+import { optionsFormatter } from "../../../components/form/BaseSelect";
 import {
   CreateForm,
   FieldType,
   FormField,
 } from "../../../components/form/Create";
-import { optionsFormatter } from "../../../components/form/BaseSelect";
+import { Hint } from "../../../entities/Hint";
 import { Theme } from "../../../entities/Theme";
+import hintsModel from "../../../models/hints.model";
 import { categoryResource } from "../../../services/category";
-import { hintResource } from "../../../services/hint";
 import { getManyBase } from "../../../services/common";
+import { hintResource } from "../../../services/hint";
 
 const EditField = () => {
   const [categories, setCategories] = useState<Theme[]>([]);
@@ -75,7 +77,8 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm
+    <CreateForm<Hint>
+      model={hintsModel}
       mode="edit"
       title="sentença"
       endpoint={hintResource}

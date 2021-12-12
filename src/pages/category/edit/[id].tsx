@@ -1,13 +1,15 @@
 import { useRouter } from "next/router";
-import { useEffect, useState, memo } from "react";
+import { memo, useEffect, useState } from "react";
 
+import { optionsFormatter } from "../../../components/form/BaseSelect";
 import {
   CreateForm,
   FieldType,
   FormField,
 } from "../../../components/form/Create";
-import { optionsFormatter } from "../../../components/form/BaseSelect";
+import { Category } from "../../../entities/Category";
 import { Theme } from "../../../entities/Theme";
+import categoriesModel from "../../../models/categories.model";
 import { categoryResource } from "../../../services/category";
 import { getManyBase } from "../../../services/common";
 import { themeResource } from "../../../services/theme";
@@ -61,7 +63,8 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm
+    <CreateForm<Category>
+      model={categoriesModel}
       mode="edit"
       title="categoria"
       endpoint={categoryResource}

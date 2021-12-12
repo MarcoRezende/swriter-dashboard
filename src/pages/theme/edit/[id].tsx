@@ -5,6 +5,8 @@ import {
   FieldType,
   FormField,
 } from "../../../components/form/Create";
+import { Theme } from "../../../entities/Theme";
+import themesModel from "../../../models/themes.model";
 import { themeResource } from "../../../services/theme";
 
 const EditField = () => {
@@ -19,7 +21,8 @@ const EditField = () => {
   ];
 
   return (
-    <CreateForm
+    <CreateForm<Theme>
+      model={themesModel}
       mode="edit"
       title="tema"
       endpoint={themeResource}

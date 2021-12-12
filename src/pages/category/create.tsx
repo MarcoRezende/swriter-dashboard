@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+
+import { optionsFormatter } from "../../components/form/BaseSelect";
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
-import {
-  optionsFormatter,
-  SelectOption,
-} from "../../components/form/BaseSelect";
+import { Category } from "../../entities/Category";
 import { Theme } from "../../entities/Theme";
+import categoriesModel from "../../models/categories.model";
 import { getManyBase } from "../../services/common";
 import { themeResource } from "../../services/theme";
 
@@ -41,7 +41,14 @@ const CategoryForm = () => {
     },
   ];
 
-  return <CreateForm title="categoria" endpoint="category" fields={fields} />;
+  return (
+    <CreateForm<Category>
+      model={categoriesModel}
+      title="categoria"
+      endpoint="category"
+      fields={fields}
+    />
+  );
 };
 
 export default CategoryForm;

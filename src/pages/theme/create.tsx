@@ -1,4 +1,6 @@
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
+import themesModel from "../../models/themes.model";
+import { Theme } from "../../entities/Theme";
 
 const ThemeForm = () => {
   const fields: FormField[] = [
@@ -11,7 +13,14 @@ const ThemeForm = () => {
     },
   ];
 
-  return <CreateForm title="tema" endpoint="theme" fields={fields} />;
+  return (
+    <CreateForm<Theme>
+      model={themesModel}
+      title="tema"
+      endpoint="theme"
+      fields={fields}
+    />
+  );
 };
 
 export default ThemeForm;

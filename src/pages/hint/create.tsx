@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { CreateForm, FieldType, FormField } from "../../components/form/Create";
 import { optionsFormatter } from "../../components/form/BaseSelect";
 import { Category } from "../../entities/Category";
+import { Hint } from "../../entities/Hint";
 import { categoryResource } from "../../services/category";
 import { getManyBase } from "../../services/common";
+import hintsModel from "../../models/hints.model";
 
 const HintForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -53,7 +55,14 @@ const HintForm = () => {
     },
   ];
 
-  return <CreateForm title="sentença" endpoint="hint" fields={fields} />;
+  return (
+    <CreateForm<Hint>
+      model={hintsModel}
+      title="sentença"
+      endpoint="hint"
+      fields={fields}
+    />
+  );
 };
 
 export default HintForm;
