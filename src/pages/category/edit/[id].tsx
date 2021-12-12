@@ -6,7 +6,7 @@ import {
   CreateForm,
   FieldType,
   FormField,
-} from "../../../components/form/Create";
+} from "../../../components/form/EntityCrud";
 import { Category } from "../../../entities/Category";
 import { Theme } from "../../../entities/Theme";
 import categoriesModel from "../../../models/categories.model";

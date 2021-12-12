@@ -6,7 +6,7 @@ import {
   CreateForm,
   FieldType,
   FormField,
-} from "../../../components/form/Create";
+} from "../../../components/form/EntityCrud";
 import { Hint } from "../../../entities/Hint";
 import { Theme } from "../../../entities/Theme";
 import hintsModel from "../../../models/hints.model";

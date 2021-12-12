@@ -4,7 +4,7 @@ import {
   CreateForm,
   FieldType,
   FormField,
-} from "../../../components/form/Create";
+} from "../../../components/form/EntityCrud";
 import { Theme } from "../../../entities/Theme";
 import themesModel from "../../../models/themes.model";
 import { themeResource } from "../../../services/theme";

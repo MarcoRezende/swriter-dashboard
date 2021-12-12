@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { CreateForm, FieldType, FormField } from "../../components/form/Create";
+import {
+  CreateForm,
+  FieldType,
+  FormField,
+} from "../../components/form/EntityCrud";
 import { optionsFormatter } from "../../components/form/BaseSelect";
 import { Category } from "../../entities/Category";
 import { Hint } from "../../entities/Hint";

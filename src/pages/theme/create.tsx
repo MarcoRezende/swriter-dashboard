@@ -1,4 +1,8 @@
-import { CreateForm, FieldType, FormField } from "../../components/form/Create";
+import {
+  CreateForm,
+  FieldType,
+  FormField,
+} from "../../components/form/EntityCrud";
 import themesModel from "../../models/themes.model";
 import { Theme } from "../../entities/Theme";
 
