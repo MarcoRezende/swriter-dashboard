@@ -1,5 +1,5 @@
 import { Theme } from "../entities/Theme";
-import { CrudModel } from "./crud-model";
+import { CrudModel } from "./crud.model";
 
 class ThemesModel extends CrudModel<Theme> {
   constructor() {

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 
-import { CrudModel } from "../../models/crud-model";
+import { CrudModel } from "../../models/crud.model";
 import { getOneBase } from "../../services/common";
 import { EntityField, FieldType, FormField } from "./EntityField";
 import { retrieveValueOnly } from "./fields/BaseSelect";

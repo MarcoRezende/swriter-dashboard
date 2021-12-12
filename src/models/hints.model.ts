@@ -1,5 +1,5 @@
 import { Hint } from "../entities/Hint";
-import { CrudModel } from "./crud-model";
+import { CrudModel } from "./crud.model";
 
 class HintsModel extends CrudModel<Hint> {
   constructor() {
