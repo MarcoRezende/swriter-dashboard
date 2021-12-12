@@ -1,5 +1,10 @@
 import { Text } from "@chakra-ui/layout";
-import { RegisterOptions } from "react-hook-form";
+import {
+  Control,
+  FieldValues,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 import { SelectOption } from "./fields/BaseSelect";
 import { Input } from "./fields/Input";
 import { MultiSelect } from "./fields/MultiSelect";
@@ -26,10 +31,10 @@ export interface FormField {
 
 interface EntityFieldProps {
   entity: { [key: string]: any };
-  register: any;
-  control: any;
+  register: UseFormRegister<FieldValues>;
+  control: Control<FieldValues, object>;
   field: FormField;
-  errors: any;
+  errors: { [key: string]: any };
   isEditMode: boolean;
 }
 
