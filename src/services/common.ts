@@ -1,3 +1,4 @@
+import theme from "../config/theme";
 import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
 import { AxiosError, AxiosResponse } from "axios";
 import { api } from "../config/axios";
@@ -18,7 +19,10 @@ interface NextPaginateResponse {
   total: number;
 }
 
-const toast = createStandaloneToast();
+const toast = createStandaloneToast({
+  theme,
+});
+
 const baseErrorToastProps: UseToastOptions = {
   title: "Erro.",
   position: "bottom-right",
