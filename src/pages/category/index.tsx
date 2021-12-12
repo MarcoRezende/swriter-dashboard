@@ -8,9 +8,9 @@ import { Table } from "../../components/common/Table";
 import { Category } from "../../models/Category";
 import { categoryResource } from "../../services/category";
 import { getManyBase } from "../../services/common";
+import { formatDate } from "../../utils/date";
 
 import type { NextPage } from "next";
-import { formatDate } from "../../utils/date";
 const Home: NextPage = () => {
   const [categories, setCategory] = useState<Category[]>([]);
 
@@ -62,6 +62,7 @@ const Home: NextPage = () => {
           title="Categorias"
           columns={columns}
           columnsContent={tableContent}
+          uploadEndpoint={`${categoryResource}/importCsv`}
         />
       </Box>
     </Box>

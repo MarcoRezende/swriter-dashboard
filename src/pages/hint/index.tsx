@@ -63,6 +63,7 @@ const Home: NextPage = () => {
           title="Sentenças"
           columns={columns}
           columnsContent={tableContent}
+          uploadEndpoint={`${hintResource}/importCsv`}
         />
       </Box>
     </Box>

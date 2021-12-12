@@ -12,6 +12,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/table";
+import { ModalFile } from "../form/ModalFile";
+import { uploadFile } from "../../services/common";
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -20,12 +22,14 @@ interface TableProps extends ChakraTableProps {
     id: string;
     values: string[];
   }>;
+  uploadEndpoint?: string;
 }
 
 export const Table: React.FC<TableProps> = ({
   title,
   columns,
   columnsContent,
+  uploadEndpoint,
   ...rest
 }) => {
   const hasContent: boolean = !!columnsContent.length;
@@ -38,6 +42,15 @@ export const Table: React.FC<TableProps> = ({
   const handleClick = (e: any, id: string) => {
     e.preventDefault();
     router.push(`${path}/edit/${id}`);
+  };
+
+  const uploadCsv = async (file: File) => {
+    if (!uploadEndpoint) {
+      console.error("No endpoint provided for upload");
+      return;
+    }
+
+    await uploadFile({ resource: uploadEndpoint, file });
   };
 
   return (
@@ -59,18 +72,13 @@ export const Table: React.FC<TableProps> = ({
           </Link>
         </Button>
         {/* @TODO create modal to upload files when clicked */}
-        <Button
-          borderColor="blue.800"
-          px="4rem"
-          d="block"
-          variant="outline"
-          _hover={{
-            bg: "blue.800",
-            color: "white",
-          }}
+        <ModalFile
+          validFormats=".csv"
+          title="Importar CSV"
+          onUpload={uploadCsv}
         >
           Importar CSV
-        </Button>
+        </ModalFile>
       </Flex>
       <Heading mb="0.5rem">{title}.</Heading>
       <Divider mb="2rem" />
