@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 
-import { optionsFormatter } from "../../../components/form/BaseSelect";
+import { optionsFormatter } from "../../../components/form/fields/BaseSelect";
 import {
   EntityCrud,
   FieldType,
