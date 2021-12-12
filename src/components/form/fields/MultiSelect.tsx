@@ -3,6 +3,7 @@ import {
   Controller,
   FieldValues,
   RegisterOptions,
+  UseFormSetValue,
 } from "react-hook-form";
 
 import {
@@ -11,6 +12,7 @@ import {
   FormLabel,
 } from "@chakra-ui/form-control";
 import { BaseSelect, optionsFormatter, SelectOption } from "./BaseSelect";
+import { useCallback, useEffect, useState } from "react";
 
 interface TextAreaProps {
   error: any;
@@ -18,6 +20,7 @@ interface TextAreaProps {
   control?: Control<FieldValues, object>;
   rules: RegisterOptions;
   isEditMode: boolean;
+  setValue: UseFormSetValue<FieldValues>;
   field: {
     name: string;
     label?: string;
@@ -33,21 +36,33 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
   control,
   rules,
   isEditMode,
-  field: { name, label, placeholder, selectOptions, selectOptionKey },
+  setValue,
+  field: { name, label, placeholder, selectOptions = [], selectOptionKey },
 }) => {
-  const filterSelectOptions = (
-    options: SelectOption[],
-    defaultOptions: SelectOption[]
-  ) => {
-    // TODO: list all options when empty
-    return isEditMode
-      ? options.filter((option) =>
-          defaultOptions.find(
-            (defaultValue) => defaultValue.label !== option.label
-          )
-        )
-      : options;
-  };
+  const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(
+    optionsFormatter(entity[name], selectOptionKey ?? "")
+  );
+
+  const filterSelectOptions = useCallback(() => {
+    if (isEditMode && !!selectedOptions.length) {
+      return selectOptions.filter((option) => {
+        return !selectedOptions.find(
+          (defaultOption) => defaultOption.label === option.label
+        );
+      });
+    }
+
+    return selectOptions;
+  }, [selectedOptions, isEditMode, selectOptions]);
+
+  const [visibleOptions, setVisibleOptions] = useState<SelectOption[]>(
+    filterSelectOptions()
+  );
+
+  useEffect(() => {
+    setVisibleOptions(filterSelectOptions());
+    setValue(name, selectedOptions);
+  }, [selectedOptions, filterSelectOptions, setValue, name]);
 
   return (
     <Controller
@@ -61,16 +76,13 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
           </FormLabel>
           <BaseSelect
             {...rest}
+            value={selectedOptions}
+            onChange={(newValues: any) => {
+              setSelectedOptions([...(newValues as SelectOption[])]);
+            }}
             isMulti
-            options={filterSelectOptions(
-              selectOptions as SelectOption[],
-              optionsFormatter(entity[name], selectOptionKey ?? "")
-            )}
+            options={visibleOptions}
             id={name}
-            defaultValue={
-              isEditMode &&
-              optionsFormatter(entity[name], selectOptionKey ?? "")
-            }
             placeholder={placeholder}
             noOptionsMessage={() => "Nenhum valor disponível"}
           />

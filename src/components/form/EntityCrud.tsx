@@ -37,6 +37,7 @@ export function EntityCrud<Entity>({
     register,
     reset,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -157,6 +158,7 @@ export function EntityCrud<Entity>({
             {filteredFields.map((field) => (
               <EntityField
                 field={field}
+                setValue={setValue}
                 entity={entity}
                 register={register}
                 errors={errors}

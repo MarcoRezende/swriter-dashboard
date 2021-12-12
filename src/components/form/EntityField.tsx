@@ -4,6 +4,7 @@ import {
   FieldValues,
   RegisterOptions,
   UseFormRegister,
+  UseFormSetValue,
 } from "react-hook-form";
 import { SelectOption } from "./fields/BaseSelect";
 import { Input } from "./fields/Input";
@@ -36,6 +37,7 @@ interface EntityFieldProps {
   field: FormField;
   errors: { [key: string]: any };
   isEditMode: boolean;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
 export const EntityField: React.FC<EntityFieldProps> = ({
@@ -50,6 +52,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
   },
   entity,
   register,
+  setValue,
   control,
   errors,
   isEditMode,
@@ -106,6 +109,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
               <MultiSelect
                 error={errors[name]}
                 entity={entity}
+                setValue={setValue}
                 isEditMode={isEditMode}
                 field={{
                   name,
