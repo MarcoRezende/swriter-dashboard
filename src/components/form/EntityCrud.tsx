@@ -1,30 +1,14 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { RegisterOptions, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@chakra-ui/button";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
+
 import { CrudModel } from "../../models/crud-model";
 import { deleteOneBase, getOneBase } from "../../services/common";
-import { EntityField } from "./EntityField";
-import { retrieveValueOnly, SelectOption } from "./fields/BaseSelect";
-
-export enum FieldType {
-  TEXT = "TEXT",
-  TEXTAREA = "TEXTAREA",
-  SELECT = "SELECT",
-  MULTI_SELECT = "MULTI_SELECT",
-  RADIO = "RADIO",
-}
-
-export interface FormField {
-  label: string;
-  placeholder: string;
-  name: string;
-  rules: RegisterOptions;
-  type: FieldType;
-  selectOptions?: SelectOption[];
-  selectOptionKey?: string;
-}
+import { EntityField, FieldType, FormField } from "./EntityField";
+import { retrieveValueOnly } from "./fields/BaseSelect";
 
 interface FormProps<T> {
   idName?: string;
