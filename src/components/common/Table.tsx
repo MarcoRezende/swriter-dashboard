@@ -13,11 +13,12 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/table";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 
 import { CrudModel } from "../../models/crud.model";
 import { uploadFile } from "../../services/common";
-import { ModalFile } from "../form/fields/ModalFile";
 import { formatTableContent, TableColumnsProps } from "../../utils/table";
+import { ModalFile } from "../form/fields/ModalFile";
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -61,12 +62,16 @@ export const Table: React.FC<TableProps> = ({
   useEffect(() => {
     (async () => {
       const localEntityDescription = await model.entityDescription();
+      const requestQuery = RequestQueryBuilder.create().sortBy({
+        field: "updatedDate",
+        order: "DESC",
+      }).queryObject;
 
       /**
        @TODO: save entity value on model then load it
        * to prevent unnecessary requests.
        */
-      const foundEntities: any[] = await model.getMany();
+      const foundEntities: any[] = await model.getMany(requestQuery);
 
       setTableColumns(
         formatTableContent(columns, localEntityDescription, foundEntities)

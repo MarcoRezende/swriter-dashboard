@@ -27,11 +27,15 @@ export type EntityDescriptionProps = AtLeast<
   "subject" | "key" | "type"
 >;
 
+interface RequestQueryBuilderObject {
+  [key: string]: any;
+}
+
 export class CrudModel<Entity> {
   public constructor(private endpoint: string) {}
 
-  async getMany() {
-    return getManyBase({ resource: this.endpoint });
+  async getMany(requestQuery: RequestQueryBuilderObject) {
+    return getManyBase({ resource: this.endpoint, requestQuery });
   }
 
   async create(data: Entity): Promise<void> {

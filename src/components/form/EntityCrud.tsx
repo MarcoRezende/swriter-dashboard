@@ -86,7 +86,7 @@ export function EntityCrud<Entity>({
 
     try {
       await model.delete(entityId ?? "");
-      router.back();
+      router.push(router.pathname.split("/").slice(0, 2).join("/"));
     } catch (err) {
       console.error(err);
     }
