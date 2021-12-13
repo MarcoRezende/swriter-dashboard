@@ -33,22 +33,7 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Nome", "Tema", "Criado", "Atualizado"];
-
-  const tableContent = categories.map((category) => {
-    const getContent = (values: (string | undefined)[]) =>
-      values.map((value) => (value ? value : "-"));
-
-    return {
-      id: category.id as string,
-      values: getContent([
-        category.name,
-        category.theme?.name,
-        formatDate(category.createdDate, { relative: true }),
-        formatDate(category.updatedDate, { relative: true }),
-      ]),
-    };
-  });
+  const columns = ["name", "theme.name", "createdDate", "updatedDate"];
 
   return (
     <Box>
@@ -63,7 +48,6 @@ const Home: NextPage = () => {
           model={categoriesModel}
           title="Categorias"
           columns={columns}
-          columnsContent={tableContent}
           uploadEndpoint={`${categoryResource}/importCsv`}
         />
       </Box>

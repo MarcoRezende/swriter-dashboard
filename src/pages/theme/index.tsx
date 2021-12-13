@@ -33,21 +33,7 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const columns = ["Nome", "Criado", "Atualizado"];
-
-  const tableContent = themes.map((theme) => {
-    const getContent = (values: string[] | undefined[]) =>
-      values.map((value) => (value ? value : "-"));
-
-    return {
-      id: theme.id as string,
-      values: getContent([
-        theme.name,
-        formatDate(theme.createdDate, { relative: true }),
-        formatDate(theme.updatedDate, { relative: true }),
-      ]),
-    };
-  });
+  const columns = ["name", "createdDate", "updatedDate"];
 
   return (
     <Box>
@@ -58,12 +44,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Box role="main" p={"2rem"}>
-        <Table
-          model={themesModel}
-          title="Temas"
-          columns={columns}
-          columnsContent={tableContent}
-        />
+        <Table model={themesModel} title="Temas" columns={columns} />
       </Box>
     </Box>
   );
