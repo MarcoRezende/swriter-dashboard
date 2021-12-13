@@ -64,8 +64,17 @@ export function optionsFormatter(
   }));
 }
 
-export const BaseSelect: React.FC<SelectProps> = ({ children, ...rest }) => {
+export const BaseSelect: React.FC<SelectProps> = ({
+  children,
+  options,
+  ...rest
+}) => {
   return (
-    <ChakraSelect closeMenuOnSelect={false} colorScheme="blue" {...rest} />
+    <ChakraSelect
+      closeMenuOnSelect={options?.length === 1}
+      options={options}
+      colorScheme="blue"
+      {...rest}
+    />
   );
 };
