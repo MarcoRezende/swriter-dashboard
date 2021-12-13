@@ -1,17 +1,10 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
 
 import { Box, Flex } from "@chakra-ui/layout";
-
-import { Hint } from "../entities/Hint";
 
 import type { NextPage } from "next";
 
 const Home: NextPage = () => {
-  const [hints, setHints] = useState<Hint[]>([]);
-
-  useEffect(() => {}, []);
-
   return (
     <Flex h="100vh" alignItems="center" justifyContent="center" m="-1rem">
       <Head>
