@@ -1,5 +1,6 @@
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { Button } from "@chakra-ui/button";
 import { Divider, Flex, Heading, Link } from "@chakra-ui/layout";
@@ -12,17 +13,15 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/table";
-import { ModalFile } from "../form/fields/ModalFile";
-import { uploadFile } from "../../services/common";
+
 import { CrudModel } from "../../models/crud.model";
+import { uploadFile } from "../../services/common";
+import { ModalFile } from "../form/fields/ModalFile";
+import { formatTableContent, TableColumnsProps } from "../../utils/table";
 
 interface TableProps extends ChakraTableProps {
   title: string;
   columns: string[];
-  columnsContent: Array<{
-    id: string;
-    values: string[];
-  }>;
   uploadEndpoint?: string;
   model: CrudModel<any>;
 }
@@ -30,12 +29,15 @@ interface TableProps extends ChakraTableProps {
 export const Table: React.FC<TableProps> = ({
   title,
   columns,
-  columnsContent,
   uploadEndpoint,
   model,
   ...rest
 }) => {
-  const hasContent: boolean = !!columnsContent.length;
+  const [tableColumns, setTableColumns] = useState<TableColumnsProps>({
+    tableHeader: [],
+    tableBody: [],
+  } as TableColumnsProps);
+  const hasContent: boolean = !!tableColumns.tableBody.length;
   const router = useRouter();
   const path = router.pathname;
   const resource = path !== "/" ? path.replace(/\//g, "") : path;
@@ -55,6 +57,22 @@ export const Table: React.FC<TableProps> = ({
 
     await uploadFile({ resource: uploadEndpoint, file });
   };
+
+  useEffect(() => {
+    (async () => {
+      const localEntityDescription = await model.entityDescription();
+
+      /**
+       @TODO: save entity value on model then load it
+       * to prevent unnecessary requests.
+       */
+      const foundEntities: any[] = await model.getMany();
+
+      setTableColumns(
+        formatTableContent(columns, localEntityDescription, foundEntities)
+      );
+    })();
+  }, [model, columns]);
 
   return (
     <>
@@ -88,7 +106,6 @@ export const Table: React.FC<TableProps> = ({
             Criar
           </Link>
         </Button>
-        {/* @TODO create modal to upload files when clicked */}
         <ModalFile
           validFormats=".csv"
           title="Importar CSV"
@@ -105,7 +122,7 @@ export const Table: React.FC<TableProps> = ({
             <Th fontFamily="Poppins" fontSize="1rem" textTransform="capitalize">
               Número
             </Th>
-            {columns.map((column) => (
+            {tableColumns.tableHeader.map((column) => (
               <Th
                 fontFamily="Poppins"
                 fontSize="1rem"
@@ -119,10 +136,10 @@ export const Table: React.FC<TableProps> = ({
         </Thead>
         <Tbody>
           {hasContent ? (
-            columnsContent.map((content, index) => (
+            tableColumns.tableBody.map((content, index) => (
               <Tr
-                onClick={(e) => handleClick(e, content.id)}
-                key={"row-" + content.id}
+                onClick={(e) => handleClick(e, content.entityId)}
+                key={"row-" + content.entityId}
                 transition="transform 0.3s, filter 0.3s"
                 _hover={{
                   cursor: "pointer",
@@ -137,7 +154,7 @@ export const Table: React.FC<TableProps> = ({
                   <Td
                     borderBottom="0"
                     py="1.5rem"
-                    key={`td-${content.id}-${index + contentIndex}`}
+                    key={`td-${content.entityId}-${index + contentIndex}`}
                   >
                     {value.length > MAX_TEXT_LENGTH
                       ? `${value.substring(0, MAX_TEXT_LENGTH)}...`
