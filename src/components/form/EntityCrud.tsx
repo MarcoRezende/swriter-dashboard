@@ -1,19 +1,19 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 
 import { CrudModel } from "../../models/crud.model";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 import { getOneBase } from "../../services/common";
 import { EntityField, FieldType, FormField } from "./EntityField";
-import { retrieveValueOnly } from "./fields/BaseSelect";
+import { optionsFormatter, retrieveValueOnly } from "./fields/BaseSelect";
 
 interface FormProps<T> {
   idName?: string;
-  endpoint: string;
-  fields: FormField[];
+  formFields: string[];
   title: string;
   mode?: "edit" | "create";
   model: CrudModel<T>;
@@ -25,8 +25,7 @@ type GenericEntity = {
 
 export function EntityCrud<Entity>({
   idName,
-  fields,
-  endpoint,
+  formFields,
   title,
   model,
   mode = "create",
@@ -35,7 +34,9 @@ export function EntityCrud<Entity>({
     updatingOrCreating: false,
     deleting: false,
   });
+  const [entityLoaded, setEntityLoaded] = useState<boolean>(false);
   const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
+  const [fields, setFields] = useState<FormField[]>([]);
   const {
     handleSubmit,
     register,
@@ -47,17 +48,6 @@ export function EntityCrud<Entity>({
 
   const router = useRouter();
   const entityId = router.query[idName as string] as string | undefined;
-
-  const filteredFields = fields.map((field) => {
-    if (typeof field.rules.required === "string") return field;
-    else if (typeof field.rules.required === "boolean")
-      return {
-        ...field,
-        rules: { ...field.rules, required: "Campo obrigatório" },
-      };
-
-    return field;
-  });
 
   const onSubmit = async (rawData: any) => {
     // retrieve only the value from select
@@ -97,40 +87,99 @@ export function EntityCrud<Entity>({
   useEffect(() => {
     const isEditMode = mode === "edit";
 
-    if (entityId && isEditMode) {
-      let cancel = false;
+    let cancel = false;
 
-      const fetchData = async () => {
-        try {
-          const fetchedEntity = await getOneBase<GenericEntity>({
-            resource: endpoint,
+    const fetchData = async () => {
+      if (cancel) return;
+
+      try {
+        if (entityId && isEditMode) {
+          const fetchedEntity = (await getOneBase<GenericEntity>({
+            resource: model.endpoint,
             id: entityId,
-          });
+          })) as GenericEntity;
 
-          if (cancel) return;
-
-          setEntity(fetchedEntity as GenericEntity);
-
-          return fetchedEntity;
-        } catch (err) {
-          console.error(err);
+          setEntity(fetchedEntity);
         }
-      };
 
-      fetchData();
+        const entityDescription = await model.entityDescription(true);
 
-      return () => {
-        cancel = true;
-      };
-    }
-  }, [endpoint, entityId, mode]);
+        const formattedFields = formFields.reduce<FormField[]>(
+          (allFields: FormField[], key) => {
+            const description = entityDescription.find(
+              (desc) => desc.key === key
+            );
+
+            if (description) {
+              const {
+                placeholder,
+                subject: label,
+                type,
+                rules = {},
+                key: name,
+                relation,
+                selectKey = "name",
+              } = description;
+
+              if (type) {
+                const fieldProps = {
+                  placeholder: placeholder ?? "",
+                  label,
+                  type,
+                  name,
+                  rules,
+                };
+
+                if (relation) {
+                  const selectOptions =
+                    model.relationOptions.find(
+                      (relation) => relation.key === key
+                    )?.data ?? [];
+
+                  if (!selectKey)
+                    console.warn(
+                      "Using default key (name) to generate select values."
+                    );
+
+                  Object.assign(fieldProps, {
+                    selectOptionKey: selectKey ?? "name",
+                    selectOptions: selectOptions
+                      ? optionsFormatter(selectOptions, selectKey ?? "name")
+                      : [],
+                  });
+                }
+
+                allFields.push(fieldProps);
+              }
+
+              return allFields;
+            }
+
+            return allFields;
+          },
+          []
+        );
+
+        setFields([...formattedFields]);
+        setEntityLoaded(true);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      cancel = true;
+    };
+  }, [entityId, mode, model, formFields]);
 
   const isEditMode = mode === "edit";
   const isCreateMode = mode === "create";
 
   const isEntityOptionsLoaded = () => {
     const selectFields = fields.filter((field) =>
-      [FieldType.MULTI_SELECT, FieldType.SELECT].includes(field.type)
+      (["multi-select", "select"] as FieldType[]).includes(field.type)
     );
 
     return selectFields.every((field) => {
@@ -144,87 +193,88 @@ export function EntityCrud<Entity>({
 
   return (
     <>
-      {(isCreateMode || (isEditMode && isEntityOptionsLoaded())) && (
-        <Flex
-          p="2rem"
-          maxW={{ base: "70%", md: "600px" }}
-          h="100%"
-          m="auto"
-          align="center"
-          justifyContent="center"
-          flexDirection="column"
-        >
-          <Heading alignSelf="flex-start" mb="1rem">
-            {mode === "edit" ? "Editar" : "Criar"} {title}.
-          </Heading>
-          <Box
-            w="100%"
-            as="form"
-            bg="gray.800"
-            boxShadow="xl"
-            borderRadius="0.5rem"
+      {entityLoaded &&
+        (isCreateMode || (isEditMode && isEntityOptionsLoaded())) && (
+          <Flex
             p="2rem"
-            onSubmit={handleSubmit(onSubmit)}
+            maxW={{ base: "70%", md: "600px" }}
+            h="100%"
+            m="auto"
+            align="center"
+            justifyContent="center"
+            flexDirection="column"
           >
-            {filteredFields.map((field) => (
-              <EntityField
-                field={field}
-                setValue={setValue}
-                entity={entity}
-                register={register}
-                errors={errors}
-                isEditMode={isEditMode}
-                control={control}
-                key={"field-" + field.name}
-              />
-            ))}
-            <Flex gridGap={"10px"}>
-              {mode === "edit" ? (
-                <>
-                  <Button
-                    onClick={() => deleteOne()}
-                    bg="red.800"
-                    w="100%"
-                    mt={4}
-                    isLoading={loading.deleting}
-                    _hover={{
-                      bg: "red.700",
-                    }}
-                  >
-                    Deletar
-                  </Button>
+            <Heading alignSelf="flex-start" mb="1rem">
+              {mode === "edit" ? "Editar" : "Criar"} {title}.
+            </Heading>
+            <Box
+              w="100%"
+              as="form"
+              bg="gray.800"
+              boxShadow="xl"
+              borderRadius="0.5rem"
+              p="2rem"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              {fields.map((field) => (
+                <EntityField
+                  field={field}
+                  setValue={setValue}
+                  entity={entity}
+                  register={register}
+                  errors={errors}
+                  isEditMode={isEditMode}
+                  control={control}
+                  key={"field-" + field.name}
+                />
+              ))}
+              <Flex gridGap={"10px"}>
+                {mode === "edit" ? (
+                  <>
+                    <Button
+                      onClick={() => deleteOne()}
+                      bg="red.800"
+                      w="100%"
+                      mt={4}
+                      isLoading={loading.deleting}
+                      _hover={{
+                        bg: "red.700",
+                      }}
+                    >
+                      Deletar
+                    </Button>
 
+                    <Button
+                      bg="green.700"
+                      w="100%"
+                      mt={4}
+                      isLoading={loading.updatingOrCreating}
+                      type="submit"
+                      _hover={{
+                        bg: "green.600",
+                      }}
+                    >
+                      Atualizar
+                    </Button>
+                  </>
+                ) : (
                   <Button
-                    bg="green.700"
+                    bg="blue.800"
                     w="100%"
                     mt={4}
                     isLoading={loading.updatingOrCreating}
                     type="submit"
                     _hover={{
-                      bg: "green.600",
+                      bg: "blue.700",
                     }}
                   >
-                    Atualizar
+                    Criar
                   </Button>
-                </>
-              ) : (
-                <Button
-                  bg="blue.800"
-                  w="100%"
-                  mt={4}
-                  isLoading={loading.updatingOrCreating}
-                  type="submit"
-                  _hover={{
-                    bg: "blue.700",
-                  }}
-                >
-                  Criar
-                </Button>
-              )}
-            </Flex>
-          </Box>
-        </Flex>
-      )}
+                )}
+              </Flex>
+            </Box>
+          </Flex>
+        )}
     </>
   );
 }
