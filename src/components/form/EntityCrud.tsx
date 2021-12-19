@@ -1,21 +1,19 @@
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Button } from '@chakra-ui/button';
+import { Box, Flex, Heading } from '@chakra-ui/layout';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading } from "@chakra-ui/layout";
-
-import { CrudModel } from "../../models/crud.model";
-import { RequestQueryBuilder } from "@nestjsx/crud-request";
-import { getOneBase } from "../../services/common";
-import { EntityField, FieldType, FormField } from "./EntityField";
-import { optionsFormatter, retrieveValueOnly } from "./fields/BaseSelect";
+import { CrudModel } from '../../models/crud.model';
+import { getOneBase } from '../../services/common';
+import { EntityField, FieldType, FormField } from './EntityField';
+import { optionsFormatter, retrieveValueOnly } from './fields/BaseSelect';
 
 interface FormProps<T> {
   idName?: string;
   formFields: string[];
   title: string;
-  mode?: "edit" | "create";
+  mode?: 'edit' | 'create';
   model: CrudModel<T>;
 }
 
@@ -28,7 +26,7 @@ export function EntityCrud<Entity>({
   formFields,
   title,
   model,
-  mode = "create",
+  mode = 'create',
 }: FormProps<Entity>) {
   const [loading, setLoading] = useState({
     updatingOrCreating: false,
@@ -59,11 +57,11 @@ export function EntityCrud<Entity>({
         await model.create(data);
         reset();
       } else {
-        await model.patch(entityId ?? "", data);
+        await model.patch(entityId ?? '', data);
       }
 
       // redirect to entity table
-      router.push(router.pathname.split("/").slice(0, 2).join("/"));
+      router.push(router.pathname.split('/').slice(0, 2).join('/'));
     } catch (err) {
       console.error(err);
     }
@@ -75,8 +73,8 @@ export function EntityCrud<Entity>({
     setLoading({ ...loading, deleting: true });
 
     try {
-      await model.delete(entityId ?? "");
-      router.push(router.pathname.split("/").slice(0, 2).join("/"));
+      await model.delete(entityId ?? '');
+      router.push(router.pathname.split('/').slice(0, 2).join('/'));
     } catch (err) {
       console.error(err);
     }
@@ -85,7 +83,7 @@ export function EntityCrud<Entity>({
   }, [entityId, router, loading, model]);
 
   useEffect(() => {
-    const isEditMode = mode === "edit";
+    const isEditMode = mode === 'edit';
 
     let cancel = false;
 
@@ -118,12 +116,12 @@ export function EntityCrud<Entity>({
                 rules = {},
                 key: name,
                 relation,
-                selectKey = "name",
+                selectKey = 'name',
               } = description;
 
               if (type) {
                 const fieldProps = {
-                  placeholder: placeholder ?? "",
+                  placeholder: placeholder ?? '',
                   label,
                   type,
                   name,
@@ -136,15 +134,16 @@ export function EntityCrud<Entity>({
                       (relation) => relation.key === key
                     )?.data ?? [];
 
-                  if (!selectKey)
+                  if (!selectKey) {
                     console.warn(
-                      "Using default key (name) to generate select values."
+                      'Using default key (name) to generate select values.'
                     );
+                  }
 
                   Object.assign(fieldProps, {
-                    selectOptionKey: selectKey ?? "name",
+                    selectOptionKey: selectKey ?? 'name',
                     selectOptions: selectOptions
-                      ? optionsFormatter(selectOptions, selectKey ?? "name")
+                      ? optionsFormatter(selectOptions, selectKey ?? 'name')
                       : [],
                   });
                 }
@@ -174,12 +173,12 @@ export function EntityCrud<Entity>({
     };
   }, [entityId, mode, model, formFields]);
 
-  const isEditMode = mode === "edit";
-  const isCreateMode = mode === "create";
+  const isEditMode = mode === 'edit';
+  const isCreateMode = mode === 'create';
 
   const isEntityOptionsLoaded = () => {
     const selectFields = fields.filter((field) =>
-      (["multi-select", "select"] as FieldType[]).includes(field.type)
+      (['multi-select', 'select'] as FieldType[]).includes(field.type)
     );
 
     return selectFields.every((field) => {
@@ -197,7 +196,7 @@ export function EntityCrud<Entity>({
         (isCreateMode || (isEditMode && isEntityOptionsLoaded())) && (
           <Flex
             p="2rem"
-            maxW={{ base: "70%", md: "600px" }}
+            maxW={{ base: '70%', md: '600px' }}
             h="100%"
             m="auto"
             align="center"
@@ -205,7 +204,7 @@ export function EntityCrud<Entity>({
             flexDirection="column"
           >
             <Heading alignSelf="flex-start" mb="1rem">
-              {mode === "edit" ? "Editar" : "Criar"} {title}.
+              {mode === 'edit' ? 'Editar' : 'Criar'} {title}.
             </Heading>
             <Box
               w="100%"
@@ -225,11 +224,11 @@ export function EntityCrud<Entity>({
                   errors={errors}
                   isEditMode={isEditMode}
                   control={control}
-                  key={"field-" + field.name}
+                  key={'field-' + field.name}
                 />
               ))}
-              <Flex gridGap={"10px"}>
-                {mode === "edit" ? (
+              <Flex gridGap={'10px'}>
+                {mode === 'edit' ? (
                   <>
                     <Button
                       onClick={() => deleteOne()}
@@ -238,7 +237,7 @@ export function EntityCrud<Entity>({
                       mt={4}
                       isLoading={loading.deleting}
                       _hover={{
-                        bg: "red.700",
+                        bg: 'red.700',
                       }}
                     >
                       Deletar
@@ -251,7 +250,7 @@ export function EntityCrud<Entity>({
                       isLoading={loading.updatingOrCreating}
                       type="submit"
                       _hover={{
-                        bg: "green.600",
+                        bg: 'green.600',
                       }}
                     >
                       Atualizar
@@ -265,7 +264,7 @@ export function EntityCrud<Entity>({
                     isLoading={loading.updatingOrCreating}
                     type="submit"
                     _hover={{
-                      bg: "blue.700",
+                      bg: 'blue.700',
                     }}
                   >
                     Criar

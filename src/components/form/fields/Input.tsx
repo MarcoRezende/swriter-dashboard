@@ -1,11 +1,10 @@
-import { RegisterOptions } from "react-hook-form";
-
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-} from "@chakra-ui/form-control";
-import { Input as ChakraInput } from "@chakra-ui/input";
+} from '@chakra-ui/form-control';
+import { Input as ChakraInput } from '@chakra-ui/input';
+import { RegisterOptions } from 'react-hook-form';
 
 interface TextAreaProps {
   error: any;
@@ -27,7 +26,7 @@ export const Input: React.FC<TextAreaProps> = ({
   field: { name, label, placeholder },
 }) => {
   return (
-    <FormControl mb="1.5rem" key={"form-control-" + name} isInvalid={error}>
+    <FormControl mb="1.5rem" key={'form-control-' + name} isInvalid={error}>
       <FormLabel fontSize="1.3rem" htmlFor={name}>
         {label}.
       </FormLabel>

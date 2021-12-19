@@ -1,24 +1,25 @@
-import { Text } from "@chakra-ui/layout";
+import { Text } from '@chakra-ui/layout';
 import {
   Control,
   FieldValues,
   RegisterOptions,
   UseFormRegister,
   UseFormSetValue,
-} from "react-hook-form";
-import { SelectOption } from "./fields/BaseSelect";
-import { Input } from "./fields/Input";
-import { MultiSelect } from "./fields/MultiSelect";
-import { Select } from "./fields/Select";
-import { Textarea } from "./fields/Textarea";
+} from 'react-hook-form';
+
+import { SelectOption } from './fields/BaseSelect';
+import { Input } from './fields/Input';
+import { MultiSelect } from './fields/MultiSelect';
+import { Select } from './fields/Select';
+import { Textarea } from './fields/Textarea';
 
 export type FieldType =
-  | "dateTime"
-  | "text"
-  | "textarea"
-  | "select"
-  | "multi-select"
-  | "radio";
+  | 'dateTime'
+  | 'text'
+  | 'textarea'
+  | 'select'
+  | 'multi-select'
+  | 'radio';
 
 export interface FormField {
   label: string;
@@ -61,7 +62,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
     <>
       {(() => {
         switch (type) {
-          case "textarea":
+          case 'textarea':
             return (
               <Textarea
                 error={errors[name]}
@@ -69,11 +70,11 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                 field={{ name, label, placeholder }}
                 register={register}
                 rules={rules}
-                key={"form-control-" + name}
+                key={'form-control-' + name}
               />
             );
 
-          case "text":
+          case 'text':
             return (
               <Input
                 error={errors[name]}
@@ -81,11 +82,11 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                 field={{ name, label, placeholder }}
                 register={register}
                 rules={rules}
-                key={"form-control-" + name}
+                key={'form-control-' + name}
               />
             );
 
-          case "select":
+          case 'select':
             return (
               <Select
                 error={errors[name]}
@@ -99,12 +100,12 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                   selectOptionKey,
                 }}
                 rules={rules}
-                key={"form-control-" + name}
+                key={'form-control-' + name}
                 control={control}
               />
             );
 
-          case "multi-select":
+          case 'multi-select':
             return (
               <MultiSelect
                 error={errors[name]}
@@ -119,7 +120,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                   selectOptionKey,
                 }}
                 rules={rules}
-                key={"form-control-" + name}
+                key={'form-control-' + name}
                 control={control}
               />
             );

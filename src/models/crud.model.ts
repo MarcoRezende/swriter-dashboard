@@ -1,5 +1,5 @@
-import { RequestQueryBuilder } from "@nestjsx/crud-request";
-import { RegisterOptions } from "react-hook-form";
+import { RegisterOptions } from 'react-hook-form';
+
 import {
   createOneBase,
   deleteAllBase,
@@ -7,21 +7,21 @@ import {
   getManyBase,
   getOneBase,
   patchOneBase,
-} from "../services/common";
+} from '../services/common';
 
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 type RelationType =
-  | "one-to-one"
-  | "one-to-many"
-  | "many-to-one"
-  | "many-to-many";
+  | 'one-to-one'
+  | 'one-to-many'
+  | 'many-to-one'
+  | 'many-to-many';
 
 export interface DescriptionProps {
   subject: string;
   key: string;
   relation?: RelationType;
-  type?: "dateTime" | "text" | "textarea" | "select" | "multi-select" | "radio";
+  type?: 'dateTime' | 'text' | 'textarea' | 'select' | 'multi-select' | 'radio';
   selectKey?: string;
   placeholder?: string;
   rules?: RegisterOptions;
@@ -29,15 +29,15 @@ export interface DescriptionProps {
 
 export type EntityDescriptionProps = AtLeast<
   DescriptionProps,
-  "subject" | "key" | "type"
+  'subject' | 'key' | 'type'
 >;
 
 interface RequestQueryBuilderObject {
   [key: string]: any;
 }
 
-interface JoinProps {
-  model: CrudModel<any>;
+interface JoinProps<T> {
+  model: T;
   key: string;
 }
 
@@ -49,7 +49,7 @@ export class CrudModel<Entity> {
 
   public constructor(
     public endpoint: string,
-    private joins: JoinProps[] = []
+    private joins: JoinProps<CrudModel<any>>[] = []
   ) {}
 
   async getMany(requestQuery?: RequestQueryBuilderObject) {
@@ -77,7 +77,7 @@ export class CrudModel<Entity> {
   ): Promise<EntityDescriptionProps[]> {
     const entityDescription = (await getOneBase<EntityDescriptionProps[]>({
       resource: `${this.endpoint}/entityDescription`,
-      id: "",
+      id: '',
     })) as EntityDescriptionProps[];
 
     if (loadRelations) await this.loadedRelationOptions();

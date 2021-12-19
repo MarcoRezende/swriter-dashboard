@@ -1,10 +1,11 @@
-import { memo } from "react";
-import { EntityCrud } from "../../../components/form/EntityCrud";
-import { Category } from "../../../entities/Category";
-import categoriesModel from "../../../models/categories.model";
+import { memo } from 'react';
+
+import { EntityCrud } from '../../../components/form/EntityCrud';
+import { Category } from '../../../entities/Category';
+import categoriesModel from '../../../models/categories.model';
 
 const EditField = () => {
-  const formFields = ["name", "theme"];
+  const formFields = ['name', 'theme'];
 
   return (
     <EntityCrud<Category>

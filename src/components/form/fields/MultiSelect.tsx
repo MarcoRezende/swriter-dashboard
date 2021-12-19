@@ -1,18 +1,18 @@
 import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+} from '@chakra-ui/form-control';
+import { useCallback, useEffect, useState } from 'react';
+import {
   Control,
   Controller,
   FieldValues,
   RegisterOptions,
   UseFormSetValue,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-} from "@chakra-ui/form-control";
-import { BaseSelect, optionsFormatter, SelectOption } from "./BaseSelect";
-import { useCallback, useEffect, useState } from "react";
+import { BaseSelect, optionsFormatter, SelectOption } from './BaseSelect';
 
 interface TextAreaProps {
   error: any;
@@ -40,7 +40,7 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
   field: { name, label, placeholder, selectOptions = [], selectOptionKey },
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(
-    optionsFormatter(entity[name], selectOptionKey ?? "")
+    optionsFormatter(entity[name], selectOptionKey ?? '')
   );
 
   const filterSelectOptions = useCallback(() => {
@@ -67,7 +67,7 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
   return (
     <Controller
       name={name}
-      key={"form-control-" + name}
+      key={'form-control-' + name}
       control={control}
       render={({ field: { ref, ...rest } }) => (
         <FormControl mb="1.5rem" isInvalid={error}>
@@ -84,7 +84,7 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
             options={visibleOptions}
             id={name}
             placeholder={placeholder}
-            noOptionsMessage={() => "Nenhum valor disponível"}
+            noOptionsMessage={() => 'Nenhum valor disponível'}
           />
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>
