@@ -1,3 +1,5 @@
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
+import { RegisterOptions } from "react-hook-form";
 import {
   createOneBase,
   deleteAllBase,
@@ -18,8 +20,11 @@ type RelationType =
 export interface DescriptionProps {
   subject: string;
   key: string;
-  relation: RelationType;
-  type: "dateTime";
+  relation?: RelationType;
+  type?: "dateTime" | "text" | "textarea" | "select" | "multi-select" | "radio";
+  selectKey?: string;
+  placeholder?: string;
+  rules?: RegisterOptions;
 }
 
 export type EntityDescriptionProps = AtLeast<
@@ -31,10 +36,23 @@ interface RequestQueryBuilderObject {
   [key: string]: any;
 }
 
-export class CrudModel<Entity> {
-  public constructor(private endpoint: string) {}
+interface JoinProps {
+  model: CrudModel<any>;
+  key: string;
+}
 
-  async getMany(requestQuery: RequestQueryBuilderObject) {
+export class CrudModel<Entity> {
+  public relationOptions: Array<{
+    key: string;
+    data: any;
+  }> = [];
+
+  public constructor(
+    public endpoint: string,
+    private joins: JoinProps[] = []
+  ) {}
+
+  async getMany(requestQuery?: RequestQueryBuilderObject) {
     return getManyBase({ resource: this.endpoint, requestQuery });
   }
 
@@ -54,10 +72,27 @@ export class CrudModel<Entity> {
     await deleteAllBase({ resource: this.endpoint });
   }
 
-  async entityDescription(): Promise<EntityDescriptionProps[]> {
-    return getOneBase<any>({
+  async entityDescription(
+    loadRelations: boolean = false
+  ): Promise<EntityDescriptionProps[]> {
+    const entityDescription = (await getOneBase<EntityDescriptionProps[]>({
       resource: `${this.endpoint}/entityDescription`,
       id: "",
-    });
+    })) as EntityDescriptionProps[];
+
+    if (loadRelations) await this.loadedRelationOptions();
+
+    return entityDescription;
+  }
+
+  private async loadedRelationOptions() {
+    Promise.all(
+      this.joins.map(async (join) => {
+        this.relationOptions.push({
+          data: await join.model.getMany(),
+          key: join.key,
+        });
+      })
+    );
   }
 }
