@@ -1,3 +1,42 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["standard", "next/core-web-vitals", "plugin:react/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-import-helpers",
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": ["module", "/^@shared/", ["parent", "sibling", "index"]],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ],
+    "semi": "off",
+    "no-useless-constructor": "off",
+    "comma-dangle": "off",
+    "space-before-function-paren": "off",
+    "no-useless-return": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-undef": "off",
+    "multiline-ternary": "off",
+    "indent": "off"
+  }
 }
