@@ -1,16 +1,16 @@
 import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+} from '@chakra-ui/form-control';
+import {
   Control,
   Controller,
   FieldValues,
   RegisterOptions,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-} from "@chakra-ui/form-control";
-import { BaseSelect, optionsFormatter, SelectOption } from "./BaseSelect";
+import { BaseSelect, optionsFormatter, SelectOption } from './BaseSelect';
 
 interface TextAreaProps {
   error: any;
@@ -38,7 +38,7 @@ export const Select: React.FC<TextAreaProps> = ({
   return (
     <Controller
       name={name}
-      key={"form-control-" + name}
+      key={'form-control-' + name}
       control={control}
       rules={rules}
       render={({ field: { ref, value, ...rest } }) => (
@@ -52,10 +52,10 @@ export const Select: React.FC<TextAreaProps> = ({
             id={name}
             defaultValue={
               isEditMode &&
-              optionsFormatter([entity[name]], selectOptionKey ?? "")
+              optionsFormatter([entity[name]], selectOptionKey ?? '')
             }
             placeholder={placeholder}
-            noOptionsMessage={() => "Nenhum valor disponível"}
+            noOptionsMessage={() => 'Nenhum valor disponível'}
           />
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>

@@ -1,5 +1,5 @@
-import { Select as ChakraSelect } from "chakra-react-select";
-import { ChakraSelectProps } from "chakra-react-select/dist/types/types";
+import { Select as ChakraSelect } from 'chakra-react-select';
+import { ChakraSelectProps } from 'chakra-react-select/dist/types/types';
 
 export type SelectValue = {
   id: string;
@@ -24,11 +24,11 @@ export interface SelectProps extends ChakraSelectProps {
  * @returns { [key: string]: any }
  */
 export function retrieveValueOnly<K>(data: Record<string, any>): K {
-  let obj: any = {};
+  const obj: any = {};
 
   Object.entries(data).forEach(([key]) => {
     if (data[key] instanceof Array) {
-      data[key].map((select: any) => {
+      data[key].forEach((select: any) => {
         if (select.label) {
           obj[key] ? obj[key].push(select.value) : (obj[key] = [select.value]);
         }
@@ -59,8 +59,8 @@ export function optionsFormatter(
   label: string
 ): SelectOption[] {
   return (options || []).map((option) => ({
-    label: option ? option[label] : "",
-    value: { id: option?.id || "" },
+    label: option ? option[label] : '',
+    value: { id: option?.id || '' },
   }));
 }
 
@@ -71,7 +71,7 @@ export const BaseSelect: React.FC<SelectProps> = ({
 }) => {
   return (
     <ChakraSelect
-      closeMenuOnSelect={options?.length === 1}
+      closeMenuOnSelect={options?.length === 1 || !rest.isMulti}
       options={options}
       colorScheme="blue"
       {...rest}
