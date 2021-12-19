@@ -86,7 +86,7 @@ export class CrudModel<Entity> {
   }
 
   private async loadedRelationOptions() {
-    Promise.all(
+    await Promise.all(
       this.joins.map(async (join) => {
         this.relationOptions.push({
           data: await join.model.getMany(),
