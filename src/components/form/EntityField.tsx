@@ -12,13 +12,13 @@ import { MultiSelect } from "./fields/MultiSelect";
 import { Select } from "./fields/Select";
 import { Textarea } from "./fields/Textarea";
 
-export enum FieldType {
-  TEXT = "TEXT",
-  TEXTAREA = "TEXTAREA",
-  SELECT = "SELECT",
-  MULTI_SELECT = "MULTI_SELECT",
-  RADIO = "RADIO",
-}
+export type FieldType =
+  | "dateTime"
+  | "text"
+  | "textarea"
+  | "select"
+  | "multi-select"
+  | "radio";
 
 export interface FormField {
   label: string;
@@ -61,7 +61,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
     <>
       {(() => {
         switch (type) {
-          case FieldType.TEXTAREA:
+          case "textarea":
             return (
               <Textarea
                 error={errors[name]}
@@ -73,7 +73,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
               />
             );
 
-          case FieldType.TEXT:
+          case "text":
             return (
               <Input
                 error={errors[name]}
@@ -85,7 +85,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
               />
             );
 
-          case FieldType.SELECT:
+          case "select":
             return (
               <Select
                 error={errors[name]}
@@ -104,7 +104,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
               />
             );
 
-          case FieldType.MULTI_SELECT:
+          case "multi-select":
             return (
               <MultiSelect
                 error={errors[name]}
