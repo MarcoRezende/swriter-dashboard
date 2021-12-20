@@ -44,7 +44,7 @@ export const MainSideBar: React.FC<MainSideBarProps> = ({
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} minH="100%" h="100%" p="4">
+      <Box ml={{ base: 0, md: 60 }} h="100%" p="4">
         {children}
       </Box>
     </Box>

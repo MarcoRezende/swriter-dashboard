@@ -195,80 +195,82 @@ export function EntityCrud<Entity>({
           <Flex
             p="2rem"
             maxW={{ base: '70%', md: '600px' }}
-            h="100%"
+            minH="100%"
             mx="auto"
-            align="center"
+            alignItems="center"
             justifyContent="center"
             flexDirection="column"
           >
-            <Heading alignSelf="flex-start" mb="1rem">
-              {mode === 'edit' ? 'Editar' : 'Criar'} {title}.
-            </Heading>
-            <Box
-              w="100%"
-              as="form"
-              bg="gray.800"
-              boxShadow="xl"
-              borderRadius="0.5rem"
-              p="2rem"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              {fields.map((field) => (
-                <EntityField
-                  field={field}
-                  setValue={setValue}
-                  entity={entity}
-                  register={register}
-                  errors={errors}
-                  isEditMode={isEditMode}
-                  control={control}
-                  key={'field-' + field.name}
-                />
-              ))}
-              <Flex gridGap={'10px'}>
-                {mode === 'edit' ? (
-                  <>
-                    <Button
-                      onClick={() => deleteOne()}
-                      bg="red.800"
-                      w="100%"
-                      mt={4}
-                      isLoading={loading.deleting}
-                      _hover={{
-                        bg: 'red.700',
-                      }}
-                    >
-                      Deletar
-                    </Button>
+            <Box w="100%">
+              <Heading alignSelf="flex-start" mb="1rem">
+                {mode === 'edit' ? 'Editar' : 'Criar'} {title}.
+              </Heading>
+              <Box
+                w="100%"
+                as="form"
+                bg="gray.800"
+                boxShadow="xl"
+                borderRadius="0.5rem"
+                p="2rem"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                {fields.map((field) => (
+                  <EntityField
+                    field={field}
+                    setValue={setValue}
+                    entity={entity}
+                    register={register}
+                    errors={errors}
+                    isEditMode={isEditMode}
+                    control={control}
+                    key={'field-' + field.name}
+                  />
+                ))}
+                <Flex gridGap={'10px'}>
+                  {mode === 'edit' ? (
+                    <>
+                      <Button
+                        onClick={() => deleteOne()}
+                        bg="red.800"
+                        w="100%"
+                        mt={4}
+                        isLoading={loading.deleting}
+                        _hover={{
+                          bg: 'red.700',
+                        }}
+                      >
+                        Deletar
+                      </Button>
 
+                      <Button
+                        bg="green.700"
+                        w="100%"
+                        mt={4}
+                        isLoading={loading.updatingOrCreating}
+                        type="submit"
+                        _hover={{
+                          bg: 'green.600',
+                        }}
+                      >
+                        Atualizar
+                      </Button>
+                    </>
+                  ) : (
                     <Button
-                      bg="green.700"
+                      bg="blue.800"
                       w="100%"
                       mt={4}
                       isLoading={loading.updatingOrCreating}
                       type="submit"
                       _hover={{
-                        bg: 'green.600',
+                        bg: 'blue.700',
                       }}
                     >
-                      Atualizar
+                      Criar
                     </Button>
-                  </>
-                ) : (
-                  <Button
-                    bg="blue.800"
-                    w="100%"
-                    mt={4}
-                    isLoading={loading.updatingOrCreating}
-                    type="submit"
-                    _hover={{
-                      bg: 'blue.700',
-                    }}
-                  >
-                    Criar
-                  </Button>
-                )}
-              </Flex>
+                  )}
+                </Flex>
+              </Box>
             </Box>
           </Flex>
         )}
