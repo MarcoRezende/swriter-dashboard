@@ -141,17 +141,15 @@ export function EntityCrud<Entity>({
                   }
 
                   Object.assign(fieldProps, {
-                    selectOptionKey: selectKey ?? 'name',
+                    selectOptionKey: selectKey,
                     selectOptions: selectOptions
-                      ? optionsFormatter(selectOptions, selectKey ?? 'name')
+                      ? optionsFormatter(selectOptions, selectKey)
                       : [],
                   });
                 }
 
                 allFields.push(fieldProps);
               }
-
-              return allFields;
             }
 
             return allFields;
@@ -198,7 +196,7 @@ export function EntityCrud<Entity>({
             p="2rem"
             maxW={{ base: '70%', md: '600px' }}
             h="100%"
-            m="auto"
+            mx="auto"
             align="center"
             justifyContent="center"
             flexDirection="column"
