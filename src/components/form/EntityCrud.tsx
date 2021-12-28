@@ -108,7 +108,7 @@ export function EntityCrud<Entity>({
               (desc) => desc.key === key
             );
 
-            if (description) {
+            if (description?.type) {
               const {
                 placeholder,
                 subject: label,
@@ -119,37 +119,34 @@ export function EntityCrud<Entity>({
                 selectKey = 'name',
               } = description;
 
-              if (type) {
-                const fieldProps = {
-                  placeholder: placeholder ?? '',
-                  label,
-                  type,
-                  name,
-                  rules,
-                };
+              const fieldProps = {
+                placeholder: placeholder ?? '',
+                label,
+                type,
+                name,
+                rules,
+              };
 
-                if (relation) {
-                  const selectOptions =
-                    model.relationOptions.find(
-                      (relation) => relation.key === key
-                    )?.data ?? [];
+              if (relation) {
+                const selectOptions =
+                  model.relationOptions.find((relation) => relation.key === key)
+                    ?.data ?? [];
 
-                  if (!selectKey) {
-                    console.warn(
-                      'Using default key (name) to generate select values.'
-                    );
-                  }
-
-                  Object.assign(fieldProps, {
-                    selectOptionKey: selectKey,
-                    selectOptions: selectOptions
-                      ? optionsFormatter(selectOptions, selectKey)
-                      : [],
-                  });
+                if (!selectKey) {
+                  console.warn(
+                    'Using default key (name) to generate select values.'
+                  );
                 }
 
-                allFields.push(fieldProps);
+                Object.assign(fieldProps, {
+                  selectOptionKey: selectKey,
+                  selectOptions: selectOptions
+                    ? optionsFormatter(selectOptions, selectKey)
+                    : [],
+                });
               }
+
+              allFields.push(fieldProps);
             }
 
             return allFields;
