@@ -1,9 +1,9 @@
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-import { Button } from "@chakra-ui/button";
-import { Divider, Flex, Heading, Link } from "@chakra-ui/layout";
+import { Button } from '@chakra-ui/button';
+import { Divider, Flex, Heading, Link } from '@chakra-ui/layout';
 import {
   Table as ChakraTable,
   TableProps as ChakraTableProps,
@@ -12,13 +12,13 @@ import {
   Th,
   Thead,
   Tr,
-} from "@chakra-ui/table";
-import { RequestQueryBuilder } from "@nestjsx/crud-request";
+} from '@chakra-ui/table';
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
-import { CrudModel } from "../../models/crud.model";
-import { uploadFile } from "../../services/common";
-import { formatTableContent, TableColumnsProps } from "../../utils/table";
-import { ModalFile } from "../form/fields/ModalFile";
+import { CrudModel } from '../../models/crud.model';
+import { uploadFile } from '../../services/common';
+import { formatTableContent, TableColumnsProps } from '../../utils/table';
+import { ModalFile } from '../form/fields/ModalFile';
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -41,7 +41,7 @@ export const Table: React.FC<TableProps> = ({
   const hasContent: boolean = !!tableColumns.tableBody.length;
   const router = useRouter();
   const path = router.pathname;
-  const resource = path !== "/" ? path.replace(/\//g, "") : path;
+  const resource = path !== '/' ? path.replace(/\//g, '') : path;
 
   const MAX_TEXT_LENGTH = 120;
 
@@ -52,7 +52,7 @@ export const Table: React.FC<TableProps> = ({
 
   const uploadCsv = async (file: File) => {
     if (!uploadEndpoint) {
-      console.error("No endpoint provided for upload");
+      console.error('No endpoint provided for upload');
       return;
     }
 
@@ -63,8 +63,8 @@ export const Table: React.FC<TableProps> = ({
     (async () => {
       const localEntityDescription = await model.entityDescription();
       const requestQuery = RequestQueryBuilder.create().sortBy({
-        field: "updatedDate",
-        order: "DESC",
+        field: 'createdDate',
+        order: 'DESC',
       }).queryObject;
 
       /**
@@ -90,8 +90,8 @@ export const Table: React.FC<TableProps> = ({
           mr="1rem"
           variant="outline"
           _hover={{
-            bg: "red.800",
-            color: "white",
+            bg: 'red.800',
+            color: 'white',
           }}
         >
           Deletar tudo
@@ -103,8 +103,8 @@ export const Table: React.FC<TableProps> = ({
           mr="1rem"
           variant="outline"
           _hover={{
-            bg: "blue.800",
-            color: "white",
+            bg: 'blue.800',
+            color: 'white',
           }}
         >
           <Link w="100%" as={NextLink} href={`/${resource}/create/`}>
@@ -132,7 +132,7 @@ export const Table: React.FC<TableProps> = ({
                 fontFamily="Poppins"
                 fontSize="1rem"
                 textTransform="capitalize"
-                key={"tr-" + column}
+                key={'tr-' + column}
               >
                 {column}
               </Th>
@@ -144,12 +144,12 @@ export const Table: React.FC<TableProps> = ({
             tableColumns.tableBody.map((content, index) => (
               <Tr
                 onClick={(e) => handleClick(e, content.entityId)}
-                key={"row-" + content.entityId}
+                key={'row-' + content.entityId}
                 transition="transform 0.3s, filter 0.3s"
                 _hover={{
-                  cursor: "pointer",
-                  transform: "translateY(-5px)",
-                  filter: "brightness(1.2)",
+                  cursor: 'pointer',
+                  transform: 'translateY(-5px)',
+                  filter: 'brightness(1.2)',
                 }}
               >
                 <Td borderBottom="0" py="1.5rem">
