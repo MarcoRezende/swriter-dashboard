@@ -23,7 +23,7 @@ interface TextAreaProps {
     label?: string;
     placeholder?: string;
     selectOptions?: SelectOption[];
-    selectOptionKey?: string;
+    selectKey?: string;
   };
 }
 
@@ -33,7 +33,7 @@ export const Select: React.FC<TextAreaProps> = ({
   control,
   rules,
   isEditMode,
-  field: { name, label, placeholder, selectOptions, selectOptionKey },
+  field: { name, label, placeholder, selectOptions, selectKey },
 }) => {
   return (
     <Controller
@@ -51,8 +51,7 @@ export const Select: React.FC<TextAreaProps> = ({
             options={selectOptions}
             id={name}
             defaultValue={
-              isEditMode &&
-              optionsFormatter([entity[name]], selectOptionKey ?? '')
+              isEditMode && optionsFormatter([entity[name]], selectKey ?? '')
             }
             placeholder={placeholder}
             noOptionsMessage={() => 'Nenhum valor disponível'}

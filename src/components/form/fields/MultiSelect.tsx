@@ -26,7 +26,7 @@ interface TextAreaProps {
     label?: string;
     placeholder?: string;
     selectOptions?: SelectOption[];
-    selectOptionKey?: string;
+    selectKey?: string;
   };
 }
 
@@ -37,10 +37,10 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
   rules,
   isEditMode,
   setValue,
-  field: { name, label, placeholder, selectOptions = [], selectOptionKey },
+  field: { name, label, placeholder, selectOptions = [], selectKey },
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(
-    optionsFormatter(entity[name], selectOptionKey ?? '')
+    optionsFormatter(entity[name], selectKey ?? '')
   );
 
   const filterSelectOptions = useCallback(() => {

@@ -28,7 +28,7 @@ export interface FormField {
   rules: RegisterOptions;
   type: FieldType;
   selectOptions?: SelectOption[];
-  selectOptionKey?: string;
+  selectKey?: string;
 }
 
 interface EntityFieldProps {
@@ -42,15 +42,7 @@ interface EntityFieldProps {
 }
 
 export const EntityField: React.FC<EntityFieldProps> = ({
-  field: {
-    label,
-    placeholder,
-    rules,
-    type,
-    selectOptions,
-    selectOptionKey,
-    name,
-  },
+  field: { label, placeholder, rules, type, selectOptions, selectKey, name },
   entity,
   register,
   setValue,
@@ -97,7 +89,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                   label,
                   placeholder,
                   selectOptions,
-                  selectOptionKey,
+                  selectKey,
                 }}
                 rules={rules}
                 key={'form-control-' + name}
@@ -117,7 +109,7 @@ export const EntityField: React.FC<EntityFieldProps> = ({
                   label,
                   placeholder,
                   selectOptions,
-                  selectOptionKey,
+                  selectKey,
                 }}
                 rules={rules}
                 key={'form-control-' + name}
