@@ -101,7 +101,7 @@ export const EntityProvider: React.FC = ({ children }) => {
 
     return useQuery(model.endpoint + '-relations', fetchData, {
       refetchOnWindowFocus: false,
-      staleTime: 5 * 5000, // 5m
+      staleTime: 5 * 500, // 5m
     });
   };
 
