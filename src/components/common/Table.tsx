@@ -18,6 +18,7 @@ import { useEntity } from '../../hooks/entity';
 import { CrudModel } from '../../models/crud.model';
 import { ErrorAlert } from '../base/ErrorAlert';
 import { ModalFile } from '../form/fields/ModalFile';
+import { ConfirmationModal } from '../base/ConfirmationModal';
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -74,20 +75,24 @@ export const Table: React.FC<TableProps> = ({
       ) : (
         <>
           <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
-            <Button
-              onClick={() => deleteAll()}
-              borderColor="red.800"
-              px="4rem"
-              d="block"
-              mr="1rem"
-              variant="outline"
-              _hover={{
-                bg: 'red.800',
-                color: 'white',
-              }}
+            <ConfirmationModal
+              onEnsured={() => deleteAll()}
+              title="Deletar tudo?"
             >
-              Deletar tudo
-            </Button>
+              <Button
+                borderColor="red.800"
+                px="4rem"
+                d="block"
+                mr="1rem"
+                variant="outline"
+                _hover={{
+                  bg: 'red.800',
+                  color: 'white',
+                }}
+              >
+                Deletar tudo
+              </Button>
+            </ConfirmationModal>
             <Button
               borderColor="blue.800"
               px="4rem"
