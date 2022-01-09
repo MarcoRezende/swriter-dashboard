@@ -17,12 +17,7 @@ const Hint: NextPage = () => {
 
   return (
     <PageWrapper tabTitle="Sentenças">
-      <Table
-        model={hintsModel}
-        title="Sentenças"
-        columns={columns}
-        uploadEndpoint={`${hintResource}/importCsv`}
-      />
+      <Table model={hintsModel} title="Sentenças" columns={columns} />
     </PageWrapper>
   );
 };

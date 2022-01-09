@@ -1,6 +1,5 @@
 import { Table } from '../../components/common/Table';
 import categoriesModel from '../../models/categories.model';
-import { categoryResource } from '../../services/category';
 
 import type { NextPage } from 'next';
 import { PageWrapper } from '../../components/base/PageWrapper';
@@ -10,12 +9,7 @@ const Category: NextPage = () => {
 
   return (
     <PageWrapper tabTitle="Categorias">
-      <Table
-        model={categoriesModel}
-        title="Categorias"
-        columns={columns}
-        uploadEndpoint={`${categoryResource}/importCsv`}
-      />
+      <Table model={categoriesModel} title="Categorias" columns={columns} />
     </PageWrapper>
   );
 };
