@@ -112,98 +112,93 @@ export function EntityCrud<Entity>({
   const isCreateMode = mode === 'create';
 
   return (
-    <>
-      {entity.id && (
-        <AsyncComponenteWrapper
-          error={loadRelationError}
-          isLoading={
-            !entityLoaded &&
-            (isCreateMode || (isEditMode && isLoadingRelations))
-          }
-        >
-          <Flex
+    <AsyncComponenteWrapper
+      error={loadRelationError}
+      isLoading={
+        isLoadingRelations && (isCreateMode || (isEditMode && !entityLoaded))
+      }
+    >
+      <Flex
+        p="2rem"
+        maxW={{ base: '70%', md: '600px' }}
+        minH="100%"
+        mx="auto"
+        alignItems="center"
+        justifyContent="center"
+        flexDirection="column"
+      >
+        <Box w="100%">
+          <Heading alignSelf="flex-start" mb="1rem">
+            {mode === 'edit' ? 'Editar' : 'Criar'} {title}.
+          </Heading>
+          <Box
+            w="100%"
+            as="form"
+            bg="gray.800"
+            boxShadow="xl"
+            borderRadius="0.5rem"
             p="2rem"
-            maxW={{ base: '70%', md: '600px' }}
-            minH="100%"
-            mx="auto"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="column"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            <Box w="100%">
-              <Heading alignSelf="flex-start" mb="1rem">
-                {mode === 'edit' ? 'Editar' : 'Criar'} {title}.
-              </Heading>
-              <Box
-                w="100%"
-                as="form"
-                bg="gray.800"
-                boxShadow="xl"
-                borderRadius="0.5rem"
-                p="2rem"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                {fields?.map((field) => (
-                  <EntityField
-                    field={field}
-                    setValue={setValue}
-                    entity={entity}
-                    register={register}
-                    errors={errors}
-                    isEditMode={isEditMode}
-                    control={control}
-                    key={'field-' + field.name}
-                  />
-                ))}
-                <Flex gridGap={'10px'}>
-                  {mode === 'edit' ? (
-                    <>
-                      <Button
-                        onClick={() => deleteOne()}
-                        bg="red.800"
-                        w="100%"
-                        mt={4}
-                        isLoading={loading.deleting}
-                        _hover={{
-                          bg: 'red.700',
-                        }}
-                      >
-                        Deletar
-                      </Button>
+            {fields?.map((field) => (
+              <EntityField
+                field={field}
+                setValue={setValue}
+                entity={entity}
+                register={register}
+                errors={errors}
+                isEditMode={isEditMode}
+                control={control}
+                key={'field-' + field.name}
+              />
+            ))}
+            <Flex gridGap={'10px'}>
+              {mode === 'edit' ? (
+                <>
+                  <Button
+                    onClick={() => deleteOne()}
+                    bg="red.800"
+                    w="100%"
+                    mt={4}
+                    isLoading={loading.deleting}
+                    _hover={{
+                      bg: 'red.700',
+                    }}
+                  >
+                    Deletar
+                  </Button>
 
-                      <Button
-                        bg="green.700"
-                        w="100%"
-                        mt={4}
-                        isLoading={loading.updatingOrCreating}
-                        type="submit"
-                        _hover={{
-                          bg: 'green.600',
-                        }}
-                      >
-                        Atualizar
-                      </Button>
-                    </>
-                  ) : (
-                    <Button
-                      bg="blue.800"
-                      w="100%"
-                      mt={4}
-                      isLoading={loading.updatingOrCreating}
-                      type="submit"
-                      _hover={{
-                        bg: 'blue.700',
-                      }}
-                    >
-                      Criar
-                    </Button>
-                  )}
-                </Flex>
-              </Box>
-            </Box>
-          </Flex>
-        </AsyncComponenteWrapper>
-      )}
-    </>
+                  <Button
+                    bg="green.700"
+                    w="100%"
+                    mt={4}
+                    isLoading={loading.updatingOrCreating}
+                    type="submit"
+                    _hover={{
+                      bg: 'green.600',
+                    }}
+                  >
+                    Atualizar
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  bg="blue.800"
+                  w="100%"
+                  mt={4}
+                  isLoading={loading.updatingOrCreating}
+                  type="submit"
+                  _hover={{
+                    bg: 'blue.700',
+                  }}
+                >
+                  Criar
+                </Button>
+              )}
+            </Flex>
+          </Box>
+        </Box>
+      </Flex>
+    </AsyncComponenteWrapper>
   );
 }
