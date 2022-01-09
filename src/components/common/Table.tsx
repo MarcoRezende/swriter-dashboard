@@ -16,6 +16,7 @@ import {
 
 import { useEntity } from '../../hooks/entity';
 import { CrudModel } from '../../models/crud.model';
+import { ErrorAlert } from '../base/ErrorAlert';
 import { ModalFile } from '../form/fields/ModalFile';
 
 interface TableProps extends ChakraTableProps {
@@ -31,10 +32,12 @@ export const Table: React.FC<TableProps> = ({
   ...rest
 }) => {
   const { generateTableContent } = useEntity();
-  const { data: tableColumns, isLoading } = generateTableContent(
-    model,
-    columns
-  );
+  const {
+    data: tableColumns,
+    isLoading,
+    isFetching,
+    error,
+  } = generateTableContent(model, columns);
   const hasContent: boolean = !!tableColumns?.tableBody.length;
   const router = useRouter();
   const path = router.pathname;
@@ -56,6 +59,10 @@ export const Table: React.FC<TableProps> = ({
       {isLoading ? (
         <Flex justifyContent="center" alignItems="center" h="100%">
           <Spinner />
+        </Flex>
+      ) : error ? (
+        <Flex justifyContent="center" alignItems="center" h="100%">
+          <ErrorAlert />
         </Flex>
       ) : (
         <>
@@ -97,7 +104,9 @@ export const Table: React.FC<TableProps> = ({
               Importar CSV
             </ModalFile>
           </Flex>
-          <Heading mb="0.5rem">{title}.</Heading>
+          <Heading mb="0.5rem">
+            {title}. {isFetching && <Spinner size="sm" ml="4" />}
+          </Heading>
           <Divider mb="2rem" />
           <ChakraTable {...rest} variant="striped">
             <Thead>
