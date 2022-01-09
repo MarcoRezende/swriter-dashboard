@@ -38,7 +38,6 @@ export const EntityProvider: React.FC = ({ children }) => {
 
     return useQuery(model.endpoint, fetchData, {
       staleTime: 5 * 500, // 5s
-      enabled: false,
     });
   };
 
