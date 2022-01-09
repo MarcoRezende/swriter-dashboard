@@ -42,16 +42,22 @@ interface JoinProps<T> {
   key: string;
 }
 
+interface RelationProps {
+  key: string;
+  data: any;
+}
+
 export class CrudModel<Entity> {
-  public relationOptions: Array<{
-    key: string;
-    data: any;
-  }> = [];
+  public localEntityDescription: EntityDescriptionProps[] = [];
 
   public constructor(
     public endpoint: string,
     private joins: JoinProps<CrudModel<any>>[] = []
   ) {}
+
+  async getOne(id: string) {
+    return getOneBase({ resource: this.endpoint, id });
+  }
 
   async getMany(requestQuery?: RequestQueryBuilderObject) {
     return getManyBase({ resource: this.endpoint, requestQuery });
@@ -77,27 +83,34 @@ export class CrudModel<Entity> {
     await uploadFile({ resource: `${this.endpoint}/importCsv`, file });
   }
 
-  async entityDescription(
-    loadRelations: boolean = false
-  ): Promise<EntityDescriptionProps[]> {
-    const entityDescription = (await getOneBase<EntityDescriptionProps[]>({
-      resource: `${this.endpoint}/entityDescription`,
-      id: '',
-    })) as EntityDescriptionProps[];
+  async entityDescription(): Promise<EntityDescriptionProps[]> {
+    if (this.localEntityDescription.length) {
+      return this.localEntityDescription;
+    }
 
-    if (loadRelations) await this.loadedRelationOptions();
+    const entityDescription =
+      (await getOneBase<EntityDescriptionProps[]>({
+        resource: `${this.endpoint}/entityDescription`,
+        id: '',
+      })) ?? [];
+
+    this.localEntityDescription = entityDescription;
 
     return entityDescription;
   }
 
-  private async loadedRelationOptions() {
+  async loadRelationOptions() {
+    const relationOptions: RelationProps[] = [];
+
     await Promise.all(
       this.joins.map(async (join) => {
-        this.relationOptions.push({
+        relationOptions.push({
           data: await join.model.getMany(),
           key: join.key,
         });
       })
     );
+
+    return relationOptions;
   }
 }
