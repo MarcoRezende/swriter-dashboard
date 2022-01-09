@@ -7,6 +7,7 @@ import {
   getManyBase,
   getOneBase,
   patchOneBase,
+  uploadFile,
 } from '../services/common';
 
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
@@ -70,6 +71,10 @@ export class CrudModel<Entity> {
 
   async deleteAll() {
     await deleteAllBase({ resource: this.endpoint });
+  }
+
+  async importCsv(file: File) {
+    await uploadFile({ resource: `${this.endpoint}/importCsv`, file });
   }
 
   async entityDescription(

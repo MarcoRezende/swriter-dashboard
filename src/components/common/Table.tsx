@@ -16,20 +16,17 @@ import {
 
 import { useEntity } from '../../hooks/entity';
 import { CrudModel } from '../../models/crud.model';
-import { uploadFile } from '../../services/common';
 import { ModalFile } from '../form/fields/ModalFile';
 
 interface TableProps extends ChakraTableProps {
   title: string;
   columns: string[];
-  uploadEndpoint?: string;
   model: CrudModel<any>;
 }
 
 export const Table: React.FC<TableProps> = ({
   title,
   columns,
-  uploadEndpoint,
   model,
   ...rest
 }) => {
@@ -51,12 +48,7 @@ export const Table: React.FC<TableProps> = ({
   };
 
   const uploadCsv = async (file: File) => {
-    if (!uploadEndpoint) {
-      console.error('No endpoint provided for upload');
-      return;
-    }
-
-    await uploadFile({ resource: uploadEndpoint, file });
+    await model.importCsv(file);
   };
 
   return (
