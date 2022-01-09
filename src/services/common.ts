@@ -1,7 +1,7 @@
-import theme from "../config/theme";
-import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
-import { AxiosError, AxiosResponse } from "axios";
-import { api } from "../config/axios";
+import theme from '../config/theme';
+import { createStandaloneToast, UseToastOptions } from '@chakra-ui/toast';
+import { AxiosError, AxiosResponse } from 'axios';
+import { api } from '../config/axios';
 
 interface DTO<T> {
   resource: string;
@@ -24,17 +24,17 @@ const toast = createStandaloneToast({
 });
 
 const baseErrorToastProps: UseToastOptions = {
-  title: "Erro.",
-  position: "bottom-right",
-  status: "error",
+  title: 'Erro.',
+  position: 'bottom-right',
+  status: 'error',
   duration: 9000,
   isClosable: true,
 };
 
 const baseSuccessToastProps: UseToastOptions = {
-  title: "Sucesso.",
-  position: "bottom-right",
-  status: "success",
+  title: 'Sucesso.',
+  position: 'bottom-right',
+  status: 'success',
   duration: 9000,
   isClosable: true,
 };
@@ -48,7 +48,7 @@ export const createOneBase = async <K>({
 
     toast({
       ...baseSuccessToastProps,
-      description: "Criação realizada com sucesso.",
+      description: 'Criação realizada com sucesso.',
     });
 
     return response;
@@ -59,9 +59,11 @@ export const createOneBase = async <K>({
       ...baseErrorToastProps,
       description: handleErrorMessage(
         (err as AxiosError).response?.status as number,
-        "Falha ao criar."
+        'Falha ao criar.'
       ),
     });
+
+    throw new Error('Falha ao criar.');
   }
 };
 
@@ -80,10 +82,10 @@ export const getManyBase = async <K>({ resource, requestQuery }: DTO<K>) => {
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao obter conteúdo.",
+      description: 'Falha ao obter conteúdo.',
     });
 
-    return [];
+    throw new Error('Falha ao obter conteúdo.');
   }
 };
 
@@ -98,8 +100,10 @@ export const getOneBase = async <K>({
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao obter conteúdo.",
+      description: 'Falha ao obter conteúdo.',
     });
+
+    throw new Error('Falha ao obter conteúdo.');
   }
 };
 
@@ -109,15 +113,17 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
 
     toast({
       ...baseSuccessToastProps,
-      description: "Deleção realizada com sucesso.",
+      description: 'Deleção realizada com sucesso.',
     });
   } catch (err) {
     console.error(err);
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao deletar conteúdo.",
+      description: 'Falha ao deletar conteúdo.',
     });
+
+    throw new Error('Falha ao deletar conteúdo.');
   }
 };
 
@@ -127,15 +133,17 @@ export const deleteAllBase = async <K>({ resource }: DTO<K>) => {
 
     toast({
       ...baseSuccessToastProps,
-      description: "Deleção realizada com sucesso.",
+      description: 'Deleção realizada com sucesso.',
     });
   } catch (err) {
     console.error(err);
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao deletar conteúdo.",
+      description: 'Falha ao deletar conteúdo.',
     });
+
+    throw new Error('Falha ao deletar conteúdo.');
   }
 };
 
@@ -145,15 +153,17 @@ export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
 
     toast({
       ...baseSuccessToastProps,
-      description: "Atualização realizada com sucesso.",
+      description: 'Atualização realizada com sucesso.',
     });
   } catch (err) {
     console.error(err);
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha ao atualizar conteúdo.",
+      description: 'Falha ao atualizar conteúdo.',
     });
+
+    throw new Error('Falha ao atualizar conteúdo.');
   }
 };
 
@@ -162,21 +172,23 @@ export const uploadFile = async <K>({ resource, file }: DTO<K>) => {
 
   try {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     await api.post<FormData>(`${resource}`, formData);
 
     toast({
       ...baseSuccessToastProps,
-      description: "Arquivo upado com sucesso.",
+      description: 'Arquivo upado com sucesso.',
     });
   } catch (err) {
     console.error(err);
 
     toast({
       ...baseErrorToastProps,
-      description: "Falha upar conteudo.",
+      description: 'Falha ao upar conteúdo.',
     });
+
+    throw new Error('Falha ao upar conteúdo.');
   }
 };
 
@@ -186,7 +198,7 @@ const handleErrorMessage = (
 ): string => {
   switch (statusCode) {
     case 409:
-      return "Registro duplicado.";
+      return 'Registro duplicado.';
 
     default:
       return defaultMessage;
