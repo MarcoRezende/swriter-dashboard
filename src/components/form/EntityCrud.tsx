@@ -1,13 +1,14 @@
-import { Button } from '@chakra-ui/button';
-import { Box, Flex, Heading } from '@chakra-ui/layout';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Button } from '@chakra-ui/button';
+import { Box, Flex, Heading } from '@chakra-ui/layout';
+
+import { useEntity } from '../../hooks/entity';
 import { CrudModel } from '../../models/crud.model';
-import { getOneBase } from '../../services/common';
-import { EntityField, FieldType, FormField } from './EntityField';
-import { optionsFormatter, retrieveValueOnly } from './fields/BaseSelect';
+import { EntityField, FieldType } from './EntityField';
+import { retrieveValueOnly } from './fields/BaseSelect';
 
 interface FormProps<T> {
   idName?: string;
@@ -34,7 +35,8 @@ export function EntityCrud<Entity>({
   });
   const [entityLoaded, setEntityLoaded] = useState<boolean>(false);
   const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
-  const [fields, setFields] = useState<FormField[]>([]);
+  const { loadRelationOptions } = useEntity();
+  const { data: fields } = loadRelationOptions(model, formFields);
   const {
     handleSubmit,
     register,
@@ -92,69 +94,10 @@ export function EntityCrud<Entity>({
 
       try {
         if (entityId && isEditMode) {
-          const fetchedEntity = (await getOneBase<GenericEntity>({
-            resource: model.endpoint,
-            id: entityId,
-          })) as GenericEntity;
-
+          const fetchedEntity = model.getOne(entityId);
           setEntity(fetchedEntity);
         }
 
-        const entityDescription = await model.entityDescription(true);
-
-        const formattedFields = formFields.reduce<FormField[]>(
-          (allFields: FormField[], key) => {
-            const description = entityDescription.find(
-              (desc) => desc.key === key
-            );
-
-            if (description?.type) {
-              const {
-                placeholder,
-                subject: label,
-                type,
-                rules = {},
-                key: name,
-                relation,
-                selectKey = 'name',
-              } = description;
-
-              const fieldProps = {
-                placeholder: placeholder ?? '',
-                label,
-                type,
-                name,
-                rules,
-              };
-
-              if (relation) {
-                const selectOptions =
-                  model.relationOptions.find((relation) => relation.key === key)
-                    ?.data ?? [];
-
-                if (!selectKey) {
-                  console.warn(
-                    'Using default key (name) to generate select values.'
-                  );
-                }
-
-                Object.assign(fieldProps, {
-                  selectOptionKey: selectKey,
-                  selectOptions: selectOptions
-                    ? optionsFormatter(selectOptions, selectKey)
-                    : [],
-                });
-              }
-
-              allFields.push(fieldProps);
-            }
-
-            return allFields;
-          },
-          []
-        );
-
-        setFields([...formattedFields]);
         setEntityLoaded(true);
       } catch (err) {
         console.error(err);
@@ -162,26 +105,22 @@ export function EntityCrud<Entity>({
     };
 
     fetchData();
-
-    return () => {
-      cancel = true;
-    };
-  }, [entityId, mode, model, formFields]);
+  }, [entityId, mode, model]);
 
   const isEditMode = mode === 'edit';
   const isCreateMode = mode === 'create';
 
   const isEntityOptionsLoaded = () => {
-    const selectFields = fields.filter((field) =>
+    const selectFields = fields?.filter((field) =>
       (['multi-select', 'select'] as FieldType[]).includes(field.type)
     );
 
-    return selectFields.every((field) => {
-      if (!field.selectOptionKey) {
+    return selectFields?.every((field) => {
+      if (!field.selectKey) {
         throw new Error(`Key is required at select "${field.label}".`);
       }
 
-      return field.selectOptionKey && entity[field.name];
+      return field.selectKey && entity[field.name];
     });
   };
 
@@ -211,7 +150,7 @@ export function EntityCrud<Entity>({
                 p="2rem"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                {fields.map((field) => (
+                {fields?.map((field) => (
                   <EntityField
                     field={field}
                     setValue={setValue}
