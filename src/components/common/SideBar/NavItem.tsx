@@ -1,13 +1,13 @@
-import Icon from "@chakra-ui/icon";
-import { Flex, FlexProps, Link } from "@chakra-ui/layout";
+import Icon from '@chakra-ui/icon';
+import { Flex, FlexProps, Link } from '@chakra-ui/layout';
 
-import { RouteProps } from "../../../router";
+import { RouteProps } from '../../../router';
 
-import ReachLink from "next/link";
+import ReachLink from 'next/link';
 
-interface NavItemProps extends FlexProps, Omit<RouteProps, "name"> {}
+interface NavItemProps extends FlexProps, Omit<RouteProps, 'name'> {}
 
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 export const NavItem: React.FC<NavItemProps> = ({
   icon,
@@ -17,13 +17,11 @@ export const NavItem: React.FC<NavItemProps> = ({
   exact,
   ...rest
 }) => {
-  const router = useRouter();
-  const isActive = exact
-    ? router.pathname === to
-    : router.pathname.includes(to);
+  const { asPath } = useRouter();
+  const isActive = exact ? asPath === to : asPath.includes(to);
 
   return (
-    <Link as={ReachLink} href={to} style={{ textDecoration: "none" }}>
+    <Link as={ReachLink} href={to} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -33,11 +31,11 @@ export const NavItem: React.FC<NavItemProps> = ({
         border="2px"
         borderColor="transparent"
         cursor="pointer"
-        boxShadow={isActive ? "xl" : ""}
-        bg={isActive ? "blue.800" : "transparent"}
+        boxShadow={isActive ? 'xl' : ''}
+        bg={isActive ? 'blue.800' : 'transparent'}
         _hover={{
-          borderColor: "blue.800",
-          color: "white",
+          borderColor: 'blue.800',
+          color: 'white',
         }}
         {...rest}
       >
@@ -46,7 +44,7 @@ export const NavItem: React.FC<NavItemProps> = ({
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: "white",
+              color: 'white',
             }}
             as={icon}
           />
