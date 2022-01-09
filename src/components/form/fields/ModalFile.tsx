@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { useDisclosure } from "@chakra-ui/hooks";
+import { useState, useRef } from 'react';
+import { useDisclosure } from '@chakra-ui/hooks';
 import {
   Modal,
   ModalBody,
@@ -13,9 +13,9 @@ import {
   FormLabel,
   Flex,
   Text,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { HiCloudUpload } from "react-icons/hi";
+import { HiCloudUpload } from 'react-icons/hi';
 
 interface ModalFileProps {
   onUpload(file: File): Promise<void>;
@@ -36,8 +36,8 @@ export const ModalFile: React.FC<ModalFileProps> = ({
   const prepareFile = (files: FileList | null) => {
     if (!files) return;
 
-    if (!validFormats?.split(".").includes(files[0].type.split("/")[1])) {
-      console.error("Invalid format");
+    if (!validFormats?.split('.').includes(files[0].type.split('/')[1])) {
+      console.error('Invalid format');
       return;
     }
 
@@ -46,13 +46,14 @@ export const ModalFile: React.FC<ModalFileProps> = ({
 
   const uploadFile = async () => {
     if (!file) {
-      console.error("File required");
+      console.error('File required');
       return;
     }
 
     try {
       await onUpload(file);
       clearFile();
+      onClose();
     } catch (err) {
       console.error(err);
     }
@@ -60,7 +61,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
 
   const clearFile = () => {
     setFile(null);
-    (inputRef.current as HTMLInputElement).value = "";
+    (inputRef.current as HTMLInputElement).value = '';
   };
 
   return (
@@ -76,7 +77,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title ?? "Upload de arquivo"}</ModalHeader>
+          <ModalHeader>{title ?? 'Upload de arquivo'}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input
@@ -84,7 +85,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
               d="none"
               id="file"
               ref={inputRef}
-              accept={validFormats ?? ""}
+              accept={validFormats ?? ''}
               onChange={({ target: { files } }) => prepareFile(files)}
             />
             <FormLabel
@@ -105,7 +106,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
               >
                 <HiCloudUpload size="5rem" />
                 <Text w="100%" isTruncated>
-                  {file?.name ? file.name : "Buscar arquivo"}
+                  {file?.name ? file.name : 'Buscar arquivo'}
                 </Text>
               </Flex>
             </FormLabel>
