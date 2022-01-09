@@ -9,6 +9,7 @@ import { useEntity } from '../../hooks/entity';
 import { CrudModel } from '../../models/crud.model';
 import { EntityField, FieldType } from './EntityField';
 import { retrieveValueOnly } from './fields/BaseSelect';
+import AsyncComponenteWrapper from '../base/AsyncComponenteWrapper';
 
 interface FormProps<T> {
   idName?: string;
@@ -36,7 +37,11 @@ export function EntityCrud<Entity>({
   const [entityLoaded, setEntityLoaded] = useState<boolean>(false);
   const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
   const { loadRelationOptions } = useEntity();
-  const { data: fields } = loadRelationOptions(model, formFields);
+  const {
+    data: fields,
+    isLoading: isLoadingRelations,
+    error: loadRelationError,
+  } = loadRelationOptions(model, formFields);
   const {
     handleSubmit,
     register,
@@ -87,14 +92,10 @@ export function EntityCrud<Entity>({
   useEffect(() => {
     const isEditMode = mode === 'edit';
 
-    let cancel = false;
-
     const fetchData = async () => {
-      if (cancel) return;
-
       try {
         if (entityId && isEditMode) {
-          const fetchedEntity = model.getOne(entityId);
+          const fetchedEntity = await model.getOne(entityId);
           setEntity(fetchedEntity);
         }
 
@@ -110,24 +111,16 @@ export function EntityCrud<Entity>({
   const isEditMode = mode === 'edit';
   const isCreateMode = mode === 'create';
 
-  const isEntityOptionsLoaded = () => {
-    const selectFields = fields?.filter((field) =>
-      (['multi-select', 'select'] as FieldType[]).includes(field.type)
-    );
-
-    return selectFields?.every((field) => {
-      if (!field.selectKey) {
-        throw new Error(`Key is required at select "${field.label}".`);
-      }
-
-      return field.selectKey && entity[field.name];
-    });
-  };
-
   return (
     <>
-      {entityLoaded &&
-        (isCreateMode || (isEditMode && isEntityOptionsLoaded())) && (
+      {entity.id && (
+        <AsyncComponenteWrapper
+          error={loadRelationError}
+          isLoading={
+            !entityLoaded &&
+            (isCreateMode || (isEditMode && isLoadingRelations))
+          }
+        >
           <Flex
             p="2rem"
             maxW={{ base: '70%', md: '600px' }}
@@ -209,7 +202,8 @@ export function EntityCrud<Entity>({
               </Box>
             </Box>
           </Flex>
-        )}
+        </AsyncComponenteWrapper>
+      )}
     </>
   );
 }
