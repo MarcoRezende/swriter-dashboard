@@ -55,16 +55,16 @@ export class CrudModel<Entity> {
     private joins: JoinProps<CrudModel<any>>[] = []
   ) {}
 
-  async getOne(id: string) {
-    return getOneBase({ resource: this.endpoint, id });
+  async getOne(id: string): Promise<Entity> {
+    return getOneBase<Entity>({ resource: this.endpoint, id });
   }
 
-  async getMany(requestQuery?: RequestQueryBuilderObject) {
-    return getManyBase({ resource: this.endpoint, requestQuery });
+  async getMany(requestQuery?: RequestQueryBuilderObject): Promise<Entity[]> {
+    return getManyBase<Entity>({ resource: this.endpoint, requestQuery });
   }
 
-  async create(data: Entity): Promise<void> {
-    await createOneBase<Entity>({ resource: this.endpoint, data });
+  async create(data: Entity): Promise<Entity> {
+    return createOneBase<Entity>({ resource: this.endpoint, data });
   }
 
   async patch(entityId: string, data: Entity): Promise<void> {
@@ -75,11 +75,11 @@ export class CrudModel<Entity> {
     await deleteOneBase<Entity>({ resource: this.endpoint, id: entityId });
   }
 
-  async deleteAll() {
+  async deleteAll(): Promise<void> {
     await deleteAllBase({ resource: this.endpoint });
   }
 
-  async importCsv(file: File) {
+  async importCsv(file: File): Promise<void> {
     await uploadFile({ resource: `${this.endpoint}/importCsv`, file });
   }
 
@@ -99,7 +99,7 @@ export class CrudModel<Entity> {
     return entityDescription;
   }
 
-  async loadRelationOptions() {
+  async loadRelationOptions(): Promise<RelationProps[]> {
     const relationOptions: RelationProps[] = [];
 
     await Promise.all(

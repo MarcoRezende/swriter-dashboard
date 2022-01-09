@@ -39,10 +39,10 @@ const baseSuccessToastProps: UseToastOptions = {
   isClosable: true,
 };
 
-export const createOneBase = async <K>({
+export const createOneBase = async <K = any>({
   resource,
   data,
-}: DTO<K>): Promise<K | undefined> => {
+}: DTO<K>): Promise<K> => {
   try {
     const { data: response } = await api.post<K>(resource, data || ({} as K));
 
@@ -67,7 +67,10 @@ export const createOneBase = async <K>({
   }
 };
 
-export const getManyBase = async <K>({ resource, requestQuery }: DTO<K>) => {
+export const getManyBase = async <K = any>({
+  resource,
+  requestQuery,
+}: DTO<K>): Promise<K[]> => {
   try {
     const { data: response } = await api.get<
       K[],
@@ -89,10 +92,10 @@ export const getManyBase = async <K>({ resource, requestQuery }: DTO<K>) => {
   }
 };
 
-export const getOneBase = async <K>({
+export const getOneBase = async <K = any>({
   resource,
   id,
-}: DTO<K>): Promise<K | undefined> => {
+}: DTO<K>): Promise<K> => {
   try {
     return (await api.get<K>(`${resource}/${id}`)).data;
   } catch (err) {
@@ -107,7 +110,7 @@ export const getOneBase = async <K>({
   }
 };
 
-export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
+export const deleteOneBase = async <K = any>({ resource, id }: DTO<K>) => {
   try {
     await api.delete<K>(`${resource}/${id}`);
 
@@ -127,7 +130,7 @@ export const deleteOneBase = async <K>({ resource, id }: DTO<K>) => {
   }
 };
 
-export const deleteAllBase = async <K>({ resource }: DTO<K>) => {
+export const deleteAllBase = async <K = any>({ resource }: DTO<K>) => {
   try {
     await api.delete<K>(`${resource}`);
 
@@ -147,7 +150,7 @@ export const deleteAllBase = async <K>({ resource }: DTO<K>) => {
   }
 };
 
-export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
+export const patchOneBase = async <K = any>({ resource, id, data }: DTO<K>) => {
   try {
     await api.patch<K>(`${resource}/${id}`, data);
 
@@ -167,7 +170,7 @@ export const patchOneBase = async <K>({ resource, id, data }: DTO<K>) => {
   }
 };
 
-export const uploadFile = async <K>({ resource, file }: DTO<K>) => {
+export const uploadFile = async <K = any>({ resource, file }: DTO<K>) => {
   if (!file) return;
 
   try {
