@@ -37,6 +37,7 @@ export const Table: React.FC<TableProps> = ({
     isLoading,
     isFetching,
     error,
+    refetch,
   } = generateTableContent(model, columns);
   const hasContent: boolean = !!tableColumns?.tableBody.length;
   const router = useRouter();
@@ -52,6 +53,12 @@ export const Table: React.FC<TableProps> = ({
 
   const uploadCsv = async (file: File) => {
     await model.importCsv(file);
+    await refetch();
+  };
+
+  const deleteAll = async () => {
+    await model.deleteAll();
+    await refetch();
   };
 
   return (
@@ -68,7 +75,7 @@ export const Table: React.FC<TableProps> = ({
         <>
           <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
             <Button
-              onClick={() => model.deleteAll()}
+              onClick={() => deleteAll()}
               borderColor="red.800"
               px="4rem"
               d="block"
