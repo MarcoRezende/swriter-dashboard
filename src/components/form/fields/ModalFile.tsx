@@ -73,7 +73,8 @@ export const ModalFile: React.FC<ModalFileProps> = ({
         onClose={onClose}
         onOverlayClick={() => clearFile()}
         onEsc={() => clearFile()}
-        closeOnEsc={true}
+        closeOnEsc
+        isCentered
       >
         <ModalOverlay />
         <ModalContent>
