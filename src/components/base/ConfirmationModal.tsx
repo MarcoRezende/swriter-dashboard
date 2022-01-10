@@ -42,10 +42,10 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader bg="gray.600">{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Alert status="error" mb="5">
+            <Alert status="error" mt="2" p="0" variant="transparent">
               <AlertIcon />
               <Text fontWeight="bold" mr="1">
                 Cuidado!
