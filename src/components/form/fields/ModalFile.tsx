@@ -1,6 +1,14 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
+import { GiMagnifyingGlass } from 'react-icons/gi';
+import { HiCloudUpload } from 'react-icons/hi';
+
 import { useDisclosure } from '@chakra-ui/hooks';
 import {
+  Button,
+  Flex,
+  FormLabel,
+  Icon,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -8,14 +16,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Button,
-  Input,
-  FormLabel,
-  Flex,
   Text,
 } from '@chakra-ui/react';
-
-import { HiCloudUpload } from 'react-icons/hi';
 
 interface ModalFileProps {
   onUpload(file: File): Promise<void>;
@@ -26,7 +28,7 @@ interface ModalFileProps {
 export const ModalFile: React.FC<ModalFileProps> = ({
   onUpload,
   children,
-  title,
+  title = 'Upload de arquivo',
   validFormats,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,9 +36,12 @@ export const ModalFile: React.FC<ModalFileProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const prepareFile = (files: FileList | null) => {
-    if (!files) return;
+    if (!files?.length) {
+      setFile(null);
+      return;
+    }
 
-    if (!validFormats?.split('.').includes(files[0].type.split('/')[1])) {
+    if (!validFormats?.split('.').includes(files[0]?.type.split('/')[1])) {
       console.error('Invalid format');
       return;
     }
@@ -78,7 +83,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title ?? 'Upload de arquivo'}</ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input
@@ -105,7 +110,11 @@ export const ModalFile: React.FC<ModalFileProps> = ({
                 alignItems="center"
                 maxW="calc(100% - 2rem)"
               >
-                <HiCloudUpload size="5rem" />
+                {file ? (
+                  <Icon as={HiCloudUpload} h={20} w={20} />
+                ) : (
+                  <Icon as={GiMagnifyingGlass} h={20} w={20} />
+                )}
                 <Text w="100%" isTruncated>
                   {file?.name ? file.name : 'Buscar arquivo'}
                 </Text>
@@ -116,6 +125,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
           <ModalFooter>
             <Button
               colorScheme="blue"
+              variant="outline"
               mr={3}
               onClick={() => {
                 onClose();
@@ -125,7 +135,7 @@ export const ModalFile: React.FC<ModalFileProps> = ({
               Fechar
             </Button>
             <Button
-              variant="ghost"
+              colorScheme="blue"
               disabled={!file?.name}
               onClick={() => uploadFile()}
             >
