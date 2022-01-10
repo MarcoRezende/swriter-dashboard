@@ -34,13 +34,13 @@ export function EntityCrud<Entity>({
     updatingOrCreating: false,
     deleting: false,
   });
-  const [entityLoaded, setEntityLoaded] = useState<boolean>(false);
+  const [isLoadingEntity, setIsLoadingEntity] = useState<boolean>(true);
   const [entity, setEntity] = useState<GenericEntity>({} as GenericEntity);
   const { loadRelationOptions } = useEntity();
   const {
     data: fields,
-    isLoading: isLoadingRelations,
     error: loadRelationError,
+    isLoading: isLoadingRelations,
   } = loadRelationOptions(model, formFields);
   const {
     handleSubmit,
@@ -99,7 +99,7 @@ export function EntityCrud<Entity>({
           setEntity(fetchedEntity);
         }
 
-        setEntityLoaded(true);
+        setIsLoadingEntity(false);
       } catch (err) {
         console.error(err);
       }
@@ -111,11 +111,26 @@ export function EntityCrud<Entity>({
   const isEditMode = mode === 'edit';
   const isCreateMode = mode === 'create';
 
+  const isLoadingEntityOptions = () => {
+    const selectFields = fields?.filter((field) =>
+      (['multi-select', 'select'] as FieldType[]).includes(field.type)
+    );
+
+    return !selectFields?.every((field) => {
+      if (!field.selectKey) {
+        throw new Error(`Key is required at select "${field.label}".`);
+      }
+
+      return field.selectKey && entity[field.name];
+    });
+  };
+
   return (
     <AsyncComponenteWrapper
       error={loadRelationError}
       isLoading={
-        isLoadingRelations && (isCreateMode || (isEditMode && !entityLoaded))
+        isLoadingRelations ||
+        (isEditMode && (isLoadingEntity || isLoadingEntityOptions()))
       }
     >
       <Flex
