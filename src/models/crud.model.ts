@@ -100,17 +100,13 @@ export class CrudModel<Entity> {
   }
 
   async loadRelationOptions(): Promise<RelationProps[]> {
-    const relationOptions: RelationProps[] = [];
-
-    await Promise.all(
+    return Promise.all(
       this.joins.map(async (join) => {
-        relationOptions.push({
+        return {
           data: await join.model.getMany(),
           key: join.key,
-        });
+        };
       })
     );
-
-    return relationOptions;
   }
 }
