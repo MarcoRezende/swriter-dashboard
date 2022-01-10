@@ -41,7 +41,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       {cloneElement(children, { onClick: onOpen })}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent overflow="hidden">
           <ModalHeader bg="gray.600">{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
