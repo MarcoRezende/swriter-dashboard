@@ -11,7 +11,8 @@ import { optionsFormatter } from '../components/form/fields/BaseSelect';
 interface EntityContextData {
   generateTableContent(
     model: CrudModel<any>,
-    columns: string[]
+    columns: string[],
+    page: number
   ): UseQueryResult<TableColumnsProps, unknown>;
 
   loadRelationOptions(
@@ -25,18 +26,23 @@ const EntityContext = createContext<EntityContextData>({} as EntityContextData);
 const requestQuery = RequestQueryBuilder.create().sortBy({
   field: 'createdDate',
   order: 'DESC',
-}).queryObject;
-
+});
 export const EntityProvider: React.FC = ({ children }) => {
-  const generateTableContent = (model: CrudModel<any>, columns: string[]) => {
+  const generateTableContent = (
+    model: CrudModel<any>,
+    columns: string[],
+    page: number
+  ) => {
     async function fetchData(): Promise<TableColumnsProps> {
       const entityDescription = await model.entityDescription();
-      const foundEntities: any[] = await model.getMany(requestQuery);
+      const foundEntities = await model.getMany(
+        requestQuery.setPage(page).queryObject
+      );
 
       return formatTableContent(columns, entityDescription, foundEntities);
     }
 
-    return useQuery(model.endpoint, fetchData, {
+    return useQuery([model.endpoint, page], fetchData, {
       staleTime: 5 * 500, // 5s
     });
   };
