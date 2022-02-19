@@ -20,7 +20,7 @@ import { ModalFile } from '../form/fields/ModalFile';
 import { ConfirmationModal } from '../base/ConfirmationModal';
 import AsyncComponenteWrapper from '../base/AsyncComponenteWrapper';
 import Pagination from '../../components/pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -69,9 +69,17 @@ export const Table: React.FC<TableProps> = ({
     await refetch();
   };
 
+  useEffect(() => {
+    const top = document.querySelector('#top');
+
+    if (top) {
+      top.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentPage]);
+
   return (
     <AsyncComponenteWrapper isLoading={isLoading} error={error}>
-      <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
+      <Flex justifyContent="flex-end" alignItems="center" mb="1rem" id="top">
         <ConfirmationModal onEnsured={() => deleteAll()} title="Deletar tudo?">
           <Button
             borderColor="red.800"
