@@ -78,7 +78,7 @@ export const EntityProvider: React.FC = ({ children }) => {
             };
 
             if (relation) {
-              const selectOptions =
+              const { data: selectOptions } =
                 relationOptions.find((relation) => relation.key === key)
                   ?.data ?? [];
 
