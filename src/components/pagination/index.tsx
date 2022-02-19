@@ -5,7 +5,6 @@ interface PaginationProps {
   registerTotalCounts: number;
   registersPerPage?: number;
   currentPage?: number;
-  count: number;
   onPageChange(page: number): void;
 }
 
@@ -31,7 +30,6 @@ export default function Pagination({
   registersPerPage = 10,
   currentPage = 1,
   onPageChange,
-  count = 0,
 }: PaginationProps) {
   const lastPage = Math.ceil(registerTotalCounts / registersPerPage);
   const previousPages =
