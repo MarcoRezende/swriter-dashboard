@@ -19,7 +19,7 @@ import { CrudModel } from '../../models/crud.model';
 import { ModalFile } from '../form/fields/ModalFile';
 import { ConfirmationModal } from '../base/ConfirmationModal';
 import AsyncComponenteWrapper from '../base/AsyncComponenteWrapper';
-import Pagination from '../../components/Pagination';
+import Pagination from '../../components/pagination';
 import { useState } from 'react';
 
 interface TableProps extends ChakraTableProps {
@@ -47,6 +47,10 @@ export const Table: React.FC<TableProps> = ({
   const router = useRouter();
   const path = router.pathname;
   const resource = path !== '/' ? path.replace(/\//g, '') : path;
+  const registerTotalCounts = tableColumns?.total ?? 0;
+  const registersPerPage = 50;
+  const offsetStart =
+    registerTotalCounts > 0 ? 1 + registersPerPage * (currentPage - 1) : 0;
 
   const MAX_TEXT_LENGTH = 120;
 
@@ -66,7 +70,7 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <AsyncComponenteWrapper isLoading={isLoading} error={error} pb="20">
+    <AsyncComponenteWrapper isLoading={isLoading} error={error}>
       <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
         <ConfirmationModal onEnsured={() => deleteAll()} title="Deletar tudo?">
           <Button
@@ -142,7 +146,7 @@ export const Table: React.FC<TableProps> = ({
                 }}
               >
                 <Td borderBottom="0" py="1.5rem">
-                  {index + 1}
+                  {offsetStart + index}
                 </Td>
                 {content.values.map((value, contentIndex) => (
                   <Td
@@ -177,10 +181,10 @@ export const Table: React.FC<TableProps> = ({
 
       <Box pb="8">
         <Pagination
-          registerTotalCounts={tableColumns?.total ?? 0}
+          registerTotalCounts={registerTotalCounts}
           currentPage={currentPage}
           onPageChange={(page) => setCurrentPage(page)}
-          registersPerPage={50}
+          registersPerPage={registersPerPage}
         />
       </Box>
     </AsyncComponenteWrapper>
