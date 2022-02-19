@@ -59,6 +59,10 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
     filterSelectOptions()
   );
 
+  const sortedOptions =
+    visibleOptions.sort((a, b) => a.label.localeCompare(b.label, 'pt-BR')) ??
+    [];
+
   useEffect(() => {
     setVisibleOptions(filterSelectOptions());
     setValue(name, selectedOptions);
@@ -81,7 +85,7 @@ export const MultiSelect: React.FC<TextAreaProps> = ({
               setSelectedOptions([...(newValues as SelectOption[])]);
             }}
             isMulti
-            options={visibleOptions}
+            options={sortedOptions}
             id={name}
             placeholder={placeholder}
             noOptionsMessage={() => 'Nenhum valor disponível'}

@@ -69,10 +69,13 @@ export const BaseSelect: React.FC<SelectProps> = ({
   options,
   ...rest
 }) => {
+  const sortedOptions =
+    options?.sort((a, b) => a.label.localeCompare(b.label, 'pt-BR')) ?? [];
+
   return (
     <ChakraSelect
       closeMenuOnSelect={options?.length === 1 || !rest.isMulti}
-      options={options}
+      options={sortedOptions}
       colorScheme="blue"
       {...rest}
     />
