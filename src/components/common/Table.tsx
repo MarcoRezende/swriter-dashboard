@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { Button } from '@chakra-ui/button';
 import { Divider, Flex, Heading, Link } from '@chakra-ui/layout';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, Box } from '@chakra-ui/react';
 import {
   Table as ChakraTable,
   TableProps as ChakraTableProps,
@@ -19,6 +19,8 @@ import { CrudModel } from '../../models/crud.model';
 import { ModalFile } from '../form/fields/ModalFile';
 import { ConfirmationModal } from '../base/ConfirmationModal';
 import AsyncComponenteWrapper from '../base/AsyncComponenteWrapper';
+import Pagination from '../../components/Pagination';
+import { useState } from 'react';
 
 interface TableProps extends ChakraTableProps {
   title: string;
@@ -33,13 +35,14 @@ export const Table: React.FC<TableProps> = ({
   ...rest
 }) => {
   const { generateTableContent } = useEntity();
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     data: tableColumns,
     isLoading,
     isFetching,
     error,
     refetch,
-  } = generateTableContent(model, columns);
+  } = generateTableContent(model, columns, currentPage);
   const hasContent: boolean = !!tableColumns?.tableBody.length;
   const router = useRouter();
   const path = router.pathname;
@@ -63,7 +66,7 @@ export const Table: React.FC<TableProps> = ({
   };
 
   return (
-    <AsyncComponenteWrapper isLoading={isLoading} error={error}>
+    <AsyncComponenteWrapper isLoading={isLoading} error={error} pb="20">
       <Flex justifyContent="flex-end" alignItems="center" mb="1rem">
         <ConfirmationModal onEnsured={() => deleteAll()} title="Deletar tudo?">
           <Button
@@ -169,6 +172,17 @@ export const Table: React.FC<TableProps> = ({
           )}
         </Tbody>
       </ChakraTable>
+
+      <Divider />
+
+      <Box pb="8">
+        <Pagination
+          registerTotalCounts={tableColumns?.total ?? 0}
+          currentPage={currentPage}
+          onPageChange={(page) => setCurrentPage(page)}
+          registersPerPage={50}
+        />
+      </Box>
     </AsyncComponenteWrapper>
   );
 };
