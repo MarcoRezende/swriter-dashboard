@@ -6,6 +6,7 @@ import {
   deleteOneBase,
   getManyBase,
   getOneBase,
+  NextPaginateResponse,
   patchOneBase,
   uploadFile,
 } from '../services/common';
@@ -59,7 +60,9 @@ export class CrudModel<Entity> {
     return getOneBase<Entity>({ resource: this.endpoint, id });
   }
 
-  async getMany(requestQuery?: RequestQueryBuilderObject): Promise<Entity[]> {
+  async getMany(
+    requestQuery?: RequestQueryBuilderObject
+  ): Promise<NextPaginateResponse<Entity>> {
     return getManyBase<Entity>({ resource: this.endpoint, requestQuery });
   }
 

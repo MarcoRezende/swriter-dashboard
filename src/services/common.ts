@@ -11,9 +11,9 @@ interface DTO<T> {
   requestQuery?: { [key: string]: any };
 }
 
-interface NextPaginateResponse {
+export interface NextPaginateResponse<DataType = any> {
   count: number;
-  data: [];
+  data: DataType[];
   page: number;
   pageCount: number;
   total: number;
@@ -70,7 +70,7 @@ export const createOneBase = async <K = any>({
 export const getManyBase = async <K = any>({
   resource,
   requestQuery,
-}: DTO<K>): Promise<K[]> => {
+}: DTO<K>): Promise<NextPaginateResponse<K>> => {
   try {
     const { data: response } = await api.get<
       K[],
@@ -79,7 +79,7 @@ export const getManyBase = async <K = any>({
       params: requestQuery,
     });
 
-    return response.data;
+    return response;
   } catch (err) {
     console.error(err);
 
