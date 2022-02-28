@@ -4,7 +4,7 @@ import { CrudModel } from './crud.model';
 
 class HintsModel extends CrudModel<Hint> {
   constructor() {
-    super('hint', [{ key: 'categories', model: categoriesModel }]);
+    super('admin/hint', [{ key: 'categories', model: categoriesModel }]);
   }
 }
 

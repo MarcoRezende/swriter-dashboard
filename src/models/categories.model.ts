@@ -4,7 +4,7 @@ import themesModel from './themes.model';
 
 class CategoriesModel extends CrudModel<Category> {
   constructor() {
-    super('category', [{ key: 'theme', model: themesModel }]);
+    super('admin/category', [{ key: 'theme', model: themesModel }]);
   }
 }
 
