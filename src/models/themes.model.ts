@@ -1,9 +1,9 @@
-import { Theme } from "../entities/Theme";
-import { CrudModel } from "./crud.model";
+import { Theme } from '../entities/Theme';
+import { CrudModel } from './crud.model';
 
 class ThemesModel extends CrudModel<Theme> {
   constructor() {
-    super("theme");
+    super('admin/theme');
   }
 }
 
